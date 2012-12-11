@@ -1,0 +1,30 @@
+<?php
+
+/**
+ * Implements hook_requirements()
+ *
+ * Checks the existance of the Twitter REST library
+ */
+function voer_api_requirements($phase) {
+  $requirements = array();
+  $t = get_t();
+  if (($phase == 'runtime') || ($phase == 'install')) {
+    $path = 'sites/all/libraries/guzzle/Http/Client.php';
+    $requirements['voer_api'] = array('title' => $t('Guzzle REST API library'));
+    if (!file_exists($path)) {
+      $requirements['voer_api']['value'] = $t('Missing');
+      $requirements['voer_api']['description'] = $t('The Guzzle REST API is missing. ' .
+        'Download it from ' .
+        '<a href="https://github.com/guzzle/guzzle" target="_blank">' .
+        'https://github.com/guzzle/guzzle</a> and place it at !path',
+        array('!path' => $path));
+      $requirements['voer_api']['severity'] = REQUIREMENT_ERROR;
+    } else {
+      $requirements['voer_api']['value'] = $t('Installed');
+      $requirements['voer_api']['severity'] = REQUIREMENT_OK;
+    }
+  }
+  return $requirements;
+}
+
+?>

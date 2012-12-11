@@ -1,0 +1,36 @@
+<?php
+	/*
+	 * -  Function get a content from respository
+	 * -  Function commit a content version to respository
+	 * -  Function search in respository
+	 */
+
+define('VOER_API_VERSION', '3');
+
+/**
+ * Implementation of hook_menu().
+ */
+function voer_api_menu() {
+  $items['admin/config/services/voer'] = array(
+    'title' => 'VOER',
+    'description' => 'Configure VOER settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('voer_admin_settings'),
+    'file' => 'voer_settings_ui.inc',
+    'access arguments' => array('administer site configuration'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  $items['voer/test'] = array(
+    'title' => 'VOER Test',
+    'page callback' => '_voer_api_test',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK
+  );
+
+  return $items;
+}
+
+function _voer_api_test(){
+  module_load_include('inc', 'voer_api');
+}

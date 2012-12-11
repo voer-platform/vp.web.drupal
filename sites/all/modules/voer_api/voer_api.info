@@ -1,0 +1,8 @@
+name = VOER API
+description = The interface communicates with VOER services.
+core = 7.x
+package = VOER
+dependencies[] = libraries
+;dependencies[] = panels
+files[] = voer_api.module
+configure = admin/config/services/voer
