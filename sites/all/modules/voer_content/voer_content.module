@@ -1,0 +1,16 @@
+<?php
+/**
+ * Implements hook_menu().
+ */
+function voer_content_menu() {
+  $items[''] = array(
+    'title' => '',
+    'page callback' => '',
+    'page arguments' => array(),
+    'access arguments' => array(''),
+    'type' => ,
+    'file' => ,
+  );
+
+  return $items;
+}
