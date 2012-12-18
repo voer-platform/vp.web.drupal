@@ -1,16 +1,79 @@
 <?php
 /**
+ * Implements hook_form_alter().
+ */
+function voer_content_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'voer_content_node_form') {
+    $form['actions']['commit'] = array(
+      '#type'=> 'submit',
+      '#value'=> 'Commit',
+      '#weight'=> 11,
+      '#submit' => array('voer_content_form_push'),
+    );
+  }
+
+  return $form;
+}
+
+function voer_content_form_push($form, &$form_state)
+{
+  $result = voer_api_add($modData);
+}
+
+/**
  * Implements hook_menu().
  */
 function voer_content_menu() {
-  $items[''] = array(
-    'title' => '',
-    'page callback' => '',
-    'page arguments' => array(),
-    'access arguments' => array(''),
-    'type' => ,
-    'file' => ,
+  $items = array();
+
+  $items['module/%/%'] = array(
+    'title' => t('View module'),
+    'page callback' => 'voer_content_view_module',
+    'access arguments' => array('view VOER content'),
+    'type' => MENU_NORMAL_ITEM,
   );
 
   return $items;
+}
+
+/**
+ * [voer_content_view_module description]
+ * @return object          [description]
+ */
+function voer_content_view_module()
+{
+  $moduleId = arg(1);
+  $version = arg(2);
+
+  if (!$version) {
+    $version = '';
+  }
+
+  $moduleData = array();
+
+  $modData = _voer_content_get_data($moduleId, $version);
+
+  if ($modData) {
+    $moduleData = $modData;
+  } else {
+    $moduleData = voer_api_get_content($moduleId, $version);
+  }
+
+}
+
+/**
+ * [_voer_content_get_data description]
+ *
+ * @param  int $moduleId     [description]
+ * @param  int $version      [description]
+ * @return object            [description]
+ */
+function _voer_content_get_data($moduleId, $version)
+{
+  $sql = "SELECT * FROM {node} AS n "
+       . "WHERE n.nid = %s ";
+
+  $result = db_query($sql, $moduleId);
+
+  return $moduleData;
 }
