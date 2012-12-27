@@ -397,3 +397,72 @@ h2.suggested-action-title {
   margin-bottom: 22px;
   margin-top: 11px;
 }
+.section-separator {
+  position:relative;
+  margin: 25px auto;
+}
+.section-separator h2 {
+  color:#898989;
+  text-align:center;
+  width:auto;
+  font-size: 16px;
+  font-weight: normal;
+  position:relative;
+  z-index:1;
+  margin:0;
+}
+ul#our_libs {
+  list-style: none outside none;
+}
+#our_libs h2.pulls {
+  font-size: 20px;
+}
+hr {
+  background:#CCC;
+  border:0;
+  -moz-box-shadow:0 2px 2px rgba(0,0,0,0.075);
+  -webkit-box-shadow:0 2px 2px rgba(0,0,0,0.075);
+  box-shadow:0 2px 2px rgba(0,0,0,0.075);
+  clear:both;
+  color:#CCC;
+  display:block;
+  height:1px;
+  width:100%;
+  margin:18px 0 36px;
+  padding:0;
+}
+hr.thin {
+  margin-bottom:18px;
+  margin-left:auto;
+  margin-right:auto;
+  opacity:.40;
+  filter:alpha(opacity=40);
+  width:50%;
+}
+.section-separator .section-separator-text {
+  background:#fff;
+  display:inline-block;
+  text-transform:uppercase;
+  padding:0 15px;
+}
+.section-separator hr {
+  position:relative;
+  top: -20px;
+  margin:0;
+}
+.subscription input.email {
+  border: 1px solid #CCCCCC;
+  border-radius: 5px 5px 5px 5px;
+  box-shadow: none;
+  font-family: "MuseoSans300",sans-serif;
+  font-size: 14px;
+  font-weight: normal;
+  height: 25px;
+  line-height: 22px;
+  outline: 0 none;
+  padding: 5px;
+  width: 97%;
+}
+.info-section .info-text {
+  min-height: 110px;
+}
