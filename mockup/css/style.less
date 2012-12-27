@@ -1,0 +1,236 @@
+// VOER 1.0.1
+// Based on Ceruclean
+// -----------------------------------------------------
+@import "../bootstrap/less/mixins.less";
+@import "variables.less";
+
+// TYPOGRAPHY
+// -----------------------------------------------------
+
+//@import url(https://fonts.googleapis.com/css?family=Telex);
+
+// SCAFFOLDING
+// -----------------------------------------------------
+body{
+  padding-bottom: 20px;
+  padding-top: 60px;
+}
+
+// NAVBAR
+// -----------------------------------------------------
+
+.navbar {
+
+
+  .brand {
+    padding: 14px 20px 16px;
+    font-family: @headingsFontFamily;
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
+  }
+
+  li {
+    line-height: 20px;
+  }
+
+  .nav > li > a {
+    padding: 16px 10px 14px;
+    font-family: @headingsFontFamily;
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
+  }
+
+  .search-query {
+    border: 1px solid darken(@linkColor, 10%);
+    line-height: normal;
+  }
+
+  .navbar-text {
+    padding: 19px 10px 18px;
+    line-height: 13px;
+    color: rgba(0, 0, 0, 0.5);
+    text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.3);
+  }
+
+  &-inverse {
+
+    .navbar-search .search-query {
+      color: @textColor;
+    }
+  }
+}
+
+@media (max-width: @navbarCollapseWidth) {
+
+  .navbar .nav-collapse {
+
+    .nav li > a {
+
+      font-family: @headingsFontFamily;
+      font-weight: normal;
+      color: @white;
+      text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
+
+      &:hover {
+        background-color: #2B7CAC;
+      }
+    }
+
+    .nav .active > a {
+      .box-shadow(none);
+      background-color: #2B7CAC;
+    }
+
+    .dropdown-menu li > a:hover,
+    .dropdown-menu li > a:focus,
+    .dropdown-submenu:hover > a {
+      background-image: none;
+    }
+
+    .navbar-form,
+    .navbar-search {
+      border: none;
+    }
+
+    .nav-header {
+      color: #2B7CAC;
+    }
+  }
+
+  .navbar-inverse .nav-collapse {
+
+    .nav li > a {
+      color: @navbarInverseLinkColor;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.1);
+      }
+    }
+
+    .nav .active > a,
+    .nav > li > a:hover,
+    .dropdown-menu a:hover {
+      background-color: rgba(0, 0, 0, 0.1) !important;
+    }
+  }
+}
+
+div.subnav {
+
+  font-family: @headingsFontFamily;
+  text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.2);
+  background-color: #EEEEEE;
+  background-image: -moz-linear-gradient(center top , #F5F5F5 0%, #EEEEEE 100%);
+  background-repeat: repeat-x;
+  border: 1px solid #E5E5E5;
+  border-radius: 4px 4px 4px 4px;
+  height: 36px;
+  margin-bottom: 20px;
+  width: 100%;
+  .nav > li{
+    & > a{
+      border-left: 1px solid #F5F5F5;
+      border-radius: 0 0 0 0;
+      border-right: 1px solid #E5E5E5;
+      margin: 0;
+      padding-bottom: 11px;
+      padding-top: 11px;
+    }
+  }
+  &-fixed {
+    top: @navbarHeight;
+    border-color: #D5D5D5;
+    border-radius: 0 0 0 0;
+    border-width: 0 0 1px;
+    box-shadow: 0 1px 0 #FFFFFF inset, 0 1px 5px rgba(0, 0, 0, 0.1);
+    left: 0;
+    position: fixed;
+    right: 0;
+    z-index: 1020;
+    .nav{
+      width: 1168px;
+      margin: 0 auto;
+      & > li{
+        & > a{
+          border-left: 1px solid #F5F5F5;
+          border-radius: 0 0 0 0;
+          border-right: 1px solid #E5E5E5;
+          margin: 0;
+          padding-bottom: 11px;
+          padding-top: 11px;
+        }
+      }
+    }
+  }
+}
+
+// NAV
+// -----------------------------------------------------
+
+// BUTTONS
+// -----------------------------------------------------
+
+.btn {
+  #gradient > .vertical-three-colors(@white, @white, 5%, darken(@white, 0%));
+  @shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05);
+  .box-shadow(@shadow);
+
+  &:hover {
+    background-position: 0 0;
+  }
+}
+
+.btn-primary {
+  .buttonBackground(lighten(@btnPrimaryBackground, 5%), @btnPrimaryBackground);
+}
+
+.btn-info {
+  .buttonBackground(lighten(@btnInfoBackground, 5%), @btnInfoBackground);
+}
+
+.btn-success {
+  .buttonBackground(lighten(@btnSuccessBackground, 5%), @btnSuccessBackground);
+}
+
+.btn-warning {
+  .buttonBackground(lighten(@btnWarningBackground, 5%), @btnWarningBackground);
+}
+
+.btn-danger {
+  .buttonBackground(lighten(@btnDangerBackground, 5%), @btnDangerBackground);
+}
+
+.btn-inverse {
+  .buttonBackground(lighten(@btnInverseBackground, 5%), @btnInverseBackground);
+}
+
+// TABLES
+// -----------------------------------------------------
+
+// FORMS
+// -----------------------------------------------------
+
+// DROPDOWNS
+// -----------------------------------------------------
+
+// ALERTS, LABELS, BADGES
+// -----------------------------------------------------
+
+// MISC
+// -----------------------------------------------------
+
+i[class^="icon-"]{
+  opacity: 0.8;
+}
+form.voer-login-form{
+  float: right;
+  margin-top: 10px;
+  margin-bottom: 0px;
+  button.btn{
+    margin-top: 0px;
+  }
+}
+#logo{
+  margin-bottom: 20px;
+}
+
+// MEDIA QUERIES
+// -----------------------------------------------------
