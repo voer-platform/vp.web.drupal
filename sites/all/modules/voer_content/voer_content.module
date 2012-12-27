@@ -4,17 +4,33 @@
  */
 function voer_content_form_alter(&$form, &$form_state, $form_id) {
   if ($form_id == 'voer_content_node_form') {
-    $form['actions']['commit'] = array(
-      '#type'=> 'submit',
-      '#value'=> 'Commit',
-      '#weight'=> 11,
-      '#submit' => array('voer_content_form_push'),
-    );
+    if (!isset($form_state['input']['accept_license'])) {
+      $form = drupal_get_form('accept_license_form');
+
+    } else {
+      $form['actions']['commit'] = array(
+        '#type'=> 'submit',
+        '#value'=> 'Commit',
+        '#weight'=> 11,
+        '#submit' => array('voer_content_form_push'),
+      );
+
+      $form['accept_license'] = array(
+        '#type'=> 'hidden',
+        '#value'=> 1,
+      );
+    }
   }
 
   return $form;
 }
 
+/**
+ * post data to server
+ *
+ * @param unknown_type $form
+ * @param unknown_type $form_state
+ */
 function voer_content_form_push($form, &$form_state)
 {
   $result = voer_api_add($modData);
@@ -75,5 +91,46 @@ function _voer_content_get_data($moduleId, $version)
 
   $result = db_query($sql, $moduleId);
 
-  return $moduleData;
+  $node = node_load($moduleData['nid']);
+
+  return $node;
+}
+
+/**
+ * Create a new form accpet license.
+ *
+ * @return form
+ */
+function accept_license_form() {
+  $form = array();
+
+  $form['license_form'] = array(
+    '#type' => 'fieldset',
+    '#title' => 'License agreement',
+    '#collapsible' => TRUE,
+  );
+
+  $form['license_form']['license_text'] = array(
+    '#type' => 'textarea',
+    '#value' => t('I recently played the role of Information Architect on a site remodel. We were charged with the task of doing a brand new build to replace an existing Flash site. One of the priorities of the client was to retain the elaborate Request for Quote form. There were many, many form fields that comprised this web form so I began to ponder if we should break the form up into a multiple step form, to improve the overall user experience. After careful consideration, I decided that we should definitely split the form up (for more on this matter check out Pagination in Web Forms | Evaluating the Effectiveness of Web Forms on UXmatter.com). Since there was no logic needed in the progression of the form, I felt that Javascript would be an acceptable solution, over using an actual server-side wizard. Thanks to Janko and his Turn any webform into a powerful wizard with jQuery blog, I found his JQuery plugin very easy to implement. This tutorial assumes that you have some basic working knowledge of the Webform module and how to create a custom module of your own.'),
+    '#weight' => 0,
+    '#disabled' => TRUE,
+    '#resizable' => FALSE,
+    '#attributes' => array(
+      'class' => array('license_text'),
+    )
+  );
+
+  $form['license_form']['accept_license'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('I have read the above, and I agree to license this new work under its terms.'),
+    '#required' => TRUE,
+  );
+
+  $form['license_form']['submit_license'] = array(
+    '#type' => 'submit',
+    '#value' => t('Next >>'),
+  );
+
+  return $form;
 }
