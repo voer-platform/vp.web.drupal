@@ -354,3 +354,46 @@ form.voer-login-form button.btn {
 #logo {
   margin-bottom: 20px;
 }
+.suggested-actions .suggested-action:hover {
+  -webkit-box-shadow:0 0 10px #76a005;
+  -moz-box-shadow:0 0 10px #76a005;
+  box-shadow:0 0 10px #76a005;
+  color:#444!important;
+  text-decoration:none!important;
+  border-color:#c3ca7d;
+}
+.suggested-action {
+  background-color:#f7f7f7;
+  color:#444!important;
+  display:block;
+  margin-bottom:0;
+  position:relative;
+  padding:14px;
+}
+.suggested-action .suggested-action-image-link {
+  background-size:cover;
+  background-repeat:no-repeat;
+  border-bottom:1px solid #dce0b3;
+  display:block;
+  height:130px;
+  margin:-14px -14px 22px;
+}
+.suggested-action .suggested-action-title {
+  color:#005987;
+}
+.vertical-shadow {
+  border:1px solid #ccc;
+  border-bottom:1px solid #aaa;
+  -webkit-box-shadow:0 1px 3px #ccc;
+  -moz-box-shadow:0 1px 3px #ccc;
+  box-shadow:0 1px 3px #ccc;
+}
+h2.suggested-action-title {
+  font-size: 21px;
+}
+.pulled {
+  opacity:.8;
+  filter:alpha(opacity=80);
+  margin-bottom: 22px;
+  margin-top: 11px;
+}
