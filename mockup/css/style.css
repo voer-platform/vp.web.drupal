@@ -37,11 +37,6 @@ body {
 .navbar li {
   line-height: 20px;
 }
-.navbar .nav > li > a {
-  padding: 16px 10px 14px;
-  font-family: 'Telex', sans-serif;
-  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
-}
 .navbar .search-query {
   border: 1px solid #178acc;
   line-height: normal;
@@ -116,7 +111,7 @@ div.subnav .nav > li > a {
   padding-top: 11px;
 }
 div.subnav-fixed {
-  top: 50px;
+  top: 40px;
   border-color: #D5D5D5;
   border-radius: 0 0 0 0;
   border-width: 0 0 1px;
@@ -353,4 +348,18 @@ form.voer-login-form button.btn {
 }
 #logo {
   margin-bottom: 20px;
+}
+div.voer-sidenav {
+  width: 258px;
+}
+footer.footer {
+  background-color: #F5F5F5;
+  border-top: 1px solid #E5E5E5;
+  margin-top: 70px;
+  padding: 30px 0;
+  text-align: center;
+}
+footer.footer p {
+  color: #777;
+  margin-bottom: 0;
 }
