@@ -8,6 +8,7 @@
     <link href="bootstrap/css/bootstrap-blue.css" rel="stylesheet" media="screen">
     <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet" media="screen">
+    <link href="css/abc.css" rel="stylesheet" media="screen">
   </head>
   <body data-offset="80" data-target=".subnav" data-spy="scroll" style="height:1000px">
     <div class="navbar navbar-fixed-top">
@@ -29,83 +30,216 @@
     </div>
     <div class="container">
       <header>
-        <div id="logo"><a href="#"><img src="images/logo-small.png" alt=""></a></div>
+        <div id="logo"><a href="#"><img src="images/logo.png" alt=""></a></div>
         <div class="subnav">
-          <form action="" class="search-form">
-            <input type="text" class="search-query" placeholder="Bạn cần tìm gì?" />
-          </form>
+          <ul class="nav nav-pills">
+            <li class="active"><a href="#chu-de">Chủ đề</a></li>
+            <li class=""><a href="#feature-01">Videos</a></li>
+            <li class=""><a href="#feature-02">Slides</a></li>
+          </ul>
         </div>
       </header>
     </div>
 
     <div class="container">
-      <ul class="breadcrumb">
-        <li><a href="#">Trang chủ</a> <span class="divider">/</span></li>
-        <li class="">Chủ đề</li>
-      </ul>
+      <div class="row-fluid suggested-actions">
+        <div class="span4">
+          <a href="#" class="vertical-shadow suggested-action">
+            <div style="background-image: url(images/feature01.png);" class="suggested-action-image-link ">
+            </div>
+            <h2 class="pulls ellipsis suggested-action-title">Holiday book shopping</h2>
+            <p class="pulled">Share Sal Khan's vision for education. His royalties are donated to VOER.</p>
+          </a>
+        </div>
+
+        <div class="span4">
+          <a href="#" class="vertical-shadow suggested-action">
+            <div style="background-image: url(images/fiscal-cliff.png);" class="suggested-action-image-link ">
+            </div>
+            <h2 class="pulls ellipsis suggested-action-title">Explore computer science</h2>
+            <p class="pulled">Create beautiful art and design your own simulations while learning how to program.</p>
+          </a>
+        </div>
+
+        <div class="span4">
+          <a href="#" class="vertical-shadow suggested-action">
+            <div style="background-image: url(images/khan-snowflake-red.png);" class="suggested-action-image-link ">
+            </div>
+          <h2 class="pulls ellipsis suggested-action-title">Give the gift of education</h2>
+          <p class="pulled">Support Khan Academy and together we can reinvent education on a global scale.</p>
+          </a>
+        </div>
+      </div>
+
+      <div class="row-fluid library-section visited-no-recolor">
+        <span class="span8">
+          <div class="section-separator">
+            <h2><span class="section-separator-text">Browse our library</span></h2>
+            <hr>
+          </div>
+
+          <ul id="our_libs">
+            <li>
+              <h2 class="pulls">
+                <a class="topic-header">Math</a>
+              </h2>
+
+              <p class="topic-children pulled">
+                <span style="display: inline-block;">
+                <a class="topic-link" href="#">Arithmetic and Pre-Algebra</a>,</span>
+                <span style="display: inline-block;">
+                <a class="topic-link" href="#">Algebra</a>,</span>
+                <span style="display: inline-block;">
+                <a class="topic-link" href="#" data-hasqtip="true">Geometry</a>,</span>
+              </p>
+            </li>
+
+            <li>
+              <h2 class="pulls">
+                <a class="topic-header">Science</a>
+              </h2>
+
+              <p class="topic-children pulled">
+                <span style="display: inline-block;">
+                <a class="topic-link" href="#">Biology</a>,</span>
+                <span style="display: inline-block;">
+                <a class="topic-link" href="#">Chemistry</a>,</span>
+                <span style="display: inline-block;">
+                <a class="topic-link" href="#">Cosmology and Astronomy</a>,</span>
+                <span style="display: inline-block;">
+                <a class="topic-link" href="#" data-hasqtip="true">Healthcare and Medicine</a>,</span>
+              </p>
+            </li>
+            <li>
+              <h2 class="pulls">
+                  <a class="topic-header" href="#">Computer Science</a>
+              </h2>
+
+              <p class="topic-children pulled">
+                <span style="display: inline-block;">
+                <a class="topic-link" href="#">Drawing</a>,</span>
+                <span style="display: inline-block;">
+                <a class="topic-link" href="#">Programming Basics</a>,</span>
+                <span style="display: inline-block;">
+                <a class="topic-link" href="#">Animation</a>,</span>
+                <span style="display: inline-block;">
+                <a class="topic-link" href="#">User Interaction</a></span>
+              </p>
+            </li>
+            <li>
+              <h2 class="pulls">
+                <a class="topic-header">Finance &amp; Economics</a>
+              </h2>
+              <p class="topic-children pulled">
+                <span style="display: inline-block;">
+                <a class="topic-link" href="#" data-hasqtip="true">Core Finance</a>,</span>
+                <span style="display: inline-block;">
+                <a class="topic-link" href="#">Valuation and Investing</a>,</span>
+                <span style="display: inline-block;">
+                <a class="topic-link" href="#">Venture Capital and Capital Markets</a>,</span>
+                <span style="display: inline-block;">
+                <a class="topic-link" href="#">Credit Crisis</a>,</span>
+              </p>
+            </li>
+            <li>
+              <h2 class="pulls">
+                  <a class="topic-header">Humanities</a>
+              </h2>
+
+              <p class="topic-children pulled">
+                <span style="display: inline-block;">
+                <a class="topic-link" href="#">History</a>,</span>
+                <span style="display: inline-block;">
+                <a class="topic-link" href="#">American Civics</a>,</span>
+                <span style="display: inline-block;">
+                <a class="topic-link" href="#">Art History</a></span>
+              </p>
+            </li>
+          </ul>
+
+          <div class="homepage-actions">
+            <a class="btn btn-large btn-success" href="#">Practice your skills</a>
+            <a class="btn btn-large" href="#">Browse all 3,600 videos</a>
+          </div>
+        </span>
+
+        <span class="span4 logged-out-sidebar">
+          <div class="section-separator">
+            <h2><span class="section-separator-text">Join the Academy</span></h2>
+            <hr>
+          </div>
+
+          <div class="suggested-action join-academy vertical-shadow">
+            <div class="subscribe-tease">
+              <h2 class="pulls ellipsis suggested-action-title">Subscribe to our courses</h2>
+              <div class="homepage-mailing">
+                <span>
+                  <div class="subscription">
+                    <span class="already-subscribed-container">
+                      <p>Nice! You're subscribed to receive <a href="#" class="already-subscribed">emails about new content</a>.</p>
+                    </span>
+
+                    <span class="not-subscribed-container">
+                      <input type="email" placeholder="Enter your email to learn about new courses." class="email" required>
+                    </span>
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+
+          <div class="suggested-actions" style="padding-top: 30px">
+            <a href="#" class="vertical-shadow suggested-action">
+              <div style="background-image: url(images/hqdefault.jpg);" class="suggested-action-image-link ">
+              </div>
+              <h2 class="pulls ellipsis suggested-action-title">How to use VOER</h2>
+              <p class="pulled">Take a quick tour with Sal of all the neat things you can do on VOER.</p>
+            </a>
+          </div>
+        </span>
+      </div>
+
+      <div class="section-separator row-fluid">
+        <span class="span12">
+          <h2><span class="section-separator-text">What's VOER All About?</span></h2>
+          <hr>
+        </span>
+      </div>
+
+      <div class="row-fluid info-section">
+        <span class="span4 info-section">
+          <h3 class="info-header pulls">Students</h3>
+          <p class="info-text pulled">
+            Watch one of our <a href="#">3,600 videos</a> or
+            <a href="#">try a practice exercise</a>. Then check out
+            <a href="#">your profile</a> to view your history and suggestions on what you can
+            learn next. You can also select your avatar and show off your accomplishments.
+          </p>
+
+          <a class="btn" href="#">Visit your profile</a>
+        </span>
+        <span class="span4 info-section">
+          <h3 class="info-header pulls">Coaches</h3>
+          <p class="info-text pulled">
+            Head on over to <a href="#">your coach dashboard</a>. Whether you're coaching
+            one or hundreds, or are a parent, mentor or teacher, <a href="#">the coach dashboard</a> provides you the insight you need to best support each learner's progress.
+          </p>
+          <a class="btn" href="#">Coach Dashboard</a>
+        </span>
+        <span class="span4 info-section">
+          <h3 class="info-header pulls">Teachers</h3>
+          <p class="info-text pulled">
+            Check out the <a href="#">teacher toolkit</a> to take Khan Academy to the next level
+            in your classroom or school. The toolkit provides ideas, materials and inspiring stories
+            from teachers, who share how they've integrated Khan Academy into their classrooms.
+          </p>
+          <a class="btn" href="#">Teacher Toolkit</a>
+        </span>
+      </div>
     </div>
 
-    <div class="container">
-      <div class="row">
-        <div class="span3">
-          <div class="voer-sidenav1">
-            <div class="well">
-              <ul class="nav nav-list">
-                <li class="nav-header">Mục lục</li>
-                <li class="active"><a href="#">1. Course Information</a></li>
-                <li><a href="#">2. Introduction</a></li>
-                <li><a href="#">3. Relation</a></li>
-                <li><a href="#">4. Logic</a></li>
-                <li><a href="#">5. Function</a></li>
-                <li><a href="#">6. Problem Solving</a></li>
-                <li><a href="#">7. Recursion</a></li>
-                <li><a href="#">8. Set Theory</a></li>
-                <li class="divider"></li>
-                <li><a href="#">Help</a></li>
-              </ul>
-            </div>
-            <div class="well">
-              <ul class="nav nav-list">
-                <li class="nav-header">Các bài liên quan</li>
-                <li><a href="#">Ứng dụng toán học trong phát triển phần mềm</a></li>
-                <li><a href="#">Hội nhập kinh tế thế giới</a></li>
-                <li><a href="#">Thế giới phẳng</a></li>
-                <li><a href="#">Những đêm không ngủ</a></li>
-              </ul>
-            </div>
-            <div class="well">
-              <div class="nav-header">Tìm kiếm</div>
-              <form action="" class="form-search">
-                <input type="text" class="search-query" placeholder="Bạn cần tìm gì?" />
-              </form>
-            </div>
-          </div>
-        </div>
-        <div class="span9">
-          <div class="social-links">
-            <!-- AddThis Button BEGIN -->
-            <div class="addthis_toolbox addthis_default_style ">
-            <a class="addthis_button_preferred_1"></a>
-            <a class="addthis_button_preferred_2"></a>
-            <a class="addthis_button_preferred_3"></a>
-            <a class="addthis_button_preferred_4"></a>
-            <a class="addthis_button_compact"></a>
-            <a class="addthis_counter addthis_bubble_style"></a>
-            </div>
-            <script type="text/javascript" src="http://s7.addthis.com/js/300/addthis_widget.js#pubid=xa-50dc53f57129e448"></script>
-            <!-- AddThis Button END -->
-          </div>
-          <div class="page-header"><h1>Course Information</h1></div><p>Module by: The Duy Bui. &nbsp;E-mail the author</p><p>Vietnam National University, Hanoi</p><p>College of Technology</p><p>CS281 - Discrete Structures</p><p>Spring, 2008</p><p>Student Manual</p><h2>Letter to Student</h2><p>To the Student:</p><p>This course and this Student Manual reflect a collective effort led by your instructor. This course is an important component of our academic program. Although it has been offered for many years, this latest version represents an attempt to expand the range of sources of information and instruction, so that the course continues to be up-to-date and the methods well suited to what is to be learned.</p><p>You will be asked from time to time to offer feedback on how the Student Manual is working and how the course is progressing. Your comments will inform the development team about what is working, and what requires attention. Our goal is to help you learn what is important about this particular field, and to eventually succeed as a professional applying what you learn in this course.This Student Manual is designed to assist you through the course by providing specific information about student responsibilities including requirements, timelines and evaluations.I hope you enjoy the course.</p><h2>Faculty Information</h2><p>Name: Bui The Duy Office Location: 306, E3 Building</p><p>Email: duybt@vnu.edu.vn</p><p>Office Hours: 8am-5pm, weekdays</p><p>Before or after class: 10am-11am, Tuesday</p><p>Support personnel:</p><ul><li>Le Thi Hoi – Assistant, 306, E3 Building</li><li>Ngo Thi Duyen – Assistant, 306, E3 Building</li><li>Ma Thi Chau – Assistant, 306, E3 Building</li></ul><h2>Resources</h2><ul><li>Course Reading material&nbsp;</li><li>MIT’s OpenCourseWare</li><li>Connexions</li><li>On-line Discrete Math tutorials&nbsp;</li></ul><h2>Purpose of the Course</h2><p>The main goal of this course is to provide students with an opportunity to gain an understanding of the theoretical foundations of Computer Science. The main areas of the course are Mathematical Logic, Set Theory, and Relations. Topics include proof methods with emphasis on mathematical induction, solving recurrence relations, propositional logic, first order logic, proof techniques, mathematical induction, sets, operations on sets, relations, operations on relations, and functions. The emphasis is on the applications of discrete structures in computer science rather than the mathematical theory itself.</p><h2>Course Description</h2><p>Discrete structures is foundational material for computer science. By foundational we mean that relatively few computer scientists will be working primarily on discrete structures, but that many other areas of computer science require the ability to work with concepts from discrete structures. Discrete structures includes important material from such areas as set theory, logic, graph theory, and combinatorics. This course covers the mathematics that underlies most of computer science, which are the fundamental mathematical concepts and reasoning along with problem solving techniques. Topics covered include propositional logic, predicate logic, inferencing, proof methods including induction, set operations, binary relations including order relations, and equivalence relations, graphs, and functions.&nbsp;</p><h2>Course Requirements</h2><ul><li>CS101 - Introduction to Programming course</li><li>MATH102 - Pre-Calculus II, or equivalents.</li><li>Calculus is preferred, but not required.</li></ul><p>Students are presumed to be familiar with basic programming techniques, including the use of functions and procedures, loops and recursion. Also assumed is facility with basic algebra.</p><p>Students are also expected to be familiar with the use of standard Internet-based tools including e-mail.&nbsp;</p><h2>Course Objectives</h2><ul><li>Cultivate clear thinking and creative problem solving.</li><li>Thoroughly train in the construction and understanding of mathematical proofs.&nbsp;Exercise common mathematical arguments and proof strategies.</li><li>Cultivate a sense of familiarity and ease in working with mathematical notation and common concepts in discrete mathematics.</li><li>Teach the basic results in Mathematical Logic, Set Theory, and Relations.</li></ul>
-        </div>
-      </div>
-    </div>
-    <footer class="footer">
-      <div class="container">
-<p>Chương trình Tài nguyên Giáo dục Mở Việt Nam (Vietnam Open Educational Resources)</p>
-<p>Hỗ trợ bởi <a href="#">Quỹ Việt Nam (The Vietnam Foundation)</a>. Sử dụng phần mềm nguồn mở Connexions của Đại học Rice, Hoa Kỳ</p>
-<p>Giấy phép xuất bản mở Creative Commons phiên bản CC by 3.0. Liên hệ: <a href="#">voer@voer.edu.vn</a></p>
-      </div>
-    </footer>
+    <br>
+
     <script src="js/jquery-latest.js"></script>
     <script src="bootstrap/js/bootstrap.min.js"></script>
     <script src="js/main.js"></script>
