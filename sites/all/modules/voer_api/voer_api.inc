@@ -1,13 +1,15 @@
 <?php
 
 $module_path = drupal_get_path('module', 'voer_api');
-require_once($module_path . '/lib/ttp.php');
+require_once($module_path . '/lib/http.php');
 
-define('VOER_API_URL', 'api.voer.edu.vn');
+define('VOER_API_URL', 'dev.voer.vn'); //api.voer.edu.vn
 define('VOER_API_VERSION', '0.1');
-define('VOER_API_COMMAND_MODULE', '/' . VOER_API_VERSION . '/modules');
+define('VOER_API_COMMAND_MODULE', '' . VOER_API_VERSION . '/modules/');
+define('VOER_API_COMMAND_CATEGORY', '' . VOER_API_VERSION . '/categories/');
+define('VOER_API_COMMAND_AUTHOR', '' . VOER_API_VERSION . '/authors/');
 define('VOER_API_AUTH', 'auth');
-define('VOER_API_PORT', 80);
+define('VOER_API_PORT', 2013); //80
 define('VOER_API_PROTOCOL', Http::HTTP);
 
 /**
@@ -49,7 +51,17 @@ function voer_api_add($params = array()){
   $client = voer_api_client();
   $response = $client->doPost(VOER_API_COMMAND_MODULE, $params);
   $data = $response;
-  return $data;
+  return json_decode($data);
+}
+
+/**
+ * [voer_api_get_modules description]
+ * @return [type] [description]
+ */
+function voer_api_get_modules(){
+  $client = voer_api_client();
+  $response = $client->doGet(VOER_API_COMMAND_MODULE);
+  return json_decode($response);
 }
 
 /**
@@ -67,7 +79,7 @@ function voer_api_get_metadata($id, $version = ""){
   }else{
     $response = $client->doGet(VOER_API_COMMAND_MODULE . "/{$id}/{$version}");
   }
-  return $response;
+  return json_decode($response);
 }
 
 /**
@@ -83,7 +95,7 @@ function voer_api_get_content($id, $version = ""){
   }else{
     $response = $client->doGet(VOER_API_COMMAND_MODULE . "/{$id}/{$version}?content=1");
   }
-  return $response;
+  return json_decode($response);
 }
 
 /**
@@ -95,8 +107,8 @@ function voer_api_get_content($id, $version = ""){
  */
 function voer_api_checkin($id, $version, $params = array()){
   $client = voer_api_client();
-  $resonse = $client->doPost(VOER_API_COMMAND_MODULE . "/{$id}/{$version}", $params);
-  return $response;
+  $response = $client->doPost(VOER_API_COMMAND_MODULE . "/{$id}/{$version}", $params);
+  return json_decode($response);
 }
 
 /**
@@ -106,8 +118,89 @@ function voer_api_checkin($id, $version, $params = array()){
  */
 function voer_api_search($params = array()){
   $client = voer_api_client();
-  $resonse = $client->doGet(VOER_API_COMMAND_MODULE, $params);
-  return $response;
+  $response = $client->doGet(VOER_API_COMMAND_MODULE, $params);
+  return json_decode($response);
+}
+
+/*** BEGIN::CATEGORY ***/
+/**
+ * [voer_api_get_all_categories description]
+ * @return [type] [description]
+ */
+function voer_api_get_all_categories(){
+  $client = voer_api_client();
+  $response = $client->doGet(VOER_API_COMMAND_CATEGORY);
+  return json_decode($response);
+}
+
+/**
+ * [voer_api_create_category description]
+ * @param  [type] $category [description]
+ * @return [type]           [description]
+ */
+function voer_api_create_category($category){
+  $client = voer_api_client();
+  $response = $client->doPost(VOER_API_COMMAND_CATEGORY,
+    array(
+      'name' => $category->name,
+      'parent' => $category->parent,
+      'description' => $category->description
+    )
+  );
+  return json_decode($response);
+}
+
+/**
+ * [voer_api_get_category description]
+ * @param  [type] $id [description]
+ * @return [type]     [description]
+ */
+function voer_api_get_category($id){
+  $client = voer_api_client();
+  $response = $client->doGet(VOER_API_COMMAND_CATEGORY . $id . "/");
+  return json_decode($response);
+}
+
+function voer_api_update_category(){
+  $client = voer_api_client();
+  $response = $client->doGet(VOER_API_COMMAND_CATEGORY . $id);
+  return json_decode($response);
+}
+
+/**
+ * [voer_api_delete_category description]
+ * @param  [type] $id [description]
+ * @return [type]     [description]
+ */
+function voer_api_delete_category($id){
+  $client = voer_api_client();
+  $response = $client->doDelete(VOER_API_COMMAND_CATEGORY . $id);
+  return json_decode($response);
+}
+/*** END::CATEGORY ***/
+
+/**
+ * [voer_api_get_all_authors description]
+ * @return [type] [description]
+ */
+function voer_api_get_all_authors(){
+  $client = voer_api_client();
+  $response = $client->doGet(VOER_API_COMMAND_AUTHOR);
+  return json_decode($response);
+}
+
+/**
+ * [voer_api_create_author description]
+ * @param  [type] $author [description]
+ * @return [type]         [description]
+ */
+function voer_api_create_author($author){
+  $client = voer_api_client();
+  $response = $client->doPost(VOER_API_COMMAND_AUTHOR, array(
+    "fullname" => $author->fulname,
+    "bio" => $author->bio
+  ));
+  return json_decode($response);
 }
 
 /**

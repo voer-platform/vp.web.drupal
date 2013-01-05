@@ -231,6 +231,9 @@ class Http
      */
     private function _exec($type, $url, $params = array())
     {
+        //For debug
+        print $url;
+
         $headers = $this->_headers;
         $s = curl_init();
 

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project version="2.0.0a12" title="">
+  <file path="voer_api.inc" hash="425b2edc7f61868fd22211026f91267a" package="Default">
+    <include line="4" type="Require Once" package="Default">
+      <name/>
+    </include>
+    <constant namespace="global" line="6" package="Default">
+      <name>VOER_API_URL</name>
+      <full_name>\VOER_API_URL</full_name>
+      <value>'http://api.voer.edu.vn/'</value>
+    </constant>
+    <constant namespace="global" line="7" package="Default">
+      <name>VOER_API_VERSION</name>
+      <full_name>\VOER_API_VERSION</full_name>
+      <value>'0.1'</value>
+    </constant>
+    <constant namespace="global" line="8" package="Default">
+      <name>VOER_API_COMMAND</name>
+      <full_name>\VOER_API_COMMAND</full_name>
+      <value>'modules'</value>
+    </constant>
+    <constant namespace="global" line="9" package="Default">
+      <name>VOER_API_AUTH</name>
+      <full_name>\VOER_API_AUTH</full_name>
+      <value>'auth'</value>
+    </constant>
+    <function namespace="global" line="15" package="Default">
+      <name>voer_api_client</name>
+      <full_name>\voer_api_client</full_name>
+      <docblock line="11">
+        <description>[voer_api_client description]</description>
+        <long-description></long-description>
+        <tag line="11" name="return" description="[description]" type="\[type]">
+          <type by_reference="false">\[type]</type>
+        </tag>
+      </docblock>
+    </function>
+    <function namespace="global" line="47" package="Default">
+      <name>voer_api_add</name>
+      <full_name>\voer_api_add</full_name>
+      <docblock line="23">
+        <description>For create a new module.</description>
+        <long-description>&lt;p&gt;Check-in activity of existing module is quite the
+same but will have little difference in URL and parameters.&lt;/p&gt;
+
+&lt;p&gt;Content of new module stays inside posted requests. It could be VDP, HTML
+(rich-text), or other media files.&lt;/p&gt;</long-description>
+        <tag line="23" name="param" description="[description]" type="\[type]" variable="$params">
+          <type by_reference="false">\[type]</type>
+        </tag>
+        <tag line="23" name="return" description="[description]" type="\[type]">
+          <type by_reference="false">\[type]</type>
+        </tag>
+        <tag line="23" name="example" description="Request: POST  $URL/modules/&#10;title=Hello there&amp;author=Someone&amp;vdp=...&#10;Response:&#10;200 OK&#10;{&#10;  &quot;module&quot;:{&#10;      &quot;id&quot;:&quot;123123123&quot;,&#10;      &quot;title&quot;:&quot;Hello there&quot;,&#10;      &quot;author&quot;:&quot;Someone&quot;,&#10;      …&#10;      }&#10;}"/>
+      </docblock>
+      <argument line="47">
+        <name>$params</name>
+        <default>array()</default>
+        <type/>
+      </argument>
+    </function>
+    <function namespace="global" line="63" package="Default">
+      <name>voer_api_refresh_key</name>
+      <full_name>\voer_api_refresh_key</full_name>
+      <docblock line="56">
+        <description>This function is used refresh token when it's about to expired</description>
+        <long-description></long-description>
+        <tag line="56" name="param" description="The client id which is registered with VOER core." type="string" variable="$clientId">
+          <type by_reference="false">string</type>
+        </tag>
+        <tag line="56" name="param" description="The old value of token" type="string" variable="$token">
+          <type by_reference="false">string</type>
+        </tag>
+        <tag line="56" name="return" description="The return status" type="string">
+          <type by_reference="false">string</type>
+        </tag>
+      </docblock>
+      <argument line="63">
+        <name>$clientId</name>
+        <default></default>
+        <type/>
+      </argument>
+      <argument line="63">
+        <name>$token</name>
+        <default></default>
+        <type/>
+      </argument>
+    </function>
+    <function namespace="global" line="71" package="Default">
+      <name>voer_api_get_metadata</name>
+      <full_name>\voer_api_get_metadata</full_name>
+    </function>
+    <function namespace="global" line="78" package="Default">
+      <name>voer_api_get_content</name>
+      <full_name>\voer_api_get_content</full_name>
+      <docblock line="75">
+        <description></description>
+        <long-description></long-description>
+      </docblock>
+    </function>
+    <function namespace="global" line="82" package="Default">
+      <name>voer_api_checkin</name>
+      <full_name>\voer_api_checkin</full_name>
+    </function>
+    <function namespace="global" line="86" package="Default">
+      <name>voer_api_search</name>
+      <full_name>\voer_api_search</full_name>
+    </function>
+    <function namespace="global" line="90" package="Default">
+      <name>voer_api_delete</name>
+      <full_name>\voer_api_delete</full_name>
+    </function>
+    <parse_markers>
+      <error line="0" code="50007">No page-level DocBlock was found in file voer_api.inc</error>
+      <error line="71" code="50009">No DocBlock was found for function \voer_api_get_metadata()</error>
+      <error line="75" code="50011">No short description for function \voer_api_get_content()</error>
+      <error line="82" code="50009">No DocBlock was found for function \voer_api_checkin()</error>
+      <error line="86" code="50009">No DocBlock was found for function \voer_api_search()</error>
+      <error line="90" code="50009">No DocBlock was found for function \voer_api_delete()</error>
+    </parse_markers>
+  </file>
+  <package name="Default" full_name="Default"/>
+  <namespace name="global" full_name="global"/>
+  <marker count="0">todo</marker>
+  <marker count="0">fixme</marker>
+  <deprecated count="0"/>
+</project>
