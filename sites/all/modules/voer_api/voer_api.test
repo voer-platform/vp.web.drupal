@@ -1,0 +1,20 @@
+<?php
+class VoerAPITestCase extends DrupalUnitTestCase{
+  public static function getInfo(){
+    return array(
+      'name' => 'VOER API Unit Test',
+      'description' => 'Test functions of voer api',
+      'group' => 'VOER'
+    );
+  }
+
+  function setUp() {
+    //drupal_load('module', 'voer_api');
+    parent::setUp();
+  }
+
+  function testCategory_getAll(){
+    $this->verbose('Node created: ');
+  }
+}
+?>

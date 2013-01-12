@@ -5,4 +5,5 @@ package = VOER
 dependencies[] = libraries
 ;dependencies[] = panels
 files[] = voer_api.module
+files[] = voer_api.test
 configure = admin/config/services/voer

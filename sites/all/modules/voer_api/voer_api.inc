@@ -5,9 +5,10 @@ require_once($module_path . '/lib/http.php');
 
 define('VOER_API_URL', 'dev.voer.vn'); //api.voer.edu.vn
 define('VOER_API_VERSION', '0.1');
-define('VOER_API_COMMAND_MODULE', '' . VOER_API_VERSION . '/modules/');
+define('VOER_API_COMMAND_MATERIAL', '' . VOER_API_VERSION . '/materials/');
 define('VOER_API_COMMAND_CATEGORY', '' . VOER_API_VERSION . '/categories/');
 define('VOER_API_COMMAND_AUTHOR', '' . VOER_API_VERSION . '/authors/');
+define('VOER_API_COMMAND_EDITOR', '' . VOER_API_VERSION . '/editors/');
 define('VOER_API_AUTH', 'auth');
 define('VOER_API_PORT', 2013); //80
 define('VOER_API_PROTOCOL', Http::HTTP);
@@ -23,44 +24,36 @@ function voer_api_client(){
   return $client;
 }
 
+/*** BEGIN: MATERIAL ***/
 /**
- * For create a new module. Check-in activity of existing module is quite the
- * same but will have little difference in URL and parameters.
- *
- * Content of new module stays inside posted requests. It could be VDP, HTML
- * (rich-text), or other media files.
- *
- * @param  array $params The array (key, value) which is POST data
- * @return string        The json format
- * @example
- * Request: POST  $URL/modules/
- * title=Hello there&author=Someone&vdp=...
- *
- * Response:
- * 200 OK
- * {
- *   "module":{
- *       "id":"123123123",
- *       "title":"Hello there",
- *       "author":"Someone",
- *       …
- *       }
- * }
+ * Get all materials
+ * @return [type] [description]
  */
-function voer_api_add($params = array()){
+function voer_api_get_all_materials(){
   $client = voer_api_client();
-  $response = $client->doPost(VOER_API_COMMAND_MODULE, $params);
-  $data = $response;
-  return json_decode($data);
+  $response = $client->doGet(VOER_API_COMMAND_MATERIAL);
+  return json_decode($response);
 }
 
 /**
- * [voer_api_get_modules description]
- * @return [type] [description]
+ * Create a material
+ * @param  Object $material [description]
+ * @return [type]           [description]
  */
-function voer_api_get_modules(){
+function voer_api_create_material($material){
   $client = voer_api_client();
-  $response = $client->doGet(VOER_API_COMMAND_MODULE);
+  $response = $client->doPost(VOER_API_COMMAND_MATERIAL, array(
+    "text" => $material->text,
+    "version" => $material->version,
+    "title" => $material->title,
+    "description" => $material->description,
+    "keywords" => $material->keywords,
+    "categories" => $material->categories,
+    "authors" => $material->authors,
+    "editor_id" => $material->editor_id,
+    "file" => $material->file,
+    "file_type" => $material->file_type
+  ));
   return json_decode($response);
 }
 
@@ -98,18 +91,7 @@ function voer_api_get_content($id, $version = ""){
   return json_decode($response);
 }
 
-/**
- * [voer_api_checkin description]
- * @param  [type] $id      [description]
- * @param  [type] $version [description]
- * @param  array  $params  [description]
- * @return [type]          [description]
- */
-function voer_api_checkin($id, $version, $params = array()){
-  $client = voer_api_client();
-  $response = $client->doPost(VOER_API_COMMAND_MODULE . "/{$id}/{$version}", $params);
-  return json_decode($response);
-}
+
 
 /**
  * [voer_api_search description]
@@ -124,8 +106,8 @@ function voer_api_search($params = array()){
 
 /*** BEGIN::CATEGORY ***/
 /**
- * [voer_api_get_all_categories description]
- * @return [type] [description]
+ * Get all categories
+ * @return Object [description]
  */
 function voer_api_get_all_categories(){
   $client = voer_api_client();
@@ -134,8 +116,8 @@ function voer_api_get_all_categories(){
 }
 
 /**
- * [voer_api_create_category description]
- * @param  [type] $category [description]
+ * Create a category with name, parent id and description
+ * @param  Object $category [description]
  * @return [type]           [description]
  */
 function voer_api_create_category($category){
@@ -151,9 +133,9 @@ function voer_api_create_category($category){
 }
 
 /**
- * [voer_api_get_category description]
- * @param  [type] $id [description]
- * @return [type]     [description]
+ * Retrieve category information
+ * @param  Number $id [description]
+ * @return Object     [description]
  */
 function voer_api_get_category($id){
   $client = voer_api_client();
@@ -161,6 +143,11 @@ function voer_api_get_category($id){
   return json_decode($response);
 }
 
+/**
+ * TODO: Must be finish
+ * Update category information
+ * @return [type] [description]
+ */
 function voer_api_update_category(){
   $client = voer_api_client();
   $response = $client->doGet(VOER_API_COMMAND_CATEGORY . $id);
@@ -168,8 +155,8 @@ function voer_api_update_category(){
 }
 
 /**
- * [voer_api_delete_category description]
- * @param  [type] $id [description]
+ * Delete a category
+ * @param  Number $id [description]
  * @return [type]     [description]
  */
 function voer_api_delete_category($id){
@@ -179,9 +166,12 @@ function voer_api_delete_category($id){
 }
 /*** END::CATEGORY ***/
 
+
+/*** BEGIN: AUTHOR ***/
+
 /**
- * [voer_api_get_all_authors description]
- * @return [type] [description]
+ * Get all authors
+ * @return Object List of authors
  */
 function voer_api_get_all_authors(){
   $client = voer_api_client();
@@ -190,8 +180,8 @@ function voer_api_get_all_authors(){
 }
 
 /**
- * [voer_api_create_author description]
- * @param  [type] $author [description]
+ * Create new an author
+ * @param  Object $author [description]
  * @return [type]         [description]
  */
 function voer_api_create_author($author){
@@ -202,6 +192,89 @@ function voer_api_create_author($author){
   ));
   return json_decode($response);
 }
+
+/**
+ * Retrieve an author information
+ * @param  [type] $id [description]
+ * @return [type]     [description]
+ */
+function voer_api_get_author($id){
+  $client = voer_api_client();
+  $response = $client->doGet(VOER_API_COMMAND_AUTHOR . $id . "/"));
+  return json_decode($response);
+}
+
+//TODO: Must finish
+function voer_api_update_author($author){
+
+}
+
+/**
+ * Delete an author
+ * @param  Number $id [description]
+ * @return [type]     [description]
+ */
+function voer_api_delete_author($id){
+  $client = voer_api_client();
+  $response = $client->doDelete(VOER_API_COMMAND_AUTHOR . $id);
+  return json_decode($response);
+}
+
+/*** END: AUTHOR ***/
+
+/*** BEGIN: EDITOR ***/
+/**
+ * Get all editors
+ * @return Object [description]
+ */
+function voer_api_get_all_editors(){
+  $client = voer_api_client();
+  $response = $client->doGet(VOER_API_COMMAND_EDITOR);
+  return json_decode($response);
+}
+
+/**
+ * Create an editor
+ * @param  [type] $editor [description]
+ * @return [type]         [description]
+ */
+function voer_api_create_editor($editor){
+  $client = voer_api_client();
+  $response = $client->doPost(VOER_API_COMMAND_EDITOR, array(
+    "fullname" => $editor->fulname,
+    "user_id" => $editor->user_id,
+    "client_id" => $editor->client_id
+  ));
+  return json_decode($response);
+}
+
+/**
+ * Retrieve an editor information
+ * @param  Number $id [description]
+ * @return [type]     [description]
+ */
+function voer_api_get_editor($id){
+  $client = voer_api_client();
+  $response = $client->doGet(VOER_API_COMMAND_EDITOR . $id . "/"));
+  return json_decode($response);
+}
+
+//TODO: Must finish
+function voer_api_update_editor($editor){
+
+}
+
+/**
+ * Delete an editor
+ * @param  [type] $id [description]
+ * @return [type]     [description]
+ */
+function voer_api_delete_editor($id){
+  $client = voer_api_client();
+  $response = $client->doDelete(VOER_API_COMMAND_EDITOR . $id);
+  return json_decode($response);
+}
+/*** END: EDITOR ***/
 
 /**
  * This function is used refresh token when it's about to expired
