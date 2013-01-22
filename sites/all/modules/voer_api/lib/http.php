@@ -117,6 +117,7 @@ class Http
     const POST   = 'POST';
     const GET    = 'GET';
     const DELETE = 'DELETE';
+    const PUT    = 'PUT';
 
     private $_requests = array();
     /**
@@ -149,6 +150,18 @@ class Http
     public function delete($url, $params=array())
     {
         $this->_requests[] = array(self::DELETE, $this->_url($url), $params);
+        return $this;
+    }
+
+    /**
+     * [put description]
+     * @param  string $url    [description]
+     * @param  array  $params [description]
+     * @return [type]         [description]
+     */
+    public function put($url, $params=array())
+    {
+        $this->_requests[] = array(self::PUT, $this->_url($url), $params);
         return $this;
     }
 
@@ -191,6 +204,17 @@ class Http
     public function doDelete($url, $params=array())
     {
         return $this->_exec(self::DELETE, $this->_url($url), $params);
+    }
+
+    /**
+     * [doPut description]
+     * @param  string $url    [description]
+     * @param  array  $params [description]
+     * @return [type]         [description]
+     */
+    public function doPut($url, $params=array())
+    {
+        return $this->_exec(self::PUT, $this->_url($url), $params);
     }
 
     private $_headers = array();
@@ -253,6 +277,10 @@ class Http
                 break;
             case self::GET:
                 curl_setopt($s, CURLOPT_URL, $url . '?' . http_build_query($params));
+                break;
+            case self::PUT:
+                curl_setopt($s, CURLOPT_URL, $url . '?' . http_build_query($params));
+                curl_setopt($s, CURLOPT_CUSTOMREQUEST, self::PUT);
                 break;
         }
 

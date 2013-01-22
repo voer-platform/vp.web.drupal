@@ -37,6 +37,7 @@ function voer_api_get_all_materials(){
 
 /**
  * Create a material
+ *
  * @param  Object $material [description]
  * @return [type]           [description]
  */
@@ -54,6 +55,58 @@ function voer_api_create_material($material){
     "file" => $material->file,
     "file_type" => $material->file_type
   ));
+  return json_decode($response);
+}
+
+function voer_api_checkin_material(){
+
+}
+
+/**
+ * Get list of materials by categories
+ *
+ * @param  array  $cagetories contains list of ids category
+ * @return [type]             [description]
+ */
+function voer_api_get_materials_by_categories($cagetories = array()){
+  $client = voer_api_client();
+  $response = $client->doGet(VOER_API_COMMAND_MATERIAL . "?categories=" . implode(",", $cagetories));
+  return json_decode($response);
+}
+
+/**
+ * Get list of materials by authors
+ *
+ * @param  array  $authors [description]
+ * @return [type]          [description]
+ */
+function voer_api_get_materials_by_authors($authors = array()){
+  $client = voer_api_client();
+  $response = $client->doGet(VOER_API_COMMAND_MATERIAL . "?authors=" . implode(",", $authors));
+  return json_decode($response);
+}
+
+/**
+ * Get list of materials by editors
+ *
+ * @param  array  $editors [description]
+ * @return [type]          [description]
+ */
+function voer_api_get_materials_by_editors($editors = array()){
+  $client = voer_api_client();
+  $response = $client->doGet(VOER_API_COMMAND_MATERIAL . "?editors=" . implode(",", $editors));
+  return json_decode($response);
+}
+
+/**
+ * Get list of materials by types
+ *
+ * @param  array  $types [description]
+ * @return [type]        [description]
+ */
+function voer_api_get_materials_by_types($types = array()){
+  $client = voer_api_client();
+  $response = $client->doGet(VOER_API_COMMAND_MATERIAL . "?material_type=" . implode(",", $types));
   return json_decode($response);
 }
 
@@ -144,13 +197,17 @@ function voer_api_get_category($id){
 }
 
 /**
- * TODO: Must be finish
- * Update category information
- * @return [type] [description]
+ * [voer_api_update_category description]
+ * @param  [type] $category [description]
+ * @return [type]           [description]
  */
-function voer_api_update_category(){
+function voer_api_update_category($category){
   $client = voer_api_client();
-  $response = $client->doGet(VOER_API_COMMAND_CATEGORY . $id);
+  $response = $client->doPut(VOER_API_COMMAND_CATEGORY . $category->id . "/", array(
+    'name' => $category->name,
+    'parent' => $category->parent,
+    'description' => $category->description
+  ));
   return json_decode($response);
 }
 
@@ -200,13 +257,22 @@ function voer_api_create_author($author){
  */
 function voer_api_get_author($id){
   $client = voer_api_client();
-  $response = $client->doGet(VOER_API_COMMAND_AUTHOR . $id . "/"));
+  $response = $client->doGet(VOER_API_COMMAND_AUTHOR . $id . "/");
   return json_decode($response);
 }
 
-//TODO: Must finish
+/**
+ * [voer_api_update_author description]
+ * @param  [type] $author [description]
+ * @return [type]         [description]
+ */
 function voer_api_update_author($author){
-
+  $client = voer_api_client();
+  $response = $client->doPut(VOER_API_COMMAND_AUTHOR . $author->id . "/", array(
+    'fullname' => $author->fullname,
+    'bio' => $author->bio
+  ));
+  return json_decode($response);
 }
 
 /**
@@ -255,13 +321,23 @@ function voer_api_create_editor($editor){
  */
 function voer_api_get_editor($id){
   $client = voer_api_client();
-  $response = $client->doGet(VOER_API_COMMAND_EDITOR . $id . "/"));
+  $response = $client->doGet(VOER_API_COMMAND_EDITOR . $id . "/");
   return json_decode($response);
 }
 
-//TODO: Must finish
+/**
+ * [voer_api_update_editor description]
+ * @param  [type] $editor [description]
+ * @return [type]         [description]
+ */
 function voer_api_update_editor($editor){
-
+  $client = voer_api_client();
+  $response = $client->doPut(VOER_API_COMMAND_EDITOR . $author->id . "/", array(
+    'fullname' => $editor->fullname,
+    'user_id' => $editor->user_id,
+    'client_id' => $editor->client_id
+  ));
+  return json_decode($response);
 }
 
 /**

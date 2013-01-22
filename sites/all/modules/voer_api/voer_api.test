@@ -1,5 +1,6 @@
 <?php
-class VoerAPITestCase extends DrupalUnitTestCase{
+class VoerAPITestCase extends DrupalWebTestCase{
+
   public static function getInfo(){
     return array(
       'name' => 'VOER API Unit Test',
@@ -8,13 +9,35 @@ class VoerAPITestCase extends DrupalUnitTestCase{
     );
   }
 
-  function setUp() {
+  public function setUp() {
     //drupal_load('module', 'voer_api');
     parent::setUp();
+    require_once(dirname(__FILE__) . '/voer_api.inc');
+  }
+
+  function testCreateClient(){
+    $client = voer_api_client();
+    $this->assertNotNull($client, 'A non-null result was returned when creating a client object.');
   }
 
   function testCategory_getAll(){
-    $this->verbose('Node created: ');
+    $result = voer_api_get_all_categories();
+    // For debugging, we might output the node structure with $this->verbose()
+    $this->verbose('List categories: ' . var_export($result, TRUE));
+    $this->assertTrue($result->count >=0 , 'Can get all categories.');
+  }
+
+  function testCategory_add(){
+    $list = voer_api_get_all_categories();
+    $count = $list->count;
+    $category = (object) array(
+      'name' => 'Test-' . $count,
+      'parent' => 0,
+      'description' => 'Description of test-' . $count
+    );
+    $result = voer_api_create_category($category);
+    $this->assertTrue($result->id > 0, 'A category is created.');
+    $this->verbose('New category: ' . var_export($result, TRUE));
   }
 }
 ?>
