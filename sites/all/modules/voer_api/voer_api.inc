@@ -45,7 +45,7 @@ function voer_api_create_material($material){
   $client = voer_api_client();
   $response = $client->doPost(VOER_API_COMMAND_MATERIAL, array(
     "text" => $material->text,
-    "version" => $material->version,
+    //"version" => $material->version,
     "title" => $material->title,
     "description" => $material->description,
     "keywords" => $material->keywords,
@@ -53,7 +53,8 @@ function voer_api_create_material($material){
     "authors" => $material->authors,
     "editor_id" => $material->editor_id,
     "file" => $material->file,
-    "file_type" => $material->file_type
+    "file_type" => $material->file_type,
+    "license_id" => $material->license_id
   ));
   return json_decode($response);
 }
@@ -119,11 +120,11 @@ function voer_api_get_materials_by_types($types = array()){
 function voer_api_get_metadata($id, $version = ""){
   $client = voer_api_client();
   if ($version === ""){
-    $response = $client->doGet(VOER_API_COMMAND_MODULE . "/" . $id);
+    $response = $client->doGet(VOER_API_COMMAND_MATERIAL  . $id . "/");
   }else if ($version === "ALL"){
-    $response = $client->doGet(VOER_API_COMMAND_MODULE . "/{$id}?all=1");
+    $response = $client->doGet(VOER_API_COMMAND_MATERIAL . "{$id}/?all=1");
   }else{
-    $response = $client->doGet(VOER_API_COMMAND_MODULE . "/{$id}/{$version}");
+    $response = $client->doGet(VOER_API_COMMAND_MATERIAL . "{$id}/{$version}/");
   }
   return json_decode($response);
 }
@@ -137,11 +138,12 @@ function voer_api_get_metadata($id, $version = ""){
 function voer_api_get_content($id, $version = ""){
   $client = voer_api_client();
   if ($version === ""){
-    $response = $client->doGet(VOER_API_COMMAND_MODULE . "/{$id}?content=1");
+    $response = $client->doGet(VOER_API_COMMAND_MATERIAL . "{$id}/?content=1");
   }else{
-    $response = $client->doGet(VOER_API_COMMAND_MODULE . "/{$id}/{$version}?content=1");
+    $response = $client->doGet(VOER_API_COMMAND_MATERIAL . "{$id}/{$version}/?content=1");
   }
-  return json_decode($response);
+
+  return drupal_json_decode($response);
 }
 
 
@@ -153,7 +155,7 @@ function voer_api_get_content($id, $version = ""){
  */
 function voer_api_search($params = array()){
   $client = voer_api_client();
-  $response = $client->doGet(VOER_API_COMMAND_MODULE, $params);
+  $response = $client->doGet(VOER_API_COMMAND_MATERIAL, $params);
   return json_decode($response);
 }
 
