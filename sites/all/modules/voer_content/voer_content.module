@@ -154,8 +154,22 @@ function voer_content_form_push($form, &$form_state)
 function voer_content_menu() {
   $items = array();
 
+  $items['materials'] = array(
+    'title' => t('Material list'),
+    'page callback' => 'voer_content_material_list',
+    'access arguments' => array('view VOER content'),
+  );
+
   $items['material/%'] = array(
-    'title' => t('View material'),
+    'title' => t('Versions of material'),
+    'page callback' => 'voer_content_material_version_list',
+    'page arguments' => array(1),
+    'access arguments' => array('view VOER content'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  $items['material/%/%'] = array(
+    'title' => t('Material detail'),
     'page callback' => 'voer_content_view_material',
     'access arguments' => array('view VOER content'),
     'type' => MENU_NORMAL_ITEM,
@@ -186,17 +200,24 @@ function voer_content_view_material()
 
   $material = array();
 
-  $material_local = _voer_content_get_data($material_id, $version);
+  $node_id = _voer_content_get_data($material_id, $version);
 
-  if ($material_local) {
-    $material = $material_local;
-
-  } else {
+  if (!$node_id) {
     module_load_include('inc', 'voer_api');
-    $material = voer_api_get_content($material_id, $version);
+    $material = voer_api_get_content($material_id);
+
+    if ($material['material_id']) {
+      $node_id = _voer_content_save_node($material);
+    }
   }
 
-  echo drupal_render(node_view($material));
+  if (!$node_id) {
+    drupal_set_message('Material does not exists.', 'warning');
+
+    return '';
+  }
+
+  return drupal_render(node_view(node_load($node_id)));
 }
 
 /**
@@ -209,30 +230,58 @@ function _voer_content_save_node($material)
 {
   $node = new stdClass();
   $node->title = $material['title'];
-  $node->uid = $mod_data['authors'];
-  $node->body = $form_state['values']['body'];
+  $node->uid = $material['authors'];
+  $node->body[LANGUAGE_NONE][0]['value'] = $material['text'];
+  $node->body[LANGUAGE_NONE][0]['format'] = 'full_html';
   $node->type = 'voer_content';
   $node->language = LANGUAGE_NONE;
-  // $node->created = time();
-  $node->created = $result->modified;
-  $node->changed = $node->created;
   $node->status = 1;
   $node->promote = 1;
 
-  $node->field_keyword = $form_state['values']['field_keyword'];
-  $node->field_language = $form_state['values']['field_language'];
-  $node->field_summary = $form_state['values']['field_summary'];
-  $node->field_category = $form_state['values']['field_category'];
-  // $node->field_id = 'wutywtywityiweytiwyetu';
-  $node->field_id = $result->material_id;
-  // $node->field_version = 12;
-  $node->field_version = $result->version;
+  $node->field_keyword[LANGUAGE_NONE][0]['value'] = $material['keywords'];
+  $node->field_language[LANGUAGE_NONE][0]['value'] = $material['language'];
+  $node->field_summary[LANGUAGE_NONE][0]['value'] = $material['description'];
+  $node->field_category[LANGUAGE_NONE][0]['value'] = $material['categories'];
+  $node->field_id[LANGUAGE_NONE][0]['value'] = $material['material_id'];
+  $node->field_version[LANGUAGE_NONE][0]['value'] = $material['version'];
 
   node_submit($node);
   node_save($node);
 
   return $node->nid;
 }
+
+function voer_content_material_list()
+{
+  global $user;
+
+  module_load_include('inc', 'voer_api');
+  $material_list = voer_api_get_materials_by_authors(array($user->uid));
+
+  if ($material_list['results']) {
+    $items = array();
+
+    foreach ($material_list['results'] as $key => $value) {
+      $items[] = l($value['title'], 'material/' . $value['material_id']);
+    }
+
+    return theme('item_list', array('items' => $items));
+  } else {
+    return t('You have not yet material');
+  }
+
+// print_r($material_list);
+  // return $user;
+}
+
+function voer_content_material_version_list($material_id)
+{
+  // global $user;
+
+  // module_load_include('inc', 'voer_api');
+  return $material_id;
+}
+
 /**
  * [_voer_content_get_data description]
  *
@@ -245,13 +294,15 @@ function _voer_content_get_data($material_id, $version)
   $sql = "SELECT node.nid AS nid "
         ."FROM {node} AS node "
         ."LEFT JOIN {field_data_field_id} field_data_field_id ON node.nid = field_data_field_id.entity_id AND (field_data_field_id.entity_type = 'node' AND field_data_field_id.deleted = '0') "
-        ."WHERE node.status = '1' AND node.type IN  ('voer_content') AND field_data_field_id.field_id_value LIKE :material_id ";
+        ."LEFT JOIN {field_data_field_version} field_data_field_version ON node.nid = field_data_field_version.entity_id AND (field_data_field_version.entity_type = 'node' AND field_data_field_version.deleted = '0') "
+        ."WHERE node.status = '1' "
+        ."AND node.type IN  ('voer_content') "
+        ."AND field_data_field_id.field_id_value LIKE :material_id "
+        ."AND field_data_field_version.field_version_value LIKE :version";
 
-  $node_id = db_query($sql, array(':material_id' => $material_id))->fetchField();
+  $node_id = db_query($sql, array(':material_id' => $material_id, ':version' => $version))->fetchField();
 
-  $node = node_load($node_id);
-
-  return $node;
+  return $node_id;
 }
 
 /**

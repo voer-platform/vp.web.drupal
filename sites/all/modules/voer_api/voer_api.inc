@@ -83,8 +83,8 @@ function voer_api_get_materials_by_categories($cagetories = array()){
  */
 function voer_api_get_materials_by_authors($authors = array()){
   $client = voer_api_client();
-  $response = $client->doGet(VOER_API_COMMAND_MATERIAL . "?authors=" . implode(",", $authors));
-  return json_decode($response);
+  $response = $client->doGet(VOER_API_COMMAND_MATERIAL, array('authors' => implode(',', $authors)));
+  return drupal_json_decode($response);
 }
 
 /**
