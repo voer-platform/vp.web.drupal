@@ -244,6 +244,7 @@ class Http
     const HTTP_OK = 200;
     const HTTP_CREATED = 201;
     const HTTP_ACEPTED = 202;
+    const HTTP_NOT_FOUND = 404;
 
     /**
      * Performing the real request
@@ -293,6 +294,7 @@ class Http
             case self::HTTP_OK:
             case self::HTTP_CREATED:
             case self::HTTP_ACEPTED:
+            case self::HTTP_NOT_FOUND:
                 $out = $_out;
                 break;
             default:
