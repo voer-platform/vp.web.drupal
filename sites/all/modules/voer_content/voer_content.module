@@ -115,7 +115,13 @@ function voer_content_form_push($form, &$form_state)
   $mod_data['derived_from'] = 1;
 
   module_load_include('inc', 'voer_api');
-  $result = voer_api_create_material((object)$mod_data);
+
+  if ($node->nid) {
+    $mod_data['material_id'] = $form_state['values']['field_id'][LANGUAGE_NONE][0]['value'];
+    $result = voer_api_checkin_material($mod_data);
+  } else {
+    $result = voer_api_create_material((object)$mod_data);
+  }
 
   if ($result && $result->material_id) {
     $node->title = $result->title;
@@ -204,17 +210,15 @@ function voer_content_view_material()
 
   if (!$node_id) {
     module_load_include('inc', 'voer_api');
-    $material = voer_api_get_content($material_id);
+    $material = voer_api_get_content($material_id, $version);
 
-    if ($material['material_id']) {
+    if (isset($material['material_id'])) {
       $node_id = _voer_content_save_node($material);
     }
   }
 
   if (!$node_id) {
-    drupal_set_message('Material does not exists.', 'warning');
-
-    return '';
+    return drupal_not_found();
   }
 
   return drupal_render(node_view(node_load($node_id)));
@@ -266,20 +270,35 @@ function voer_content_material_list()
     }
 
     return theme('item_list', array('items' => $items));
-  } else {
-    return t('You have not yet material');
-  }
 
-// print_r($material_list);
-  // return $user;
+  } else {
+    return drupal_not_found();
+  }
 }
 
+/**
+ * [voer_content_material_version_list description]
+ *
+ * @param  int $material_id [description]
+ * @return [type]              [description]
+ */
 function voer_content_material_version_list($material_id)
 {
-  // global $user;
+  module_load_include('inc', 'voer_api');
+  $version_list = voer_api_get_materials_by_id($material_id);
 
-  // module_load_include('inc', 'voer_api');
-  return $material_id;
+  if ($version_list->results) {
+    $materials = array();
+
+    foreach ($version_list->results as $key => $material_info) {
+      $materials[] = l($material_info->title, sprintf('material/%s/%s', $material_info->material_id, $material_info->version));
+    }
+
+    return theme('item_list', array('items' => $materials));
+
+  } else {
+    return drupal_not_found();
+  }
 }
 
 /**

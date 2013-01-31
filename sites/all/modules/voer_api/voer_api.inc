@@ -59,8 +59,30 @@ function voer_api_create_material($material){
   return json_decode($response);
 }
 
-function voer_api_checkin_material(){
+/**
+ * [voer_api_checkin_material description]
+ *
+ * @param  array $material [description]
+ * @return array           [description]
+ */
+function voer_api_checkin_material($material){
+  $client = voer_api_client();
+  $response = $client->doPut(VOER_API_COMMAND_MATERIAL . $material['material_id'] . '/', $material);
 
+  return json_decode($response);
+}
+
+/**
+ * Get list version of material by id
+ *
+ * @param  int $id [description]
+ * @return object     [description]
+ */
+function voer_api_get_materials_by_id($id) {
+  $client = voer_api_client();
+  $response = $client->doGet(VOER_API_COMMAND_MATERIAL . $id . '/all/');
+
+  return json_decode($response);
 }
 
 /**
@@ -138,9 +160,9 @@ function voer_api_get_metadata($id, $version = ""){
 function voer_api_get_content($id, $version = ""){
   $client = voer_api_client();
   if ($version === ""){
-    $response = $client->doGet(VOER_API_COMMAND_MATERIAL . "{$id}/?content=1");
-  }else{
-    $response = $client->doGet(VOER_API_COMMAND_MATERIAL . "{$id}/{$version}/?content=1");
+    $response = $client->doGet(VOER_API_COMMAND_MATERIAL . "{$id}/");
+  } else {
+    $response = $client->doGet(VOER_API_COMMAND_MATERIAL . "{$id}/{$version}/");
   }
 
   return drupal_json_decode($response);
