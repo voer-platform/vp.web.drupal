@@ -28,7 +28,7 @@
 <a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
                                     Reports <b class="caret"></b></a><ul class="dropdown-menu">
 <li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
-                <span class="label label-info">6</span></a></li>
+                <span class="label label-info">3</span></a></li>
 <li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
                 <ul></ul></a></li>
 <li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
@@ -57,23 +57,45 @@
 </li>
 <li class="nav-header">
 <i class="icon-custom icon-function"></i> Functions</li>
-<li class="function  "><a href="#function_voer_api_add" title="voer_api_add :: For create a new module."><span class="description">For create a new module.</span><pre>voer_api_add</pre></a></li>
-<li class="function  "><a href="#function_voer_api_checkin" title="voer_api_checkin :: "><span class="description">voer_api_checkin()
-        </span><pre>voer_api_checkin</pre></a></li>
+<li class="function  "><a href="#function_voer_api_checkin_material" title="voer_api_checkin_material :: "><span class="description">voer_api_checkin_material()
+        </span><pre>voer_api_checkin_material</pre></a></li>
 <li class="function  "><a href="#function_voer_api_client" title="voer_api_client :: [voer_api_client description]"><span class="description">[voer_api_client description]</span><pre>voer_api_client</pre></a></li>
+<li class="function  "><a href="#function_voer_api_create_author" title="voer_api_create_author :: Create new an author"><span class="description">Create new an author</span><pre>voer_api_create_author</pre></a></li>
+<li class="function  "><a href="#function_voer_api_create_category" title="voer_api_create_category :: Create a category with name, parent id and description"><span class="description">Create a category with name, parent id and description</span><pre>voer_api_create_category</pre></a></li>
+<li class="function  "><a href="#function_voer_api_create_editor" title="voer_api_create_editor :: Create an editor"><span class="description">Create an editor</span><pre>voer_api_create_editor</pre></a></li>
+<li class="function  "><a href="#function_voer_api_create_material" title="voer_api_create_material :: Create a material"><span class="description">Create a material</span><pre>voer_api_create_material</pre></a></li>
 <li class="function  "><a href="#function_voer_api_delete" title="voer_api_delete :: "><span class="description">voer_api_delete()
         </span><pre>voer_api_delete</pre></a></li>
-<li class="function  "><a href="#function_voer_api_get_content" title="voer_api_get_content :: "><span class="description">voer_api_get_content()
-        </span><pre>voer_api_get_content</pre></a></li>
-<li class="function  "><a href="#function_voer_api_get_metadata" title="voer_api_get_metadata :: "><span class="description">voer_api_get_metadata()
-        </span><pre>voer_api_get_metadata</pre></a></li>
+<li class="function  "><a href="#function_voer_api_delete_author" title="voer_api_delete_author :: Delete an author"><span class="description">Delete an author</span><pre>voer_api_delete_author</pre></a></li>
+<li class="function  "><a href="#function_voer_api_delete_category" title="voer_api_delete_category :: Delete a category"><span class="description">Delete a category</span><pre>voer_api_delete_category</pre></a></li>
+<li class="function  "><a href="#function_voer_api_delete_editor" title="voer_api_delete_editor :: Delete an editor"><span class="description">Delete an editor</span><pre>voer_api_delete_editor</pre></a></li>
+<li class="function  "><a href="#function_voer_api_get_all_authors" title="voer_api_get_all_authors :: Get all authors"><span class="description">Get all authors</span><pre>voer_api_get_all_authors</pre></a></li>
+<li class="function  "><a href="#function_voer_api_get_all_categories" title="voer_api_get_all_categories :: Get all categories"><span class="description">Get all categories</span><pre>voer_api_get_all_categories</pre></a></li>
+<li class="function  "><a href="#function_voer_api_get_all_editors" title="voer_api_get_all_editors :: Get all editors"><span class="description">Get all editors</span><pre>voer_api_get_all_editors</pre></a></li>
+<li class="function  "><a href="#function_voer_api_get_all_materials" title="voer_api_get_all_materials :: Get all materials"><span class="description">Get all materials</span><pre>voer_api_get_all_materials</pre></a></li>
+<li class="function  "><a href="#function_voer_api_get_author" title="voer_api_get_author :: Retrieve an author information"><span class="description">Retrieve an author information</span><pre>voer_api_get_author</pre></a></li>
+<li class="function  "><a href="#function_voer_api_get_category" title="voer_api_get_category :: Retrieve category information"><span class="description">Retrieve category information</span><pre>voer_api_get_category</pre></a></li>
+<li class="function  "><a href="#function_voer_api_get_content" title="voer_api_get_content :: [voer_api_get_content description]"><span class="description">[voer_api_get_content description]</span><pre>voer_api_get_content</pre></a></li>
+<li class="function  "><a href="#function_voer_api_get_editor" title="voer_api_get_editor :: Retrieve an editor information"><span class="description">Retrieve an editor information</span><pre>voer_api_get_editor</pre></a></li>
+<li class="function  "><a href="#function_voer_api_get_materials_by_authors" title="voer_api_get_materials_by_authors :: Get list of materials by authors"><span class="description">Get list of materials by authors</span><pre>voer_api_get_materials_by_authors</pre></a></li>
+<li class="function  "><a href="#function_voer_api_get_materials_by_categories" title="voer_api_get_materials_by_categories :: Get list of materials by categories"><span class="description">Get list of materials by categories</span><pre>voer_api_get_materials_by_categories</pre></a></li>
+<li class="function  "><a href="#function_voer_api_get_materials_by_editors" title="voer_api_get_materials_by_editors :: Get list of materials by editors"><span class="description">Get list of materials by editors</span><pre>voer_api_get_materials_by_editors</pre></a></li>
+<li class="function  "><a href="#function_voer_api_get_materials_by_types" title="voer_api_get_materials_by_types :: Get list of materials by types"><span class="description">Get list of materials by types</span><pre>voer_api_get_materials_by_types</pre></a></li>
+<li class="function  "><a href="#function_voer_api_get_metadata" title="voer_api_get_metadata :: [voer_api_get_metadata description]"><span class="description">[voer_api_get_metadata description]</span><pre>voer_api_get_metadata</pre></a></li>
 <li class="function  "><a href="#function_voer_api_refresh_key" title="voer_api_refresh_key :: This function is used refresh token when it's about to expired"><span class="description">This function is used refresh token when it's about to expired</span><pre>voer_api_refresh_key</pre></a></li>
-<li class="function  "><a href="#function_voer_api_search" title="voer_api_search :: "><span class="description">voer_api_search()
-        </span><pre>voer_api_search</pre></a></li>
+<li class="function  "><a href="#function_voer_api_search" title="voer_api_search :: [voer_api_search description]"><span class="description">[voer_api_search description]</span><pre>voer_api_search</pre></a></li>
+<li class="function  "><a href="#function_voer_api_update_author" title="voer_api_update_author :: [voer_api_update_author description]"><span class="description">[voer_api_update_author description]</span><pre>voer_api_update_author</pre></a></li>
+<li class="function  "><a href="#function_voer_api_update_category" title="voer_api_update_category :: [voer_api_update_category description]"><span class="description">[voer_api_update_category description]</span><pre>voer_api_update_category</pre></a></li>
+<li class="function  "><a href="#function_voer_api_update_editor" title="voer_api_update_editor :: [voer_api_update_editor description]"><span class="description">[voer_api_update_editor description]</span><pre>voer_api_update_editor</pre></a></li>
 <li class="nav-header">
 <i class="icon-custom icon-constant"></i> Constants</li>
 <li class="constant  "><a href="#constant_VOER_API_AUTH" title="VOER_API_AUTH :: "><span class="description">VOER_API_AUTH</span><pre>VOER_API_AUTH</pre></a></li>
-<li class="constant  "><a href="#constant_VOER_API_COMMAND" title="VOER_API_COMMAND :: "><span class="description">VOER_API_COMMAND</span><pre>VOER_API_COMMAND</pre></a></li>
+<li class="constant  "><a href="#constant_VOER_API_COMMAND_AUTHOR" title="VOER_API_COMMAND_AUTHOR :: "><span class="description">VOER_API_COMMAND_AUTHOR</span><pre>VOER_API_COMMAND_AUTHOR</pre></a></li>
+<li class="constant  "><a href="#constant_VOER_API_COMMAND_CATEGORY" title="VOER_API_COMMAND_CATEGORY :: "><span class="description">VOER_API_COMMAND_CATEGORY</span><pre>VOER_API_COMMAND_CATEGORY</pre></a></li>
+<li class="constant  "><a href="#constant_VOER_API_COMMAND_EDITOR" title="VOER_API_COMMAND_EDITOR :: "><span class="description">VOER_API_COMMAND_EDITOR</span><pre>VOER_API_COMMAND_EDITOR</pre></a></li>
+<li class="constant  "><a href="#constant_VOER_API_COMMAND_MATERIAL" title="VOER_API_COMMAND_MATERIAL :: "><span class="description">VOER_API_COMMAND_MATERIAL</span><pre>VOER_API_COMMAND_MATERIAL</pre></a></li>
+<li class="constant  "><a href="#constant_VOER_API_PORT" title="VOER_API_PORT :: "><span class="description">VOER_API_PORT</span><pre>VOER_API_PORT</pre></a></li>
+<li class="constant  "><a href="#constant_VOER_API_PROTOCOL" title="VOER_API_PROTOCOL :: "><span class="description">VOER_API_PROTOCOL</span><pre>VOER_API_PROTOCOL</pre></a></li>
 <li class="constant  "><a href="#constant_VOER_API_URL" title="VOER_API_URL :: "><span class="description">VOER_API_URL</span><pre>VOER_API_URL</pre></a></li>
 <li class="constant  "><a href="#constant_VOER_API_VERSION" title="VOER_API_VERSION :: "><span class="description">VOER_API_VERSION</span><pre>VOER_API_VERSION</pre></a></li>
 </ul>
@@ -85,51 +107,10 @@
 <div class="package-indent">
 <h3>
 <i class="icon-custom icon-function"></i> Functions</h3>
-<a id="function_voer_api_add"></a><div class="element clickable function  function_voer_api_add" data-toggle="collapse" data-target=".function_voer_api_add .collapse">
-<h2>For create a new module.</h2>
-<pre>voer_api_add(\[type] $params) : \[type]</pre>
-<div class="labels"></div>
-<div class="row collapse">
-<div class="span4">
-<div class="long_description"><p>Check-in activity of existing module is quite the
-same but will have little difference in URL and parameters.</p>
-
-<p>Content of new module stays inside posted requests. It could be VDP, HTML
-(rich-text), or other media files.</p></div>
-<table class="table table-bordered"><tr>
-<th>example</th>
-<td>Request: POST  $URL/modules/
-title=Hello there&author=Someone&vdp=...
-Response:
-200 OK
-{
-  "module":{
-      "id":"123123123",
-      "title":"Hello there",
-      "author":"Someone",
-      …
-      }
-}</td>
-</tr></table>
-<h3>Parameters</h3>
-<div class="subelement argument">
-<h4>$params</h4>
-<code>\[type]</code><p>[description]</p>
-</div>
-<h3>Returns</h3>
-<div class="subelement response">
-<code>\[type]</code>[description]</div>
-</div>
-<div class="span4">
-<h3>Examples</h3>
-<pre class="prettyprint linenums"></pre>
-</div>
-</div>
-</div>
-<a id="function_voer_api_checkin"></a><div class="element clickable function  function_voer_api_checkin" data-toggle="collapse" data-target=".function_voer_api_checkin .collapse">
-<h2>voer_api_checkin()
+<a id="function_voer_api_checkin_material"></a><div class="element clickable function  function_voer_api_checkin_material" data-toggle="collapse" data-target=".function_voer_api_checkin_material .collapse">
+<h2>voer_api_checkin_material()
         </h2>
-<pre>voer_api_checkin() </pre>
+<pre>voer_api_checkin_material() </pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
@@ -144,6 +125,70 @@ Response:
 <code>\[type]</code>[description]</div>
 </div></div>
 </div>
+<a id="function_voer_api_create_author"></a><div class="element clickable function  function_voer_api_create_author" data-toggle="collapse" data-target=".function_voer_api_create_author .collapse">
+<h2>Create new an author</h2>
+<pre>voer_api_create_author(Object $author) : \[type]</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$author</h4>
+<code>Object</code><p>[description]</p>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\[type]</code>[description]</div>
+</div></div>
+</div>
+<a id="function_voer_api_create_category"></a><div class="element clickable function  function_voer_api_create_category" data-toggle="collapse" data-target=".function_voer_api_create_category .collapse">
+<h2>Create a category with name, parent id and description</h2>
+<pre>voer_api_create_category(Object $category) : \[type]</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$category</h4>
+<code>Object</code><p>[description]</p>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\[type]</code>[description]</div>
+</div></div>
+</div>
+<a id="function_voer_api_create_editor"></a><div class="element clickable function  function_voer_api_create_editor" data-toggle="collapse" data-target=".function_voer_api_create_editor .collapse">
+<h2>Create an editor</h2>
+<pre>voer_api_create_editor(\[type] $editor) : \[type]</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$editor</h4>
+<code>\[type]</code><p>[description]</p>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\[type]</code>[description]</div>
+</div></div>
+</div>
+<a id="function_voer_api_create_material"></a><div class="element clickable function  function_voer_api_create_material" data-toggle="collapse" data-target=".function_voer_api_create_material .collapse">
+<h2>Create a material</h2>
+<pre>voer_api_create_material(Object $material) : \[type]</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$material</h4>
+<code>Object</code><p>[description]</p>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\[type]</code>[description]</div>
+</div></div>
+</div>
 <a id="function_voer_api_delete"></a><div class="element clickable function  function_voer_api_delete" data-toggle="collapse" data-target=".function_voer_api_delete .collapse">
 <h2>voer_api_delete()
         </h2>
@@ -151,19 +196,248 @@ Response:
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
-<a id="function_voer_api_get_content"></a><div class="element clickable function  function_voer_api_get_content" data-toggle="collapse" data-target=".function_voer_api_get_content .collapse">
-<h2>voer_api_get_content()
-        </h2>
-<pre>voer_api_get_content() </pre>
+<a id="function_voer_api_delete_author"></a><div class="element clickable function  function_voer_api_delete_author" data-toggle="collapse" data-target=".function_voer_api_delete_author .collapse">
+<h2>Delete an author</h2>
+<pre>voer_api_delete_author(\Number $id) : \[type]</pre>
 <div class="labels"></div>
-<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\Number</code><p>[description]</p>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\[type]</code>[description]</div>
+</div></div>
+</div>
+<a id="function_voer_api_delete_category"></a><div class="element clickable function  function_voer_api_delete_category" data-toggle="collapse" data-target=".function_voer_api_delete_category .collapse">
+<h2>Delete a category</h2>
+<pre>voer_api_delete_category(\Number $id) : \[type]</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\Number</code><p>[description]</p>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\[type]</code>[description]</div>
+</div></div>
+</div>
+<a id="function_voer_api_delete_editor"></a><div class="element clickable function  function_voer_api_delete_editor" data-toggle="collapse" data-target=".function_voer_api_delete_editor .collapse">
+<h2>Delete an editor</h2>
+<pre>voer_api_delete_editor(\[type] $id) : \[type]</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\[type]</code><p>[description]</p>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\[type]</code>[description]</div>
+</div></div>
+</div>
+<a id="function_voer_api_get_all_authors"></a><div class="element clickable function  function_voer_api_get_all_authors" data-toggle="collapse" data-target=".function_voer_api_get_all_authors .collapse">
+<h2>Get all authors</h2>
+<pre>voer_api_get_all_authors() : Object</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>Object</code>List of authors</div>
+</div></div>
+</div>
+<a id="function_voer_api_get_all_categories"></a><div class="element clickable function  function_voer_api_get_all_categories" data-toggle="collapse" data-target=".function_voer_api_get_all_categories .collapse">
+<h2>Get all categories</h2>
+<pre>voer_api_get_all_categories() : Object</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>Object</code>[description]</div>
+</div></div>
+</div>
+<a id="function_voer_api_get_all_editors"></a><div class="element clickable function  function_voer_api_get_all_editors" data-toggle="collapse" data-target=".function_voer_api_get_all_editors .collapse">
+<h2>Get all editors</h2>
+<pre>voer_api_get_all_editors() : Object</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>Object</code>[description]</div>
+</div></div>
+</div>
+<a id="function_voer_api_get_all_materials"></a><div class="element clickable function  function_voer_api_get_all_materials" data-toggle="collapse" data-target=".function_voer_api_get_all_materials .collapse">
+<h2>Get all materials</h2>
+<pre>voer_api_get_all_materials() : \[type]</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\[type]</code>[description]</div>
+</div></div>
+</div>
+<a id="function_voer_api_get_author"></a><div class="element clickable function  function_voer_api_get_author" data-toggle="collapse" data-target=".function_voer_api_get_author .collapse">
+<h2>Retrieve an author information</h2>
+<pre>voer_api_get_author(\[type] $id) : \[type]</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\[type]</code><p>[description]</p>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\[type]</code>[description]</div>
+</div></div>
+</div>
+<a id="function_voer_api_get_category"></a><div class="element clickable function  function_voer_api_get_category" data-toggle="collapse" data-target=".function_voer_api_get_category .collapse">
+<h2>Retrieve category information</h2>
+<pre>voer_api_get_category(\Number $id) : Object</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\Number</code><p>[description]</p>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>Object</code>[description]</div>
+</div></div>
+</div>
+<a id="function_voer_api_get_content"></a><div class="element clickable function  function_voer_api_get_content" data-toggle="collapse" data-target=".function_voer_api_get_content .collapse">
+<h2>[voer_api_get_content description]</h2>
+<pre>voer_api_get_content(\[type] $id, string $version) : \[type]</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\[type]</code><p>[description]</p>
+</div>
+<div class="subelement argument">
+<h4>$version</h4>
+<code>string</code><p>[description]</p>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\[type]</code>[description]</div>
+</div></div>
+</div>
+<a id="function_voer_api_get_editor"></a><div class="element clickable function  function_voer_api_get_editor" data-toggle="collapse" data-target=".function_voer_api_get_editor .collapse">
+<h2>Retrieve an editor information</h2>
+<pre>voer_api_get_editor(\Number $id) : \[type]</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\Number</code><p>[description]</p>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\[type]</code>[description]</div>
+</div></div>
+</div>
+<a id="function_voer_api_get_materials_by_authors"></a><div class="element clickable function  function_voer_api_get_materials_by_authors" data-toggle="collapse" data-target=".function_voer_api_get_materials_by_authors .collapse">
+<h2>Get list of materials by authors</h2>
+<pre>voer_api_get_materials_by_authors(array $authors) : \[type]</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$authors</h4>
+<code>array</code><p>[description]</p>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\[type]</code>[description]</div>
+</div></div>
+</div>
+<a id="function_voer_api_get_materials_by_categories"></a><div class="element clickable function  function_voer_api_get_materials_by_categories" data-toggle="collapse" data-target=".function_voer_api_get_materials_by_categories .collapse">
+<h2>Get list of materials by categories</h2>
+<pre>voer_api_get_materials_by_categories(array $cagetories) : \[type]</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$cagetories</h4>
+<code>array</code><p>contains list of ids category</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\[type]</code>[description]</div>
+</div></div>
+</div>
+<a id="function_voer_api_get_materials_by_editors"></a><div class="element clickable function  function_voer_api_get_materials_by_editors" data-toggle="collapse" data-target=".function_voer_api_get_materials_by_editors .collapse">
+<h2>Get list of materials by editors</h2>
+<pre>voer_api_get_materials_by_editors(array $editors) : \[type]</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$editors</h4>
+<code>array</code><p>[description]</p>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\[type]</code>[description]</div>
+</div></div>
+</div>
+<a id="function_voer_api_get_materials_by_types"></a><div class="element clickable function  function_voer_api_get_materials_by_types" data-toggle="collapse" data-target=".function_voer_api_get_materials_by_types .collapse">
+<h2>Get list of materials by types</h2>
+<pre>voer_api_get_materials_by_types(array $types) : \[type]</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$types</h4>
+<code>array</code><p>[description]</p>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\[type]</code>[description]</div>
+</div></div>
 </div>
 <a id="function_voer_api_get_metadata"></a><div class="element clickable function  function_voer_api_get_metadata" data-toggle="collapse" data-target=".function_voer_api_get_metadata .collapse">
-<h2>voer_api_get_metadata()
-        </h2>
-<pre>voer_api_get_metadata() </pre>
+<h2>[voer_api_get_metadata description]</h2>
+<pre>voer_api_get_metadata(\[type] $id, string $version) : \[type]</pre>
 <div class="labels"></div>
-<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>\[type]</code><p>[description]</p>
+</div>
+<div class="subelement argument">
+<h4>$version</h4>
+<code>string</code><p>[description]</p>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\[type]</code>[description]</div>
+</div></div>
 </div>
 <a id="function_voer_api_refresh_key"></a><div class="element clickable function  function_voer_api_refresh_key" data-toggle="collapse" data-target=".function_voer_api_refresh_key .collapse">
 <h2>This function is used refresh token when it's about to expired</h2>
@@ -184,11 +458,68 @@ Response:
 </div></div>
 </div>
 <a id="function_voer_api_search"></a><div class="element clickable function  function_voer_api_search" data-toggle="collapse" data-target=".function_voer_api_search .collapse">
-<h2>voer_api_search()
-        </h2>
-<pre>voer_api_search() </pre>
+<h2>[voer_api_search description]</h2>
+<pre>voer_api_search(array $params) : \[type]</pre>
 <div class="labels"></div>
-<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$params</h4>
+<code>array</code><p>[description]</p>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\[type]</code>[description]</div>
+</div></div>
+</div>
+<a id="function_voer_api_update_author"></a><div class="element clickable function  function_voer_api_update_author" data-toggle="collapse" data-target=".function_voer_api_update_author .collapse">
+<h2>[voer_api_update_author description]</h2>
+<pre>voer_api_update_author(\[type] $author) : \[type]</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$author</h4>
+<code>\[type]</code><p>[description]</p>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\[type]</code>[description]</div>
+</div></div>
+</div>
+<a id="function_voer_api_update_category"></a><div class="element clickable function  function_voer_api_update_category" data-toggle="collapse" data-target=".function_voer_api_update_category .collapse">
+<h2>[voer_api_update_category description]</h2>
+<pre>voer_api_update_category(\[type] $category) : \[type]</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$category</h4>
+<code>\[type]</code><p>[description]</p>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\[type]</code>[description]</div>
+</div></div>
+</div>
+<a id="function_voer_api_update_editor"></a><div class="element clickable function  function_voer_api_update_editor" data-toggle="collapse" data-target=".function_voer_api_update_editor .collapse">
+<h2>[voer_api_update_editor description]</h2>
+<pre>voer_api_update_editor(\[type] $editor) : \[type]</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$editor</h4>
+<code>\[type]</code><p>[description]</p>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\[type]</code>[description]</div>
+</div></div>
 </div>
 <h3>
 <i class="icon-custom icon-constant"></i> Constants</h3>
@@ -198,9 +529,39 @@ Response:
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
-<a id="constant_VOER_API_COMMAND"> </a><div class="element clickable constant  constant_VOER_API_COMMAND" data-toggle="collapse" data-target=".constant_VOER_API_COMMAND .collapse">
-<h2>VOER_API_COMMAND</h2>
-<pre>VOER_API_COMMAND </pre>
+<a id="constant_VOER_API_COMMAND_AUTHOR"> </a><div class="element clickable constant  constant_VOER_API_COMMAND_AUTHOR" data-toggle="collapse" data-target=".constant_VOER_API_COMMAND_AUTHOR .collapse">
+<h2>VOER_API_COMMAND_AUTHOR</h2>
+<pre>VOER_API_COMMAND_AUTHOR </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="constant_VOER_API_COMMAND_CATEGORY"> </a><div class="element clickable constant  constant_VOER_API_COMMAND_CATEGORY" data-toggle="collapse" data-target=".constant_VOER_API_COMMAND_CATEGORY .collapse">
+<h2>VOER_API_COMMAND_CATEGORY</h2>
+<pre>VOER_API_COMMAND_CATEGORY </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="constant_VOER_API_COMMAND_EDITOR"> </a><div class="element clickable constant  constant_VOER_API_COMMAND_EDITOR" data-toggle="collapse" data-target=".constant_VOER_API_COMMAND_EDITOR .collapse">
+<h2>VOER_API_COMMAND_EDITOR</h2>
+<pre>VOER_API_COMMAND_EDITOR </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="constant_VOER_API_COMMAND_MATERIAL"> </a><div class="element clickable constant  constant_VOER_API_COMMAND_MATERIAL" data-toggle="collapse" data-target=".constant_VOER_API_COMMAND_MATERIAL .collapse">
+<h2>VOER_API_COMMAND_MATERIAL</h2>
+<pre>VOER_API_COMMAND_MATERIAL </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="constant_VOER_API_PORT"> </a><div class="element clickable constant  constant_VOER_API_PORT" data-toggle="collapse" data-target=".constant_VOER_API_PORT .collapse">
+<h2>VOER_API_PORT</h2>
+<pre>VOER_API_PORT </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="constant_VOER_API_PROTOCOL"> </a><div class="element clickable constant  constant_VOER_API_PROTOCOL" data-toggle="collapse" data-target=".constant_VOER_API_PROTOCOL .collapse">
+<h2>VOER_API_PROTOCOL</h2>
+<pre>VOER_API_PROTOCOL </pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
@@ -222,7 +583,7 @@ Response:
 <div class="row"><footer class="span12">
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a12</a> and<br>
-            generated on 2012-12-04T21:53:04+07:00.<br></footer></div>
+            generated on 2013-01-22T23:28:42+07:00.<br></footer></div>
 </div>
 </body>
 </html>

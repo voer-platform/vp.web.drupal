@@ -179,6 +179,7 @@ function wysiwyg_tinymce_settings($editor, $config, $theme) {
     'button_tile_map' => TRUE, // @todo Add a setting for this.
     'document_base_url' => base_path(),
     'mode' => 'none',
+    'skin' => 'cirkuit',
     'plugins' => array(),
     'theme' => $theme,
     'width' => '100%',

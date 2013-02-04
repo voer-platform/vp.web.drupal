@@ -257,7 +257,7 @@ class Http
     private function _exec($type, $url, $params = array())
     {
         //For debug
-        print $url;
+        //print $url;
 
         $headers = $this->_headers;
         $s = curl_init();
@@ -280,8 +280,9 @@ class Http
                 curl_setopt($s, CURLOPT_URL, $url . '?' . http_build_query($params));
                 break;
             case self::PUT:
-                curl_setopt($s, CURLOPT_URL, $url . '?' . http_build_query($params));
+                curl_setopt($s, CURLOPT_URL, $url);
                 curl_setopt($s, CURLOPT_CUSTOMREQUEST, self::PUT);
+                curl_setopt($s, CURLOPT_POSTFIELDS, $params);
                 break;
         }
 

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project version="2.0.0a12" title="">
-  <file path="voer_api.inc" hash="425b2edc7f61868fd22211026f91267a" package="Default">
+  <file path="voer_api.inc" hash="b15eb8a82ebe807ebdf85750c948a39e" package="Default">
     <include line="4" type="Require Once" package="Default">
       <name/>
     </include>
     <constant namespace="global" line="6" package="Default">
       <name>VOER_API_URL</name>
       <full_name>\VOER_API_URL</full_name>
-      <value>'http://api.voer.edu.vn/'</value>
+      <value>'dev.voer.vn'</value>
     </constant>
     <constant namespace="global" line="7" package="Default">
       <name>VOER_API_VERSION</name>
@@ -15,108 +15,530 @@
       <value>'0.1'</value>
     </constant>
     <constant namespace="global" line="8" package="Default">
-      <name>VOER_API_COMMAND</name>
-      <full_name>\VOER_API_COMMAND</full_name>
-      <value>'modules'</value>
+      <name>VOER_API_COMMAND_MATERIAL</name>
+      <full_name>\VOER_API_COMMAND_MATERIAL</full_name>
+      <value>'' . VOER_API_VERSION . '/materials/'</value>
     </constant>
     <constant namespace="global" line="9" package="Default">
+      <name>VOER_API_COMMAND_CATEGORY</name>
+      <full_name>\VOER_API_COMMAND_CATEGORY</full_name>
+      <value>'' . VOER_API_VERSION . '/categories/'</value>
+    </constant>
+    <constant namespace="global" line="10" package="Default">
+      <name>VOER_API_COMMAND_AUTHOR</name>
+      <full_name>\VOER_API_COMMAND_AUTHOR</full_name>
+      <value>'' . VOER_API_VERSION . '/authors/'</value>
+    </constant>
+    <constant namespace="global" line="11" package="Default">
+      <name>VOER_API_COMMAND_EDITOR</name>
+      <full_name>\VOER_API_COMMAND_EDITOR</full_name>
+      <value>'' . VOER_API_VERSION . '/editors/'</value>
+    </constant>
+    <constant namespace="global" line="12" package="Default">
       <name>VOER_API_AUTH</name>
       <full_name>\VOER_API_AUTH</full_name>
       <value>'auth'</value>
     </constant>
-    <function namespace="global" line="15" package="Default">
+    <constant namespace="global" line="13" package="Default">
+      <name>VOER_API_PORT</name>
+      <full_name>\VOER_API_PORT</full_name>
+      <value>2013</value>
+    </constant>
+    <constant namespace="global" line="14" package="Default">
+      <name>VOER_API_PROTOCOL</name>
+      <full_name>\VOER_API_PROTOCOL</full_name>
+      <value>\Http::HTTP</value>
+    </constant>
+    <function namespace="global" line="20" package="Default">
       <name>voer_api_client</name>
       <full_name>\voer_api_client</full_name>
-      <docblock line="11">
+      <docblock line="16">
         <description>[voer_api_client description]</description>
         <long-description></long-description>
-        <tag line="11" name="return" description="[description]" type="\[type]">
+        <tag line="16" name="return" description="[description]" type="\[type]">
           <type by_reference="false">\[type]</type>
         </tag>
       </docblock>
     </function>
-    <function namespace="global" line="47" package="Default">
-      <name>voer_api_add</name>
-      <full_name>\voer_api_add</full_name>
-      <docblock line="23">
-        <description>For create a new module.</description>
-        <long-description>&lt;p&gt;Check-in activity of existing module is quite the
-same but will have little difference in URL and parameters.&lt;/p&gt;
-
-&lt;p&gt;Content of new module stays inside posted requests. It could be VDP, HTML
-(rich-text), or other media files.&lt;/p&gt;</long-description>
-        <tag line="23" name="param" description="[description]" type="\[type]" variable="$params">
+    <function namespace="global" line="32" package="Default">
+      <name>voer_api_get_all_materials</name>
+      <full_name>\voer_api_get_all_materials</full_name>
+      <docblock line="28">
+        <description>Get all materials</description>
+        <long-description></long-description>
+        <tag line="28" name="return" description="[description]" type="\[type]">
           <type by_reference="false">\[type]</type>
         </tag>
-        <tag line="23" name="return" description="[description]" type="\[type]">
-          <type by_reference="false">\[type]</type>
-        </tag>
-        <tag line="23" name="example" description="Request: POST  $URL/modules/&#10;title=Hello there&amp;author=Someone&amp;vdp=...&#10;Response:&#10;200 OK&#10;{&#10;  &quot;module&quot;:{&#10;      &quot;id&quot;:&quot;123123123&quot;,&#10;      &quot;title&quot;:&quot;Hello there&quot;,&#10;      &quot;author&quot;:&quot;Someone&quot;,&#10;      …&#10;      }&#10;}"/>
       </docblock>
-      <argument line="47">
+    </function>
+    <function namespace="global" line="44" package="Default">
+      <name>voer_api_create_material</name>
+      <full_name>\voer_api_create_material</full_name>
+      <docblock line="38">
+        <description>Create a material</description>
+        <long-description></long-description>
+        <tag line="38" name="param" description="[description]" type="Object" variable="$material">
+          <type by_reference="false">Object</type>
+        </tag>
+        <tag line="38" name="return" description="[description]" type="\[type]">
+          <type by_reference="false">\[type]</type>
+        </tag>
+      </docblock>
+      <argument line="44">
+        <name>$material</name>
+        <default></default>
+        <type/>
+      </argument>
+    </function>
+    <function namespace="global" line="61" package="Default">
+      <name>voer_api_checkin_material</name>
+      <full_name>\voer_api_checkin_material</full_name>
+    </function>
+    <function namespace="global" line="71" package="Default">
+      <name>voer_api_get_materials_by_categories</name>
+      <full_name>\voer_api_get_materials_by_categories</full_name>
+      <docblock line="65">
+        <description>Get list of materials by categories</description>
+        <long-description></long-description>
+        <tag line="65" name="param" description="contains list of ids category" type="array" variable="$cagetories">
+          <type by_reference="false">array</type>
+        </tag>
+        <tag line="65" name="return" description="[description]" type="\[type]">
+          <type by_reference="false">\[type]</type>
+        </tag>
+      </docblock>
+      <argument line="71">
+        <name>$cagetories</name>
+        <default>array()</default>
+        <type/>
+      </argument>
+    </function>
+    <function namespace="global" line="83" package="Default">
+      <name>voer_api_get_materials_by_authors</name>
+      <full_name>\voer_api_get_materials_by_authors</full_name>
+      <docblock line="77">
+        <description>Get list of materials by authors</description>
+        <long-description></long-description>
+        <tag line="77" name="param" description="[description]" type="array" variable="$authors">
+          <type by_reference="false">array</type>
+        </tag>
+        <tag line="77" name="return" description="[description]" type="\[type]">
+          <type by_reference="false">\[type]</type>
+        </tag>
+      </docblock>
+      <argument line="83">
+        <name>$authors</name>
+        <default>array()</default>
+        <type/>
+      </argument>
+    </function>
+    <function namespace="global" line="95" package="Default">
+      <name>voer_api_get_materials_by_editors</name>
+      <full_name>\voer_api_get_materials_by_editors</full_name>
+      <docblock line="89">
+        <description>Get list of materials by editors</description>
+        <long-description></long-description>
+        <tag line="89" name="param" description="[description]" type="array" variable="$editors">
+          <type by_reference="false">array</type>
+        </tag>
+        <tag line="89" name="return" description="[description]" type="\[type]">
+          <type by_reference="false">\[type]</type>
+        </tag>
+      </docblock>
+      <argument line="95">
+        <name>$editors</name>
+        <default>array()</default>
+        <type/>
+      </argument>
+    </function>
+    <function namespace="global" line="107" package="Default">
+      <name>voer_api_get_materials_by_types</name>
+      <full_name>\voer_api_get_materials_by_types</full_name>
+      <docblock line="101">
+        <description>Get list of materials by types</description>
+        <long-description></long-description>
+        <tag line="101" name="param" description="[description]" type="array" variable="$types">
+          <type by_reference="false">array</type>
+        </tag>
+        <tag line="101" name="return" description="[description]" type="\[type]">
+          <type by_reference="false">\[type]</type>
+        </tag>
+      </docblock>
+      <argument line="107">
+        <name>$types</name>
+        <default>array()</default>
+        <type/>
+      </argument>
+    </function>
+    <function namespace="global" line="119" package="Default">
+      <name>voer_api_get_metadata</name>
+      <full_name>\voer_api_get_metadata</full_name>
+      <docblock line="113">
+        <description>[voer_api_get_metadata description]</description>
+        <long-description></long-description>
+        <tag line="113" name="param" description="[description]" type="\[type]" variable="$id">
+          <type by_reference="false">\[type]</type>
+        </tag>
+        <tag line="113" name="param" description="[description]" type="string" variable="$version">
+          <type by_reference="false">string</type>
+        </tag>
+        <tag line="113" name="return" description="[description]" type="\[type]">
+          <type by_reference="false">\[type]</type>
+        </tag>
+      </docblock>
+      <argument line="119">
+        <name>$id</name>
+        <default></default>
+        <type/>
+      </argument>
+      <argument line="119">
+        <name>$version</name>
+        <default>""</default>
+        <type/>
+      </argument>
+    </function>
+    <function namespace="global" line="137" package="Default">
+      <name>voer_api_get_content</name>
+      <full_name>\voer_api_get_content</full_name>
+      <docblock line="131">
+        <description>[voer_api_get_content description]</description>
+        <long-description></long-description>
+        <tag line="131" name="param" description="[description]" type="\[type]" variable="$id">
+          <type by_reference="false">\[type]</type>
+        </tag>
+        <tag line="131" name="param" description="[description]" type="string" variable="$version">
+          <type by_reference="false">string</type>
+        </tag>
+        <tag line="131" name="return" description="[description]" type="\[type]">
+          <type by_reference="false">\[type]</type>
+        </tag>
+      </docblock>
+      <argument line="137">
+        <name>$id</name>
+        <default></default>
+        <type/>
+      </argument>
+      <argument line="137">
+        <name>$version</name>
+        <default>""</default>
+        <type/>
+      </argument>
+    </function>
+    <function namespace="global" line="154" package="Default">
+      <name>voer_api_search</name>
+      <full_name>\voer_api_search</full_name>
+      <docblock line="149">
+        <description>[voer_api_search description]</description>
+        <long-description></long-description>
+        <tag line="149" name="param" description="[description]" type="array" variable="$params">
+          <type by_reference="false">array</type>
+        </tag>
+        <tag line="149" name="return" description="[description]" type="\[type]">
+          <type by_reference="false">\[type]</type>
+        </tag>
+      </docblock>
+      <argument line="154">
         <name>$params</name>
         <default>array()</default>
         <type/>
       </argument>
     </function>
-    <function namespace="global" line="63" package="Default">
+    <function namespace="global" line="165" package="Default">
+      <name>voer_api_get_all_categories</name>
+      <full_name>\voer_api_get_all_categories</full_name>
+      <docblock line="161">
+        <description>Get all categories</description>
+        <long-description></long-description>
+        <tag line="161" name="return" description="[description]" type="Object">
+          <type by_reference="false">Object</type>
+        </tag>
+      </docblock>
+    </function>
+    <function namespace="global" line="176" package="Default">
+      <name>voer_api_create_category</name>
+      <full_name>\voer_api_create_category</full_name>
+      <docblock line="171">
+        <description>Create a category with name, parent id and description</description>
+        <long-description></long-description>
+        <tag line="171" name="param" description="[description]" type="Object" variable="$category">
+          <type by_reference="false">Object</type>
+        </tag>
+        <tag line="171" name="return" description="[description]" type="\[type]">
+          <type by_reference="false">\[type]</type>
+        </tag>
+      </docblock>
+      <argument line="176">
+        <name>$category</name>
+        <default></default>
+        <type/>
+      </argument>
+    </function>
+    <function namespace="global" line="193" package="Default">
+      <name>voer_api_get_category</name>
+      <full_name>\voer_api_get_category</full_name>
+      <docblock line="188">
+        <description>Retrieve category information</description>
+        <long-description></long-description>
+        <tag line="188" name="param" description="[description]" type="\Number" variable="$id">
+          <type by_reference="false">\Number</type>
+        </tag>
+        <tag line="188" name="return" description="[description]" type="Object">
+          <type by_reference="false">Object</type>
+        </tag>
+      </docblock>
+      <argument line="193">
+        <name>$id</name>
+        <default></default>
+        <type/>
+      </argument>
+    </function>
+    <function namespace="global" line="204" package="Default">
+      <name>voer_api_update_category</name>
+      <full_name>\voer_api_update_category</full_name>
+      <docblock line="199">
+        <description>[voer_api_update_category description]</description>
+        <long-description></long-description>
+        <tag line="199" name="param" description="[description]" type="\[type]" variable="$category">
+          <type by_reference="false">\[type]</type>
+        </tag>
+        <tag line="199" name="return" description="[description]" type="\[type]">
+          <type by_reference="false">\[type]</type>
+        </tag>
+      </docblock>
+      <argument line="204">
+        <name>$category</name>
+        <default></default>
+        <type/>
+      </argument>
+    </function>
+    <function namespace="global" line="219" package="Default">
+      <name>voer_api_delete_category</name>
+      <full_name>\voer_api_delete_category</full_name>
+      <docblock line="214">
+        <description>Delete a category</description>
+        <long-description></long-description>
+        <tag line="214" name="param" description="[description]" type="\Number" variable="$id">
+          <type by_reference="false">\Number</type>
+        </tag>
+        <tag line="214" name="return" description="[description]" type="\[type]">
+          <type by_reference="false">\[type]</type>
+        </tag>
+      </docblock>
+      <argument line="219">
+        <name>$id</name>
+        <default></default>
+        <type/>
+      </argument>
+    </function>
+    <function namespace="global" line="233" package="Default">
+      <name>voer_api_get_all_authors</name>
+      <full_name>\voer_api_get_all_authors</full_name>
+      <docblock line="229">
+        <description>Get all authors</description>
+        <long-description></long-description>
+        <tag line="229" name="return" description="List of authors" type="Object">
+          <type by_reference="false">Object</type>
+        </tag>
+      </docblock>
+    </function>
+    <function namespace="global" line="244" package="Default">
+      <name>voer_api_create_author</name>
+      <full_name>\voer_api_create_author</full_name>
+      <docblock line="239">
+        <description>Create new an author</description>
+        <long-description></long-description>
+        <tag line="239" name="param" description="[description]" type="Object" variable="$author">
+          <type by_reference="false">Object</type>
+        </tag>
+        <tag line="239" name="return" description="[description]" type="\[type]">
+          <type by_reference="false">\[type]</type>
+        </tag>
+      </docblock>
+      <argument line="244">
+        <name>$author</name>
+        <default></default>
+        <type/>
+      </argument>
+    </function>
+    <function namespace="global" line="258" package="Default">
+      <name>voer_api_get_author</name>
+      <full_name>\voer_api_get_author</full_name>
+      <docblock line="253">
+        <description>Retrieve an author information</description>
+        <long-description></long-description>
+        <tag line="253" name="param" description="[description]" type="\[type]" variable="$id">
+          <type by_reference="false">\[type]</type>
+        </tag>
+        <tag line="253" name="return" description="[description]" type="\[type]">
+          <type by_reference="false">\[type]</type>
+        </tag>
+      </docblock>
+      <argument line="258">
+        <name>$id</name>
+        <default></default>
+        <type/>
+      </argument>
+    </function>
+    <function namespace="global" line="269" package="Default">
+      <name>voer_api_update_author</name>
+      <full_name>\voer_api_update_author</full_name>
+      <docblock line="264">
+        <description>[voer_api_update_author description]</description>
+        <long-description></long-description>
+        <tag line="264" name="param" description="[description]" type="\[type]" variable="$author">
+          <type by_reference="false">\[type]</type>
+        </tag>
+        <tag line="264" name="return" description="[description]" type="\[type]">
+          <type by_reference="false">\[type]</type>
+        </tag>
+      </docblock>
+      <argument line="269">
+        <name>$author</name>
+        <default></default>
+        <type/>
+      </argument>
+    </function>
+    <function namespace="global" line="283" package="Default">
+      <name>voer_api_delete_author</name>
+      <full_name>\voer_api_delete_author</full_name>
+      <docblock line="278">
+        <description>Delete an author</description>
+        <long-description></long-description>
+        <tag line="278" name="param" description="[description]" type="\Number" variable="$id">
+          <type by_reference="false">\Number</type>
+        </tag>
+        <tag line="278" name="return" description="[description]" type="\[type]">
+          <type by_reference="false">\[type]</type>
+        </tag>
+      </docblock>
+      <argument line="283">
+        <name>$id</name>
+        <default></default>
+        <type/>
+      </argument>
+    </function>
+    <function namespace="global" line="296" package="Default">
+      <name>voer_api_get_all_editors</name>
+      <full_name>\voer_api_get_all_editors</full_name>
+      <docblock line="292">
+        <description>Get all editors</description>
+        <long-description></long-description>
+        <tag line="292" name="return" description="[description]" type="Object">
+          <type by_reference="false">Object</type>
+        </tag>
+      </docblock>
+    </function>
+    <function namespace="global" line="307" package="Default">
+      <name>voer_api_create_editor</name>
+      <full_name>\voer_api_create_editor</full_name>
+      <docblock line="302">
+        <description>Create an editor</description>
+        <long-description></long-description>
+        <tag line="302" name="param" description="[description]" type="\[type]" variable="$editor">
+          <type by_reference="false">\[type]</type>
+        </tag>
+        <tag line="302" name="return" description="[description]" type="\[type]">
+          <type by_reference="false">\[type]</type>
+        </tag>
+      </docblock>
+      <argument line="307">
+        <name>$editor</name>
+        <default></default>
+        <type/>
+      </argument>
+    </function>
+    <function namespace="global" line="322" package="Default">
+      <name>voer_api_get_editor</name>
+      <full_name>\voer_api_get_editor</full_name>
+      <docblock line="317">
+        <description>Retrieve an editor information</description>
+        <long-description></long-description>
+        <tag line="317" name="param" description="[description]" type="\Number" variable="$id">
+          <type by_reference="false">\Number</type>
+        </tag>
+        <tag line="317" name="return" description="[description]" type="\[type]">
+          <type by_reference="false">\[type]</type>
+        </tag>
+      </docblock>
+      <argument line="322">
+        <name>$id</name>
+        <default></default>
+        <type/>
+      </argument>
+    </function>
+    <function namespace="global" line="333" package="Default">
+      <name>voer_api_update_editor</name>
+      <full_name>\voer_api_update_editor</full_name>
+      <docblock line="328">
+        <description>[voer_api_update_editor description]</description>
+        <long-description></long-description>
+        <tag line="328" name="param" description="[description]" type="\[type]" variable="$editor">
+          <type by_reference="false">\[type]</type>
+        </tag>
+        <tag line="328" name="return" description="[description]" type="\[type]">
+          <type by_reference="false">\[type]</type>
+        </tag>
+      </docblock>
+      <argument line="333">
+        <name>$editor</name>
+        <default></default>
+        <type/>
+      </argument>
+    </function>
+    <function namespace="global" line="348" package="Default">
+      <name>voer_api_delete_editor</name>
+      <full_name>\voer_api_delete_editor</full_name>
+      <docblock line="343">
+        <description>Delete an editor</description>
+        <long-description></long-description>
+        <tag line="343" name="param" description="[description]" type="\[type]" variable="$id">
+          <type by_reference="false">\[type]</type>
+        </tag>
+        <tag line="343" name="return" description="[description]" type="\[type]">
+          <type by_reference="false">\[type]</type>
+        </tag>
+      </docblock>
+      <argument line="348">
+        <name>$id</name>
+        <default></default>
+        <type/>
+      </argument>
+    </function>
+    <function namespace="global" line="362" package="Default">
       <name>voer_api_refresh_key</name>
       <full_name>\voer_api_refresh_key</full_name>
-      <docblock line="56">
+      <docblock line="355">
         <description>This function is used refresh token when it's about to expired</description>
         <long-description></long-description>
-        <tag line="56" name="param" description="The client id which is registered with VOER core." type="string" variable="$clientId">
+        <tag line="355" name="param" description="The client id which is registered with VOER core." type="string" variable="$clientId">
           <type by_reference="false">string</type>
         </tag>
-        <tag line="56" name="param" description="The old value of token" type="string" variable="$token">
+        <tag line="355" name="param" description="The old value of token" type="string" variable="$token">
           <type by_reference="false">string</type>
         </tag>
-        <tag line="56" name="return" description="The return status" type="string">
+        <tag line="355" name="return" description="The return status" type="string">
           <type by_reference="false">string</type>
         </tag>
       </docblock>
-      <argument line="63">
+      <argument line="362">
         <name>$clientId</name>
         <default></default>
         <type/>
       </argument>
-      <argument line="63">
+      <argument line="362">
         <name>$token</name>
         <default></default>
         <type/>
       </argument>
     </function>
-    <function namespace="global" line="71" package="Default">
-      <name>voer_api_get_metadata</name>
-      <full_name>\voer_api_get_metadata</full_name>
-    </function>
-    <function namespace="global" line="78" package="Default">
-      <name>voer_api_get_content</name>
-      <full_name>\voer_api_get_content</full_name>
-      <docblock line="75">
-        <description></description>
-        <long-description></long-description>
-      </docblock>
-    </function>
-    <function namespace="global" line="82" package="Default">
-      <name>voer_api_checkin</name>
-      <full_name>\voer_api_checkin</full_name>
-    </function>
-    <function namespace="global" line="86" package="Default">
-      <name>voer_api_search</name>
-      <full_name>\voer_api_search</full_name>
-    </function>
-    <function namespace="global" line="90" package="Default">
+    <function namespace="global" line="370" package="Default">
       <name>voer_api_delete</name>
       <full_name>\voer_api_delete</full_name>
     </function>
     <parse_markers>
       <error line="0" code="50007">No page-level DocBlock was found in file voer_api.inc</error>
-      <error line="71" code="50009">No DocBlock was found for function \voer_api_get_metadata()</error>
-      <error line="75" code="50011">No short description for function \voer_api_get_content()</error>
-      <error line="82" code="50009">No DocBlock was found for function \voer_api_checkin()</error>
-      <error line="86" code="50009">No DocBlock was found for function \voer_api_search()</error>
-      <error line="90" code="50009">No DocBlock was found for function \voer_api_delete()</error>
+      <error line="61" code="50009">No DocBlock was found for function \voer_api_checkin_material()</error>
+      <error line="370" code="50009">No DocBlock was found for function \voer_api_delete()</error>
     </parse_markers>
   </file>
   <package name="Default" full_name="Default"/>

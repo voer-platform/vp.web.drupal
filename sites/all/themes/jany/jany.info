@@ -6,7 +6,7 @@ stylesheets[screen][] = css/style.css
 ; Contrib Module Admin Styles
 stylesheets[screen][] = css/contrib.css
 ; Install and Maintenance Pages
-stylesheets[all][] = css/shiny.css
+stylesheets[all][] = css/jany.css
 
 settings[shortcut_module_link] = 1
 regions[content] = Content

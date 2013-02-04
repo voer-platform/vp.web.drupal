@@ -39,5 +39,16 @@ class VoerAPITestCase extends DrupalWebTestCase{
     $this->assertTrue($result->id > 0, 'A category is created.');
     $this->verbose('New category: ' . var_export($result, TRUE));
   }
+
+  function testCategory_update(){
+    $category = (object) array(
+      'id' => 1,
+      'name' => 'History culture',
+      'parent' => 0,
+      'description' => 'Description'
+    );
+    $result = voer_api_update_category($category);
+    $this->verbose('Update category: ' . var_export($result, TRUE));
+  }
 }
 ?>

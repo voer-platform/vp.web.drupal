@@ -42,17 +42,16 @@ function _voer_api_test(){
   dpm($category);
 
   //insert category
-  $category = (object) array('name' => 'Category 1', 'parent' => '0', 'description' => 'Description of category 1');
+  $category = (object) array('id' => 1, 'name' => 'Category 999', 'parent' => '0', 'description' => 'Description of category 1');
   //$result = voer_api_create_category($category);
-  //dpm($result);
-
-  $modules = voer_api_get_modules();
-  dpm($modules);
+  $result = voer_api_update_category($category);
+  dpm($result);
+  //$modules = voer_api_get_modules();
+  //dpm($modules);
 
   //get all authors
   //$authors = voer_api_get_all_authors();
   //dpm($authors);
-
 
   return "";
 }

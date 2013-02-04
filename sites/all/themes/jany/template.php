@@ -88,7 +88,7 @@ function jany_admin_block_content($variables) {
  */
 function jany_tablesort_indicator($variables) {
   $style = $variables['style'];
-  $theme_path = drupal_get_path('theme', 'shiny');
+  $theme_path = drupal_get_path('theme', 'jany');
   if ($style == 'asc') {
     return theme('image', array('path' => $theme_path . '/images/arrow-asc.png', 'alt' => t('sort ascending'), 'width' => 13, 'height' => 13, 'title' => t('sort ascending')));
   }
@@ -101,16 +101,16 @@ function jany_tablesort_indicator($variables) {
  * Implements hook_css_alter().
  */
 function jany_css_alter(&$css) {
-  // Use shiny's vertical tabs style instead of the default one.
+  // Use jany's vertical tabs style instead of the default one.
   if (isset($css['misc/vertical-tabs.css'])) {
-    $css['misc/vertical-tabs.css']['data'] = drupal_get_path('theme', 'shiny') . '/css/vertical-tabs.css';
+    $css['misc/vertical-tabs.css']['data'] = drupal_get_path('theme', 'jany') . '/css/vertical-tabs.css';
   }
   if (isset($css['misc/vertical-tabs-rtl.css'])) {
-    $css['misc/vertical-tabs-rtl.css']['data'] = drupal_get_path('theme', 'shiny') . '/css/vertical-tabs-rtl.css';
+    $css['misc/vertical-tabs-rtl.css']['data'] = drupal_get_path('theme', 'jany') . '/css/vertical-tabs-rtl.css';
   }
-  // Use shiny's jQuery UI theme style instead of the default one.
+  // Use jany's jQuery UI theme style instead of the default one.
   if (isset($css['misc/ui/jquery.ui.theme.css'])) {
-    $css['misc/ui/jquery.ui.theme.css']['data'] = drupal_get_path('theme', 'shiny') . '/css/jquery.ui.theme.css';
+    $css['misc/ui/jquery.ui.theme.css']['data'] = drupal_get_path('theme', 'jany') . '/css/jquery.ui.theme.css';
   }
 }
 
