@@ -7,9 +7,9 @@
  */
 function voer_wysiwyg_import_plugin() {
   $plugins['import'] = array(
-    'title' => t('Import plugin'),
+    'title' => t('Import document'),
     // The 'icon file' is the icon that appears in the Wysiwyg toolbar.
-    'icon file' => 'foo.toolbar_icon.gif',
+    'icon file' => 'import.png',
     'icon title' => t('A import document plugin'),
     'settings' => array(),
   );
