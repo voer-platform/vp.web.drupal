@@ -45,7 +45,6 @@ function voer_api_create_material($material){
   $client = voer_api_client();
   $response = $client->doPost(VOER_API_COMMAND_MATERIAL, array(
     "text" => $material->text,
-    //"version" => $material->version,
     "title" => $material->title,
     "description" => $material->description,
     "keywords" => $material->keywords,
@@ -356,7 +355,7 @@ function voer_api_get_editor($id){
  */
 function voer_api_update_editor($editor){
   $client = voer_api_client();
-  $response = $client->doPut(VOER_API_COMMAND_EDITOR . $author->id . "/", array(
+  $response = $client->doPut(VOER_API_COMMAND_EDITOR . $editor->id . "/", array(
     'fullname' => $editor->fullname,
     'user_id' => $editor->user_id,
     'client_id' => $editor->client_id

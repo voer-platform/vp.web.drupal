@@ -116,23 +116,23 @@ function voer_content_form_push($form, &$form_state)
 
   module_load_include('inc', 'voer_api');
 
-  if ($node->nid) {
+  if (isset($node->nid) && $form_state['values']['field_id'][LANGUAGE_NONE][0]['value']) {
     $mod_data['material_id'] = $form_state['values']['field_id'][LANGUAGE_NONE][0]['value'];
     $result = voer_api_checkin_material($mod_data);
+    unset($node->nid);
+    unset($node->vid);
+
   } else {
     $result = voer_api_create_material((object)$mod_data);
   }
 
   if ($result && $result->material_id) {
     $node->title = $result->title;
-    // $node->title = $mod_data['title'];
     $node->uid = $mod_data['authors'];
     $node->body = $form_state['values']['body'];
     $node->type = 'voer_content';
     $node->language = LANGUAGE_NONE;
-    // $node->created = time();
-    $node->created = $result->modified;
-    $node->changed = $node->created;
+    // $node->created = $result->modified;
     $node->status = 1;
     $node->promote = 1;
 
@@ -140,10 +140,8 @@ function voer_content_form_push($form, &$form_state)
     $node->field_language = $form_state['values']['field_language'];
     $node->field_summary = $form_state['values']['field_summary'];
     $node->field_category = $form_state['values']['field_category'];
-    // $node->field_id = 'wutywtywityiweytiwyetu';
-    $node->field_id = $result->material_id;
-    // $node->field_version = 12;
-    $node->field_version = $result->version;
+    $node->field_id[LANGUAGE_NONE][0]['value'] = $result->material_id;
+    $node->field_version[LANGUAGE_NONE][0]['value'] = $result->version;
 
     node_submit($node);
     node_save($node);
