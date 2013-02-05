@@ -53,7 +53,9 @@ function voer_api_create_material($material){
     "editor_id" => $material->editor_id,
     "file" => $material->file,
     "file_type" => $material->file_type,
-    "license_id" => $material->license_id
+    "license_id" => $material->license_id,
+    "language" => $material->language,
+    "derived_from" => $material->derived_from
   ));
   return json_decode($response);
 }

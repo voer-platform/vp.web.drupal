@@ -104,10 +104,10 @@ function voer_content_form_push($form, &$form_state)
   $mod_data['text'] = $form_state['values']['body'][LANGUAGE_NONE][0]['value'];
   $mod_data['language'] = $form_state['values']['field_language'][LANGUAGE_NONE][0]['value'];
   $mod_data['description'] = $form_state['values']['field_summary'][LANGUAGE_NONE][0]['value'];
-  $mod_data['categories'] = '1, 2, 3';
+  $mod_data['categories'] = $form_state['values']['field_category'][LANGUAGE_NONE][0]['value'];
   $mod_data['authors'] = $user->uid;
   $mod_data['editor_id'] = 1;
-  $mod_data['keywords'] = 'hello, test';
+  $mod_data['keywords'] = $form_state['values']['field_keyword'][LANGUAGE_NONE][0]['value'];
   $mod_data['license_id'] = '3';
   $mod_data['material_type'] = VOER_MATERIAL_TYPE_TEXT;
   $mod_data['file'] = '';
