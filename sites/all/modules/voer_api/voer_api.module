@@ -35,6 +35,7 @@ function _voer_api_test(){
   module_load_include('inc', 'voer_api');
 
   //get all category
+  // voer_api_refresh_token();
   $categories = voer_api_get_all_materials();
   // print_r($categories);
   dpm($categories);
