@@ -2,6 +2,7 @@
 
 $module_path = drupal_get_path('module', 'voer_api');
 require_once($module_path . '/lib/http.php');
+require_once('voer_api.lib.php');
 
 define('VOER_API_URL', 'dev.voer.vn'); //api.voer.edu.vn
 define('VOER_API_VERSION', '0.1');
@@ -9,19 +10,34 @@ define('VOER_API_COMMAND_MATERIAL', '' . VOER_API_VERSION . '/materials/');
 define('VOER_API_COMMAND_CATEGORY', '' . VOER_API_VERSION . '/categories/');
 define('VOER_API_COMMAND_AUTHOR', '' . VOER_API_VERSION . '/authors/');
 define('VOER_API_COMMAND_EDITOR', '' . VOER_API_VERSION . '/editors/');
-define('VOER_API_AUTH', 'auth');
+define('VOER_API_AUTH', VOER_API_VERSION . '/auth/');
 define('VOER_API_PORT', 2013); //80
 define('VOER_API_PROTOCOL', Http::HTTP);
+
 
 /**
  * [voer_api_client description]
  * @return [type] [description]
  */
 function voer_api_client(){
-  // Create a client to work with the Twitter API
-
   $client = Http::connect(VOER_API_URL, VOER_API_PORT, VOER_API_PROTOCOL);
   return $client;
+}
+
+/**
+ * [voer_api_authenticate description]
+ * @return [type] [description]
+ */
+function voer_api_authenticate(){
+  $client = voer_api_client();
+  $clientId = variable_get('voer_api_client_id', '');
+  $clientKey = variable_get('voer_api_key', '');
+  $sugar = 'voer';
+  $response = $client->doGet(VOER_API_AUTH . $clientId . "/", array(
+    'sugar' => $sugar,
+    'comb' => md5($clientKey . $sugar)
+  ));
+  return json_decode($response);
 }
 
 /*** BEGIN: MATERIAL ***/
@@ -30,8 +46,13 @@ function voer_api_client(){
  * @return [type] [description]
  */
 function voer_api_get_all_materials(){
-  $client = voer_api_client();
-  $response = $client->doGet(VOER_API_COMMAND_MATERIAL);
+  // $client = voer_api_client();
+  // $client->setAuthenticate('vpweb', 'b079d6f6f0eaa03e40c086d525bdaa8b');
+  $voer = new VoerApi();
+  // $voer->refresh_token();
+  $url = VOER_API_COMMAND_MATERIAL;
+  $response = $voer->auth_request($url);
+  // $response = $client->doGet(VOER_API_COMMAND_MATERIAL);
   return json_decode($response);
 }
 
@@ -42,8 +63,9 @@ function voer_api_get_all_materials(){
  * @return [type]           [description]
  */
 function voer_api_create_material($material){
-  $client = voer_api_client();
-  $response = $client->doPost(VOER_API_COMMAND_MATERIAL, array(
+  $voer = new VoerApi();
+  $url = VOER_API_COMMAND_MATERIAL;
+  $params = array(
     "text" => $material->text,
     "title" => $material->title,
     "description" => $material->description,
@@ -56,7 +78,9 @@ function voer_api_create_material($material){
     "license_id" => $material->license_id,
     "language" => $material->language,
     "derived_from" => $material->derived_from
-  ));
+  );
+  $response = $voer->auth_request($url, "POST", $params);
+
   return json_decode($response);
 }
 
@@ -67,8 +91,11 @@ function voer_api_create_material($material){
  * @return array           [description]
  */
 function voer_api_checkin_material($material){
-  $client = voer_api_client();
-  $response = $client->doPut(VOER_API_COMMAND_MATERIAL . $material['material_id'] . '/', $material);
+  $voer = new VoerApi();
+  $url = VOER_API_COMMAND_MATERIAL .$material['material_id'] . '/';
+  $response = $voer->auth_request($url, "PUT", $material);
+  // $client = voer_api_client();
+  // $response = $client->doPut(VOER_API_COMMAND_MATERIAL . $material['material_id'] . '/', $material);
 
   return json_decode($response);
 }
@@ -80,8 +107,11 @@ function voer_api_checkin_material($material){
  * @return object     [description]
  */
 function voer_api_get_materials_by_id($id) {
-  $client = voer_api_client();
-  $response = $client->doGet(VOER_API_COMMAND_MATERIAL . $id . '/all/');
+  $voer = new VoerApi();
+  $url = VOER_API_COMMAND_MATERIAL . $id . '/all/';
+  $response = $voer->auth_request($url);
+  // $client = voer_api_client();
+  // $response = $client->doGet(VOER_API_COMMAND_MATERIAL . $id . '/all/');
 
   return json_decode($response);
 }
@@ -93,8 +123,12 @@ function voer_api_get_materials_by_id($id) {
  * @return [type]             [description]
  */
 function voer_api_get_materials_by_categories($cagetories = array()){
-  $client = voer_api_client();
-  $response = $client->doGet(VOER_API_COMMAND_MATERIAL . "?categories=" . implode(",", $cagetories));
+  $voer = new VoerApi();
+  $url = VOER_API_COMMAND_MATERIAL . "?categories=" . implode(",", $cagetories);
+  $response = $voer->auth_request($url);
+
+  // $client = voer_api_client();
+  // $response = $client->doGet(VOER_API_COMMAND_MATERIAL . "?categories=" . implode(",", $cagetories));
   return json_decode($response);
 }
 
@@ -105,9 +139,12 @@ function voer_api_get_materials_by_categories($cagetories = array()){
  * @return [type]          [description]
  */
 function voer_api_get_materials_by_authors($authors = array()){
-  $client = voer_api_client();
-  $response = $client->doGet(VOER_API_COMMAND_MATERIAL, array('authors' => implode(',', $authors)));
-  return drupal_json_decode($response);
+  $voer = new VoerApi();
+  $url = VOER_API_COMMAND_MATERIAL, array('authors' => implode(',', $authors));
+  $response = $voer->auth_request($url);
+  // $client = voer_api_client();
+  // $response = $client->doGet(VOER_API_COMMAND_MATERIAL, array('authors' => implode(',', $authors)));
+  return json_decode($response);
 }
 
 /**
@@ -117,8 +154,10 @@ function voer_api_get_materials_by_authors($authors = array()){
  * @return [type]          [description]
  */
 function voer_api_get_materials_by_editors($editors = array()){
-  $client = voer_api_client();
-  $response = $client->doGet(VOER_API_COMMAND_MATERIAL . "?editors=" . implode(",", $editors));
+  $voer = new VoerApi();
+  $url = VOER_API_COMMAND_MATERIAL . "?editors=" . implode(",", $editors);
+  // $client = voer_api_client();
+  // $response = $client->doGet(VOER_API_COMMAND_MATERIAL . "?editors=" . implode(",", $editors));
   return json_decode($response);
 }
 
@@ -129,8 +168,11 @@ function voer_api_get_materials_by_editors($editors = array()){
  * @return [type]        [description]
  */
 function voer_api_get_materials_by_types($types = array()){
-  $client = voer_api_client();
-  $response = $client->doGet(VOER_API_COMMAND_MATERIAL . "?material_type=" . implode(",", $types));
+  $voer = new VoerApi();
+  $url = VOER_API_COMMAND_MATERIAL . "?material_type=" . implode(",", $types);
+  $response = $voer->auth_request($url);
+  // $client = voer_api_client();
+  // $response = $client->doGet(VOER_API_COMMAND_MATERIAL . "?material_type=" . implode(",", $types));
   return json_decode($response);
 }
 

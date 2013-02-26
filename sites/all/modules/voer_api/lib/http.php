@@ -53,6 +53,9 @@ class Http
     private $_pass = null;
     private $_protocol = null;
 
+    private $_token = null;
+    private $_clientid = null;
+
     const HTTP  = 'http';
     const HTTPS = 'https';
 
@@ -112,6 +115,11 @@ class Http
     {
         $this->_user = $user;
         $this->_pass = $pass;
+    }
+
+    public function setAuthenticate($clientid, $token){
+        $this->_clientid = $clientid;
+        $this->_token = $token;
     }
 
     const POST   = 'POST';
@@ -245,6 +253,7 @@ class Http
     const HTTP_CREATED = 201;
     const HTTP_ACEPTED = 202;
     const HTTP_NOT_FOUND = 404;
+    const HTTP_NOT_ACCEPTABLE = 406;
 
     /**
      * Performing the real request
@@ -263,7 +272,12 @@ class Http
         $s = curl_init();
 
         if(!is_null($this->_user)){
-           curl_setopt($s, CURLOPT_USERPWD, $this->_user.':'.$this->_pass);
+            curl_setopt($s, CURLOPT_USERPWD, $this->_user.':'.$this->_pass);
+        }
+
+        if (!is_null($this->_clientid)){
+            //print "vpr_token={$this->_token};vpr_client={$this->_clientid}";
+            curl_setopt($s, CURLOPT_COOKIE, "vpr_token={$this->_token};vpr_client={$this->_clientid}");
         }
 
         switch ($type) {
@@ -296,6 +310,7 @@ class Http
             case self::HTTP_CREATED:
             case self::HTTP_ACEPTED:
             case self::HTTP_NOT_FOUND:
+            case self::HTTP_NOT_ACCEPTABLE:
                 $out = $_out;
                 break;
             default:

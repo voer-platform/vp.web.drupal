@@ -35,6 +35,6 @@
   </div>
   <div class="footer-messages clearfix">
     <div id="powered">
-      Powered by <a href="http://drupalcommerce.org">VOER</a>
+      Powered by <a href="http://voer.edu.vn">VOER</a>
     </div>
   </div>

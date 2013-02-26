@@ -35,17 +35,20 @@ function _voer_api_test(){
   module_load_include('inc', 'voer_api');
 
   //get all category
-  //$categories = voer_api_get_all_categories();
-  //dpm($categories);
+  $categories = voer_api_get_all_materials();
+  // print_r($categories);
+  dpm($categories);
 
-  $category = voer_api_get_category(2);
-  dpm($category);
+  // $category = voer_api_get_category(2);
+  // dpm($category);
 
   //insert category
-  $category = (object) array('id' => 1, 'name' => 'Category 999', 'parent' => '0', 'description' => 'Description of category 1');
+  // $category = (object) array('id' => 1, 'name' => 'Category 999', 'parent' => '0', 'description' => 'Description of category 1');
   //$result = voer_api_create_category($category);
-  $result = voer_api_update_category($category);
-  dpm($result);
+  // $result = voer_api_update_category($category);
+  //
+  // $result = voer_api_authenticate();
+  // dpm($result);
   //$modules = voer_api_get_modules();
   //dpm($modules);
 

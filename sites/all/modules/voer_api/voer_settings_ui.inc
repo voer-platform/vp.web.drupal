@@ -15,6 +15,14 @@ function voer_admin_settings($form, &$form_state) {
     '#title' => t('VOER Initialize'),
   );
 
+  $form['initialization']['voer_api_client_id'] = array(
+    '#title' => t('VOER Client ID'),
+    '#type' => 'textfield',
+    '#default_value' => variable_get('voer_api_client_id', ''),
+    '#size' => 50,
+    '#maxlength' => 255,
+  );
+
   if (!module_exists('keys_api') && !module_exists('keys')) {
     $form['initialization']['voer_api_key'] = array(
       '#type' => 'textfield',
@@ -33,6 +41,7 @@ function voer_admin_settings($form, &$form_state) {
 
   $form['initialization']['voer_api_key']['#title'] = t('VOER API Key');
   $form['initialization']['voer_api_key']['#description'] = t('Your personal VOER API key.  If you want to use an API key, you can get one at <a href="http://api.voer.edu.vn/signup.html">VOER API website</a>.');
+
 
   $form['initialization']['voer_api_interval'] = array(
     '#type' => 'textfield',
