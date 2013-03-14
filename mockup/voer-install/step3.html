@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html class="js" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" dir="ltr" lang="en"><head>
+    <title>Database configuration | Drupal</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="shortcut icon" href="jany/favicon.ico" type="image/vnd.microsoft.icon">
+<meta name="Generator" content="Drupal 7 (http://drupal.org)">
+    <style type="text/css" media="all">@import url("system/system.base.css?0");
+@import url("system/system.admin.css?0");
+@import url("system/system.menus.css?0");
+@import url("system/system.messages.css?0");
+@import url("system/system.theme.css?0");
+@import url("system/system.maintenance.css?0");</style>
+<style type="text/css" media="screen">@import url("jany/css/reset.css?0");
+@import url("jany/css/style.css?0");
+@import url("jany/css/contrib.css?0");</style>
+<style type="text/css" media="all">@import url("jany/css/jany.css?0");</style>
+
+<!--[if lte IE 9]>
+<link type="text/css" rel="stylesheet" href="jany/css/ie.css?0" media="all" />
+<![endif]-->
+
+<!--[if lte IE 8]>
+<link type="text/css" rel="stylesheet" href="jany/css/ie8.css?0" media="all" />
+<![endif]-->
+
+<!--[if lte IE 7]>
+<link type="text/css" rel="stylesheet" href="jany/css/ie7.css?0" media="all" />
+<![endif]-->
+
+<!--[if lte IE 6]>
+<link type="text/css" rel="stylesheet" href="jany/css/ie6.css?0" media="all" />
+<![endif]-->
+    <script type="text/javascript" src="step3_files/jquery_002.js"></script>
+<script type="text/javascript" src="step3_files/jquery.js"></script>
+<script type="text/javascript" src="step3_files/drupal.js"></script>
+<script type="text/javascript" src="step3_files/form.js"></script>
+<script type="text/javascript" src="step3_files/states.js"></script>
+<script type="text/javascript" src="step3_files/collapse.js"></script>
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+jQuery.extend(Drupal.settings, {"basePath":"\/","pathPrefix":"","states":{"#edit-mysql":{"visible":{":input[name=driver]":{"value":"mysql"}}},"#edit-pgsql":{"visible":{":input[name=driver]":{"value":"pgsql"}}},"#edit-sqlite":{"visible":{":input[name=driver]":{"value":"sqlite"}}}},"ajaxPageState":{"css":{"modules\/system\/system.base.css":1,"modules\/system\/system.admin.css":1,"modules\/system\/system.menus.css":1,"modules\/system\/system.messages.css":1,"modules\/system\/system.theme.css":1,"modules\/system\/system.maintenance.css":1,"sites\/all\/themes\/jany\/css\/reset.css":1,"sites\/all\/themes\/jany\/css\/style.css":1,"sites\/all\/themes\/jany\/css\/contrib.css":1,"sites\/all\/themes\/jany\/css\/jany.css":1,"sites\/all\/themes\/jany\/css\/ie.css":1,"sites\/all\/themes\/jany\/css\/ie8.css":1,"sites\/all\/themes\/jany\/css\/ie7.css":1,"sites\/all\/themes\/jany\/css\/ie6.css":1},"js":{"misc\/jquery.js":1,"misc\/jquery.once.js":1,"misc\/drupal.js":1,"misc\/form.js":1,"misc\/states.js":1,"misc\/collapse.js":1}}});
+//--><!]]>
+</script>
+  </head>
+  <body class="maintenance-page in-maintenance db-offline one-sidebar sidebar-first database-configuration">
+
+    <div class="body-wrapper">
+  <div class="page-outer">
+  <div id="page">
+    <div id="branding">
+            <div class="logo-wrapper">
+        <img id="logo" src="step3_files/logo.png" alt="Drupal">
+      </div>
+            <h1 class="page-title">Database configuration</h1>    </div>
+
+    <div class="page-wrapper clearfix">
+
+              <div id="sidebar-first" class="sidebar">
+          <h2 class="element-invisible">Installation tasks</h2><ol class="task-list"><li class="done">Welcome<span class="element-invisible">(done)</span></li><li class="done">Verify requirements<span class="element-invisible">(done)</span></li><li class="active">Set up database<span class="element-invisible">(active)</span></li><li>Install profile</li><li>Configure site</li><li>Configure VOER</li><li>Finished</li></ol>        </div>
+
+      <div id="content" class="clearfix">
+                        <form action="/install.php?profile=voer_kickstart&amp;welcome=done&amp;locale=en" method="post" id="install-settings-form" accept-charset="UTF-8"><div><div class="form-item form-type-radios form-item-driver">
+  <label for="edit-driver">Database type <span class="form-required" title="This field is required.">*</span></label>
+ <div id="edit-driver" class="form-radios"><div class="form-item form-type-radio form-item-driver">
+ <input id="edit-driver-mysql" name="driver" value="mysql" checked="checked" class="form-radio" type="radio">  <label class="option" for="edit-driver-mysql">MySQL, MariaDB, or equivalent </label>
+
+</div>
+<div class="form-item form-type-radio form-item-driver">
+ <input id="edit-driver-pgsql" name="driver" value="pgsql" class="form-radio" type="radio">  <label class="option" for="edit-driver-pgsql">PostgreSQL </label>
+
+</div>
+<div class="form-item form-type-radio form-item-driver">
+ <input id="edit-driver-sqlite" name="driver" value="sqlite" class="form-radio" type="radio">  <label class="option" for="edit-driver-sqlite">SQLite </label>
+
+</div>
+</div>
+<div class="description">The type of database your VOER Kickstart data will be stored in.</div>
+</div>
+<h2 class="js-hide">MySQL, MariaDB, or equivalent settings</h2><div id="edit-mysql" class="form-wrapper"><div class="form-item form-type-textfield form-item-mysql-database">
+  <label for="edit-mysql-database">Database name <span class="form-required" title="This field is required.">*</span></label>
+ <input id="edit-mysql-database" name="mysql[database]" size="45" maxlength="128" class="form-text required" type="text">
+<div class="description">The name of the database your VOER Kickstart
+data will be stored in. It must exist on your server before VOER
+Kickstart can be installed.</div>
+</div>
+<div class="form-item form-type-textfield form-item-mysql-username">
+  <label for="edit-mysql-username">Database username <span class="form-required" title="This field is required.">*</span></label>
+ <input id="edit-mysql-username" name="mysql[username]" size="45" maxlength="128" class="form-text required" type="text">
+</div>
+<div class="form-item form-type-password form-item-mysql-password">
+  <label for="edit-mysql-password">Database password </label>
+ <input id="edit-mysql-password" name="mysql[password]" size="45" maxlength="128" class="form-text" type="password">
+</div>
+<fieldset class="collapsible collapsed form-wrapper collapse-processed" id="edit-mysql--2"><legend><span class="fieldset-legend"><a class="fieldset-title" href="#"><span class="fieldset-legend-prefix element-invisible">Show</span> Advanced options</a><span class="summary"></span></span></legend><div class="fieldset-wrapper"><div class="fieldset-description">These
+ options are only necessary for some sites. If you're not sure what you
+should enter here, leave the default settings or check with your hosting
+ provider.</div><div class="form-item form-type-textfield form-item-mysql-host">
+  <label for="edit-mysql-host">Database host <span class="form-required" title="This field is required.">*</span></label>
+ <input id="edit-mysql-host" name="mysql[host]" value="localhost" size="45" maxlength="255" class="form-text required" type="text">
+<div class="description">If your database is located on a different server, change this.</div>
+</div>
+<div class="form-item form-type-textfield form-item-mysql-port">
+  <label for="edit-mysql-port">Database port </label>
+ <input id="edit-mysql-port" name="mysql[port]" size="45" maxlength="5" class="form-text" type="text">
+<div class="description">If your database server is listening to a non-standard port, enter its number.</div>
+</div>
+<div class="form-item form-type-textfield form-item-mysql-db-prefix">
+  <label for="edit-mysql-db-prefix">Table prefix </label>
+ <input id="edit-mysql-db-prefix" name="mysql[db_prefix]" size="45" maxlength="128" class="form-text" type="text">
+<div class="description">If more than one application will be sharing this database, enter a table prefix such as <em>voer_kickstart_</em> for your VOER Kickstart site here.</div>
+</div>
+</div></fieldset>
+</div><h2 class="js-hide">PostgreSQL settings</h2><div style="display: none;" id="edit-pgsql" class="form-wrapper"><div class="form-item form-type-textfield form-item-pgsql-database">
+  <label for="edit-pgsql-database">Database name <span class="form-required" title="This field is required.">*</span></label>
+ <input id="edit-pgsql-database" name="pgsql[database]" size="45" maxlength="128" class="form-text required" type="text">
+<div class="description">The name of the database your VOER Kickstart
+data will be stored in. It must exist on your server before VOER
+Kickstart can be installed.</div>
+</div>
+<div class="form-item form-type-textfield form-item-pgsql-username">
+  <label for="edit-pgsql-username">Database username <span class="form-required" title="This field is required.">*</span></label>
+ <input id="edit-pgsql-username" name="pgsql[username]" size="45" maxlength="128" class="form-text required" type="text">
+</div>
+<div class="form-item form-type-password form-item-pgsql-password">
+  <label for="edit-pgsql-password">Database password </label>
+ <input id="edit-pgsql-password" name="pgsql[password]" size="45" maxlength="128" class="form-text" type="password">
+</div>
+<fieldset class="collapsible collapsed form-wrapper collapse-processed" id="edit-pgsql--2"><legend><span class="fieldset-legend"><a class="fieldset-title" href="#"><span class="fieldset-legend-prefix element-invisible">Show</span> Advanced options</a><span class="summary"></span></span></legend><div class="fieldset-wrapper"><div class="fieldset-description">These
+ options are only necessary for some sites. If you're not sure what you
+should enter here, leave the default settings or check with your hosting
+ provider.</div><div class="form-item form-type-textfield form-item-pgsql-host">
+  <label for="edit-pgsql-host">Database host <span class="form-required" title="This field is required.">*</span></label>
+ <input id="edit-pgsql-host" name="pgsql[host]" value="localhost" size="45" maxlength="255" class="form-text required" type="text">
+<div class="description">If your database is located on a different server, change this.</div>
+</div>
+<div class="form-item form-type-textfield form-item-pgsql-port">
+  <label for="edit-pgsql-port">Database port </label>
+ <input id="edit-pgsql-port" name="pgsql[port]" size="45" maxlength="5" class="form-text" type="text">
+<div class="description">If your database server is listening to a non-standard port, enter its number.</div>
+</div>
+<div class="form-item form-type-textfield form-item-pgsql-db-prefix">
+  <label for="edit-pgsql-db-prefix">Table prefix </label>
+ <input id="edit-pgsql-db-prefix" name="pgsql[db_prefix]" size="45" maxlength="128" class="form-text" type="text">
+<div class="description">If more than one application will be sharing this database, enter a table prefix such as <em>voer_kickstart_</em> for your VOER Kickstart site here.</div>
+</div>
+</div></fieldset>
+</div><h2 class="js-hide">SQLite settings</h2><div style="display: none;" id="edit-sqlite" class="form-wrapper"><div class="form-item form-type-textfield form-item-sqlite-database">
+  <label for="edit-sqlite-database">Database file <span class="form-required" title="This field is required.">*</span></label>
+ <input id="edit-sqlite-database" name="sqlite[database]" value="sites/default/files/.ht.sqlite" size="45" maxlength="128" class="form-text required" type="text">
+<div class="description">The absolute path to the file where VOER
+Kickstart data will be stored. This must be writable by the web server
+and should exist outside of the web root.</div>
+</div>
+<fieldset class="collapsible collapsed form-wrapper collapse-processed" id="edit-sqlite--2"><legend><span class="fieldset-legend"><a class="fieldset-title" href="#"><span class="fieldset-legend-prefix element-invisible">Show</span> Advanced options</a><span class="summary"></span></span></legend><div class="fieldset-wrapper"><div class="fieldset-description">These
+ options are only necessary for some sites. If you're not sure what you
+should enter here, leave the default settings or check with your hosting
+ provider.</div><div class="form-item form-type-textfield form-item-sqlite-db-prefix">
+  <label for="edit-sqlite-db-prefix">Table prefix </label>
+ <input id="edit-sqlite-db-prefix" name="sqlite[db_prefix]" size="45" maxlength="128" class="form-text" type="text">
+<div class="description">If more than one application will be sharing this database, enter a table prefix such as <em>voer_kickstart_</em> for your VOER Kickstart site here.</div>
+</div>
+</div></fieldset>
+</div><input name="form_build_id" value="form-uEgygVMtv8JUfx8jmiDUVKRh2lqxQCUZSourYTl3Zso" type="hidden">
+<input name="form_id" value="install_settings_form" type="hidden">
+<div class="form-actions form-wrapper" id="edit-actions"><input id="edit-save" name="op" value="Save and continue" class="form-submit" type="submit"></div></div></form>      </div>
+    </div>
+  </div>
+    <div class="footer-messages clearfix">
+    <div id="credit" class="clearfix">
+      <div class="message">Proudly built by</div>
+      <div class="logo"><a href="http://voer.edu.vn/">VOER Vietnam</a></div>
+    </div>
+    </div>
+    </div>
+  </div>
+
+
+</body></html>

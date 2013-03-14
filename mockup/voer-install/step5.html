@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html class="js" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" dir="ltr" lang="en"><head>
+    <title>Configure VOER | VOER Kickstart</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="shortcut icon" href="jany/favicon.ico" type="image/vnd.microsoft.icon">
+<meta name="Generator" content="Drupal 7 (http://drupal.org)">
+    <style type="text/css" media="all">@import url("system/system.messages.css?mjnfqc");
+@import url("system/system.theme.css?mjnfqc");
+@import url("system/system.menus.css?mjnfqc");
+@import url("system/system.base.css?mjnfqc");</style>
+<style type="text/css" media="all">@import url("comment/comment.css?mjnfqc");
+@import url("field/theme/field.css?mjnfqc");
+@import url("node/node.css?mjnfqc");
+@import url("user/user.css?mjnfqc");
+@import url("http://voer.local/sites/all/modules/contrib/views/css/views.css?mjnfqc");</style>
+<style type="text/css" media="all">@import url("system/system.admin.css?mjnfqc");
+@import url("system/system.maintenance.css?mjnfqc");
+@import url("http://voer.local/sites/all/modules/contrib/ctools/css/ctools.css?mjnfqc");</style>
+<style type="text/css" media="screen">@import url("jany/css/reset.css?mjnfqc");
+@import url("jany/css/style.css?mjnfqc");
+@import url("jany/css/contrib.css?mjnfqc");</style>
+<style type="text/css" media="all">@import url("jany/css/jany.css?mjnfqc");</style>
+
+<!--[if lte IE 9]>
+<link type="text/css" rel="stylesheet" href="jany/css/ie.css?mjnfqc" media="all" />
+<![endif]-->
+
+<!--[if lte IE 8]>
+<link type="text/css" rel="stylesheet" href="jany/css/ie8.css?mjnfqc" media="all" />
+<![endif]-->
+
+<!--[if lte IE 7]>
+<link type="text/css" rel="stylesheet" href="jany/css/ie7.css?mjnfqc" media="all" />
+<![endif]-->
+
+<!--[if lte IE 6]>
+<link type="text/css" rel="stylesheet" href="jany/css/ie6.css?mjnfqc" media="all" />
+<![endif]-->
+    <script type="text/javascript" src="step5_files/jquery_002.js"></script>
+<script type="text/javascript" src="step5_files/jquery.js"></script>
+<script type="text/javascript" src="step5_files/drupal.js"></script>
+<script type="text/javascript" src="step5_files/form.js"></script>
+<script type="text/javascript" src="step5_files/states.js"></script>
+<script type="text/javascript" src="step5_files/system.js"></script>
+<script type="text/javascript" src="step5_files/timezone.js"></script>
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+jQuery(function () { Drupal.cleanURLsInstallCheck(); });
+//--><!]]>
+</script>
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+jQuery(function () { Drupal.hideEmailAdministratorCheckbox() });
+//--><!]]>
+</script>
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+jQuery.extend(Drupal.settings, {"basePath":"\/","pathPrefix":"","copyFieldValue":{"edit-site-mail":["edit-account-mail"]},"states":{"#edit-extras":{"visible":{":input[name=\u0022install_demo_store\u0022]":{"value":"0"}}}},"ajaxPageState":{"css":{"modules\/system\/system.messages.css":1,"modules\/system\/system.theme.css":1,"modules\/system\/system.menus.css":1,"modules\/system\/system.base.css":1,"modules\/comment\/comment.css":1,"modules\/field\/theme\/field.css":1,"modules\/node\/node.css":1,"modules\/user\/user.css":1,"sites\/all\/modules\/contrib\/views\/css\/views.css":1,"modules\/system\/system.admin.css":1,"modules\/system\/system.maintenance.css":1,"sites\/all\/modules\/contrib\/ctools\/css\/ctools.css":1,"sites\/all\/themes\/jany\/css\/reset.css":1,"sites\/all\/themes\/jany\/css\/style.css":1,"sites\/all\/themes\/jany\/css\/contrib.css":1,"sites\/all\/themes\/jany\/css\/jany.css":1,"sites\/all\/themes\/jany\/css\/ie.css":1,"sites\/all\/themes\/jany\/css\/ie8.css":1,"sites\/all\/themes\/jany\/css\/ie7.css":1,"sites\/all\/themes\/jany\/css\/ie6.css":1},"js":{"misc\/jquery.js":1,"misc\/jquery.once.js":1,"misc\/drupal.js":1,"misc\/form.js":1,"misc\/states.js":1,"modules\/system\/system.js":1,"misc\/timezone.js":1,"0":1,"1":1}}});
+//--><!]]>
+</script>
+  </head>
+  <body class="maintenance-page in-maintenance db-offline one-sidebar sidebar-first configure-voer">
+
+    <div class="body-wrapper">
+  <div class="page-outer">
+  <div id="page">
+    <div id="branding">
+            <div class="logo-wrapper">
+        <img id="logo" src="step5_files/logo.png" alt="VOER Kickstart">
+      </div>
+            <h1 class="page-title">Configure VOER</h1>    </div>
+
+    <div class="page-wrapper clearfix">
+
+              <div id="sidebar-first" class="sidebar">
+          <h2 class="element-invisible">Installation tasks</h2><ol class="task-list"><li class="done">Welcome<span class="element-invisible">(done)</span></li><li class="done">Verify requirements<span class="element-invisible">(done)</span></li><li class="done">Set up database<span class="element-invisible">(done)</span></li><li class="done">Install profile<span class="element-invisible">(done)</span></li><li class="done">Configure site<span class="element-invisible">(done)</span></li><li class="active">Configure VOER<span class="element-invisible">(active)</span></li><li>Finished</li></ol>        </div>
+
+      <div id="content" class="clearfix">
+                        <form action="/install.php?profile=voer_kickstart&amp;welcome=done&amp;locale=en" method="post" id="voer-kickstart-configure-store-form" accept-charset="UTF-8"><div><fieldset class="form-wrapper" id="edit-voer-client"><legend><span class="fieldset-legend">Register VOER client</span></legend><div class="fieldset-wrapper"><div class="form-item form-type-textfield form-item-voer-api-client-id">
+  <label for="edit-voer-api-client-id">VOER Client ID </label>
+ <input id="edit-voer-api-client-id" name="voer_api_client_id" size="50" maxlength="255" class="form-text" type="text">
+</div>
+<div class="form-item form-type-textfield form-item-voer-api-key">
+  <label for="edit-voer-api-key">VOER API Key </label>
+ <input id="edit-voer-api-key" name="voer_api_key" size="50" maxlength="255" class="form-text" type="text">
+<div class="description">Your personal VOER API key.  If you want to use an API key, you can get one at <a href="http://api.voer.edu.vn/signup.html">VOER API website</a>.</div>
+</div>
+</div></fieldset>
+<fieldset class="form-wrapper" id="edit-functionality"><legend><span class="fieldset-legend">Functionality</span></legend><div class="fieldset-wrapper"><div class="form-item form-type-radios form-item-install-demo-store">
+  <label for="edit-install-demo-store">Do you want to install the demo site? </label>
+ <div id="edit-install-demo-store" class="form-radios"><div class="form-item form-type-radio form-item-install-demo-store">
+ <input id="edit-install-demo-store-1" name="install_demo_store" value="1" checked="checked" class="form-radio" type="radio">  <label class="option" for="edit-install-demo-store-1">Yes </label>
+
+</div>
+<div class="form-item form-type-radio form-item-install-demo-store">
+ <input id="edit-install-demo-store-0" name="install_demo_store" value="0" class="form-radio" type="radio">  <label class="option" for="edit-install-demo-store-0">No </label>
+
+</div>
+</div>
+<div class="description">Shows you everything VOER Kickstart can do. Includes a custom theme, sample content and modules.</div>
+</div>
+<div style="display: none;" class="form-item form-type-checkboxes form-item-extras">
+  <label for="edit-extras">Install additional functionality </label>
+ <div id="edit-extras" class="form-checkboxes"><div class="form-item form-type-checkbox form-item-extras-anonymous-checkout">
+ <input id="edit-extras-anonymous-checkout" name="extras[anonymous_checkout]" value="anonymous_checkout" class="form-checkbox" type="checkbox">  <label class="option" for="edit-extras-anonymous-checkout">Allow checkout for <strong>anonymous users</strong>. </label>
+
+</div>
+<div class="form-item form-type-checkbox form-item-extras-merchandising">
+ <input id="edit-extras-merchandising" name="extras[merchandising]" value="merchandising" class="form-checkbox" type="checkbox">  <label class="option" for="edit-extras-merchandising">Additional <strong>blocks</strong> for featuring specific content. </label>
+
+</div>
+<div class="form-item form-type-checkbox form-item-extras-slideshow">
+ <input id="edit-extras-slideshow" name="extras[slideshow]" value="slideshow" class="form-checkbox" type="checkbox">  <label class="option" for="edit-extras-slideshow">Frontpage <strong>slideshow</strong>. </label>
+
+</div>
+<div class="form-item form-type-checkbox form-item-extras-menus">
+ <input id="edit-extras-menus" name="extras[menus]" value="menus" class="form-checkbox" type="checkbox">  <label class="option" for="edit-extras-menus">Custom <strong>admin menu</strong> designed for store owners. </label>
+
+</div>
+<div class="form-item form-type-checkbox form-item-extras-blog">
+ <input id="edit-extras-blog" name="extras[blog]" value="blog" class="form-checkbox" type="checkbox">  <label class="option" for="edit-extras-blog"><strong>Blog</strong> functionality. </label>
+
+</div>
+<div class="form-item form-type-checkbox form-item-extras-social">
+ <input id="edit-extras-social" name="extras[social]" value="social" class="form-checkbox" type="checkbox">  <label class="option" for="edit-extras-social"><strong>Social</strong> logins and links for sharing products via social networks. </label>
+
+</div>
+<div class="form-item form-type-checkbox form-item-extras-zoom-cloud">
+ <input id="edit-extras-zoom-cloud" name="extras[zoom_cloud]" value="zoom_cloud" class="form-checkbox" type="checkbox">  <label class="option" for="edit-extras-zoom-cloud"><strong>Zoom &amp; Gallery</strong> mode for products. </label>
+
+</div>
+</div>
+</div>
+</div></fieldset>
+<fieldset class="form-wrapper" id="edit-localization"><legend><span class="fieldset-legend">Localization</span></legend><div class="fieldset-wrapper"><div class="form-item form-type-radios form-item-install-localization">
+  <label for="edit-install-localization">Do you want to be able to translate the interface of your site? </label>
+ <div id="edit-install-localization" class="form-radios"><div class="form-item form-type-radio form-item-install-localization">
+ <input id="edit-install-localization-1" name="install_localization" value="1" class="form-radio" type="radio">  <label class="option" for="edit-install-localization-1">Yes </label>
+
+</div>
+<div class="form-item form-type-radio form-item-install-localization">
+ <input id="edit-install-localization-0" name="install_localization" value="0" checked="checked" class="form-radio" type="radio">  <label class="option" for="edit-install-localization-0">No </label>
+
+</div>
+</div>
+</div>
+</div></fieldset>
+<input name="form_build_id" value="form-y6sk5PkteVgtfrrXgG6MwlXVXU2js5m8zf0FatAXzl4" type="hidden">
+<input name="form_token" value="NYXcJu1VKV5w_qJkIpvGVuFR5ZyIzSSr-ZVlh0-N-4M" type="hidden">
+<input name="form_id" value="voer_kickstart_configure_store_form" type="hidden">
+<div class="form-actions form-wrapper" id="edit-actions"><input id="edit-submit" name="op" value="Create and Finish" class="form-submit" type="submit"></div></div></form>      </div>
+    </div>
+  </div>
+    <div class="footer-messages clearfix">
+    <div id="credit" class="clearfix">
+      <div class="message">Proudly built by</div>
+      <div class="logo"><a href="http://voer.edu.vn/">VOER Vietnam</a></div>
+    </div>
+    </div>
+    </div>
+  </div>
+
+
+</body></html>
