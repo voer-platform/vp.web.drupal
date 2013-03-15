@@ -61,5 +61,23 @@
 			$("#dialog").dialog( "open" );
 			event.preventDefault();
 		});
+
+    randomPictures('help');
+    randomPictures('questionnaire');
+    randomPictures('courseware');
+    randomPictures('textbook');
+    randomPictures('collection');
+    randomPictures('module');
   })
 }(window.jQuery);
+
+function randomPictures(ele)
+{
+  var randomNumber = randomRange(1, 3);
+
+  jQuery('.cls_' + ele).css('background-image', 'url(images/' + ele + randomNumber + '.jpg)');
+}
+
+function randomRange(min, max) {
+  return ~~(Math.random() * (max - min + 1)) + min
+}

@@ -10,6 +10,7 @@
     <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
     <link href="css/jui/blitzer/jquery-ui-1.10.1.custom.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet" media="screen">
+    <link href="css/abc.css" rel="stylesheet" media="screen">
   </head>
   <body data-offset="80" data-target=".subnav" data-spy="scroll" style="height:1000px">
     <div class="navbar navbar-fixed-top">
@@ -40,76 +41,27 @@
       </form>
     </div>
     
-    <div id="dialog" title="Dashboard">
-      <div class="box span7">
-        <div class="box-header">
-          <h2>
-            <i class="icon-th"></i>
-            <span class="break"></span>
-            Last activities
-          </h2>
-        </div>
-        <div class="box-content">
-          <table class="table table-striped ">
-            <thead>
-              <tr>
-                <th>Title</th>
-                <th>Type</th>
-                <th>Published</th>
-                <th>Views</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Giao trinh day C#</td>
-                <td>Material</td>
-                <td>02-Jan-2013</td>
-                <td>345</td>
-              </tr>
-              <tr>
-                <td>Xay dung game cho iPhone</td>
-                <td>Collection</td>
-                <td>12-Jun-2012</td>
-                <td>234</td>
-              </tr>
-              <tr>
-                <td>Bao mat thong tin trong lap trinh</td>
-                <td>Course</td>
-                <td>07-Mar-2012</td>
-                <td>24</td>
-              </tr>
-              <tr>
-                <td>Giao trinh PHP + MySQL</td>
-                <td>Module</td>
-                <td>07-May-2012</td>
-                <td>24</td>
-              </tr>
-            </tbody>
-          </table>
+    <div id="create_material" title="Create a material">
+      <label>Body</label>
+      <textarea class="rich_text_editor span12" rows="5"></textarea>
+      
+      <div class="verticalslider" id="textExample">
+        <ul class="verticalslider_tabs">
+          <li><a href="#">Metadata</a></li>
+          <li><a href="#">Authoring infomation</a></li>
+          <li><a href="#">Third tab</a></li>
+          <li><a href="#">Four tab</a></li>                        
+        </ul>
+        <ul class="verticalslider_contents">
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>                        
+        </ul>
+      </div>
+      <br>
 
-        </div>
-      </div>
-      <div class="box span3">
-        <div class="box-header">
-          <h2>
-            <i class="icon-th"></i>
-            Actions
-          </h2>
-        </div>
-        <div class="box-content">
-          <ul class="actions unstyled">
-            <li>
-              <ul class="unstyled action_first">
-                <li><a href="create_material.html">Create a material</a></li>
-                <li><a href="#">Create a collection</a></li>
-                <li><a href="#">Create a course</a></li>
-              </ul>
-            </li>
-            <li><a href="#">My list</a></li>
-            <li><a href="#">My favorites</a></li>
-          </ul>
-        </div>
-      </div>
+      <a class="btn btn-success" href="detail.html">Submit</a>
     </div>
 
     <div class="container">
@@ -214,6 +166,22 @@
     <script src="js/jquery-latest.js"></script>
     <script src="bootstrap/js/bootstrap.min.js"></script>
     <script src="js/jquery-ui-1.10.1.custom.js"></script>
+    <script language="javascript" type="text/javascript" src="js/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
     <script src="js/main.js"></script>
+    <script language="javascript" type="text/javascript">
+    tinyMCE.init({
+      theme : "advanced",
+      mode : "specific_textareas",
+      editor_selector : /(rich_text_editor|mceRichText)/,
+      keep_styles : false
+    });
+    </script>
+    <script type="text/javascript" src="js/verticaltabs/js/verticaltabs.pack.js"></script>
+    <link rel="stylesheet" href="js/verticaltabs/css/verticaltabs.css" />
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $("#textExample").verticaltabs({speed: 500,slideShow: false,activeIndex: 2});
+      });
+    </script>
   </body>
 </html>
