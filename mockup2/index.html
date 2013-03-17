@@ -19,37 +19,30 @@
           <ul class="nav">
             <li><a href="#">Learn</a></li>
             <li><a href="#">Contribute</a></li>
-            <li><a href="#">About us</a></li>
+            <li><a href="aboutus.html">About us</a></li>
             <li><a href="#">Support</a></li>
           </ul>
 
-          <ul class="nav nav_action">
-            <li><a class="sign_in" href="#">Sign in</a></li>
-            <li><a href="#">Sign up</a></li>
+          <ul class="nav pull-right">
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Sign in <strong class="caret"></strong></a>
+              <div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px;">
+              <form method="post" action="login" accept-charset="UTF-8">
+              <input style="margin-bottom: 15px;" type="text" placeholder="Username" id="username" name="username">
+              <input style="margin-bottom: 15px;" type="password" placeholder="Password" id="password" name="password">
+              <input style="float: left; margin-right: 10px;" type="checkbox" name="remember-me" id="remember-me" value="1">
+              <label class="string optional" for="user_remember_me"> Remember me</label>
+              <input class="btn btn-primary btn-block" type="submit" id="sign-in" value="Sign In">
+              <label style="text-align:center;margin-top:5px">or</label>
+              <input class="btn btn-primary btn-block" type="button" id="sign-in-google" value="Sign In with Google">
+              <input class="btn btn-primary btn-block" type="button" id="sign-in-twitter" value="Sign In with Twitter">
+              </form>
+              </div>
+            </li>
+            <li><a href="signup.html">Sign up</a></li>
           </ul>
 
-          <div class="signin_form_wrapper">
-            <form class="form-horizontal signin_form">
-              <div class="control-group">
-                <label class="control-label" for="inputEmail">Email</label>
-                <div class="controls">
-                  <input type="text" id="inputEmail" placeholder="Email" class="input-medium">
-                </div>
-              </div>
-              <div class="control-group">
-                <label class="control-label" for="inputPassword">Password</label>
-                <div class="controls">
-                  <input type="password" id="inputPassword" placeholder="Password" class="input-medium">
-                </div>
-              </div>
-              <div class="control-group">
-                <div class="controls">
-                  <label class="checkbox"><input type="checkbox"> Remember me</label>
-                  <a class="btn btn-success" href="dashboard.html">Sign in</a>
-                </div>
-              </div>
-            </form>
-          </div>
+
         </div>
       </div>
     </div>
@@ -66,7 +59,7 @@
       <div class="row-fluid suggested-actions">
         <div class="material_category">
         <div class="span4">
-          <a href="#" class="vertical-shadow suggested-action">
+          <a href="detail-module.html" class="vertical-shadow suggested-action">
             <div class="suggested-action-image-link cls_module"></div>
             <h2 class="pulls ellipsis suggested-action-title">Chi phí kinh doanh trong doanh nghiệp thương mại</h2>
             <h5>Economic & Finance (534)</h5>
@@ -76,7 +69,7 @@
         </div>
 
         <div class="span4">
-          <a href="#" class="vertical-shadow suggested-action">
+          <a href="detail-collection.html" class="vertical-shadow suggested-action">
             <div class="suggested-action-image-link cls_collection"></div>
             <h2 class="pulls ellipsis suggested-action-title">Fundamentals of Signal Processing</h2>
             <h5>Health & Society (365)</h5>
@@ -111,6 +104,7 @@
           <a href="#" class="vertical-shadow suggested-action">
             <div class="suggested-action-image-link cls_questionnaire"></div>
             <h2 class="pulls ellipsis suggested-action-title">Questionnaire</h2>
+            <h5>Mathematics (9)</h5>
             <p class="pulled">It allows teachers to create a wide range of questions to get student feedback e.g. on a course or activities. </p>
             <span class="caption">Questionnaire (112)</span>
           </a>

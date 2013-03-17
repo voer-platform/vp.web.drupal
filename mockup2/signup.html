@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Sign up - VOER</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet" media="screen">
+    <link href="bootstrap/css/bootstrap-blue.css" rel="stylesheet" media="screen">
+    <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/jui/blitzer/jquery-ui-1.10.1.custom.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet" media="screen">
+  </head>
+  <body data-offset="80" data-target=".subnav" data-spy="scroll">
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a id="logo" href="homepage.html"><img src="images/voer_logo.png" /></a>
+          <ul class="nav">
+            <li><a href="#">Learn</a></li>
+            <li><a href="#">Contribute</a></li>
+            <li><a href="#">About us</a></li>
+            <li><a href="#">Support</a></li>
+          </ul>
+
+          <ul class="nav nav_action">
+            <li><a class="sign_in" href="signin.html">Sign in</a></li>
+            <li><a href="#" class="active">Sign up</a></li>
+          </ul>
+
+          <div class="signin_form_wrapper">
+            <form class="form-horizontal signin_form">
+              <div class="control-group">
+                <label class="control-label" for="inputEmail">Email</label>
+                <div class="controls">
+                  <input type="text" id="inputEmail" placeholder="Email" class="input-medium">
+                </div>
+              </div>
+              <div class="control-group">
+                <label class="control-label" for="inputPassword">Password</label>
+                <div class="controls">
+                  <input type="password" id="inputPassword" placeholder="Password" class="input-medium">
+                </div>
+              </div>
+              <div class="control-group">
+                <div class="controls">
+                  <label class="checkbox"><input type="checkbox"> Remember me</label>
+                  <a class="btn btn-success" href="dashboard.html">Sign in</a>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="span12">
+          <form class="form-horizontal" action='' method="POST">
+          <fieldset>
+          <div id="legend">
+          <legend class="">Register</legend>
+          </div>
+          <div class="control-group">
+          <!-- Username -->
+          <label class="control-label" for="username">Username</label>
+          <div class="controls">
+          <input type="text" id="username" name="username" placeholder="" class="input-xlarge">
+          <p class="help-block">Username can contain any letters or numbers, without spaces</p>
+          </div>
+          </div>
+
+          <div class="control-group">
+          <!-- E-mail -->
+          <label class="control-label" for="email">E-mail</label>
+          <div class="controls">
+          <input type="text" id="email" name="email" placeholder="" class="input-xlarge">
+          <p class="help-block">Please provide your E-mail</p>
+          </div>
+          </div>
+
+          <div class="control-group">
+          <!-- Password-->
+          <label class="control-label" for="password">Password</label>
+          <div class="controls">
+          <input type="password" id="password" name="password" placeholder="" class="input-xlarge">
+          <p class="help-block">Password should be at least 4 characters</p>
+          </div>
+          </div>
+
+          <div class="control-group">
+          <!-- Password -->
+          <label class="control-label" for="password_confirm">Password (Confirm)</label>
+          <div class="controls">
+          <input type="password" id="password_confirm" name="password_confirm" placeholder="" class="input-xlarge">
+          <p class="help-block">Please confirm password</p>
+          </div>
+          </div>
+
+          <div class="control-group">
+          <!-- Button -->
+          <div class="controls">
+          <button class="btn btn-success">Register</button>
+          </div>
+          </div>
+          </fieldset>
+          </form>
+        </div>
+      </div>
+
+
+    </div>
+
+    <footer class="footer">
+      <div class="container">
+    <p>Vietnam Open Educational Resources (VOER) is supported by the Vietnam Foundation</p>
+    <p>Content license: Creative Commons CC by version 3.0.
+    <p>Contact us: <a href="#">voer@voer.edu.vn</a></p>
+      </div>
+    </footer>
+
+    <script src="js/jquery-latest.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="js/jquery-ui-1.10.1.custom.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>

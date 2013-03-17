@@ -560,12 +560,12 @@ hr.thin {
 }
 
 .navbar .nav > li > a {
-  text-decoration: underline;
+  text-decoration: none;
   text-transform: uppercase;
   text-shadow: 0 1px 0 #8d092d;
 }
 
-.navbar .nav > li > a:hover, .navbar .nav > li > a:focus{
+.navbar .nav > li > a:hover, .navbar .nav > li > a:focus, .navbar .nav > li > a.active{
   background-color: #8d092d;
 }
 
@@ -610,4 +610,8 @@ ul.action_first {
 
 #our_libs li{
   line-height: 30px;
+}
+
+.voer-sidenav1{
+  width: 270px;
 }
