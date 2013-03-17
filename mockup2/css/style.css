@@ -347,7 +347,7 @@ form.voer-login-form button.btn {
   margin-top: 0px;
 }
 #logo {
-  margin-bottom: 20px;
+  float: left;
 }
 div.voer-sidenav {
   width: 258px;
@@ -398,12 +398,12 @@ footer.footer p {
   padding: 10px;
 }
 .suggested-actions .suggested-action:hover {
-  -webkit-box-shadow: 0 0 10px #76a005;
-  -moz-box-shadow: 0 0 10px #76a005;
-  box-shadow: 0 0 10px #76a005;
+  -webkit-box-shadow: 0 0 10px #c25171;
+  -moz-box-shadow: 0 0 10px #c25171;
+  box-shadow: 0 0 10px #c25171;
   color: #444!important;
   text-decoration: none!important;
-  border-color: #c3ca7d;
+  border-color: #e9afbf;
 }
 .suggested-action {
   background-color: #f7f7f7;
@@ -421,8 +421,27 @@ footer.footer p {
   height: 130px;
   margin: -14px -14px 22px;
 }
+a.suggested-action{
+  text-decoration: none;
+}
+a.suggested-action h5{
+  color: #555;
+  font-size: 10pt;
+}
+a.suggested-action .caption{
+  background: none repeat scroll 0 0 #555;
+  color: white;
+  font-size: 9pt;
+  left: 0;
+  filter:alpha(opacity=80); /* IE */
+  -moz-opacity:0.8; /* Mozilla */
+  opacity: 0.8; /* CSS3 */  padding: 3px 10px;
+  position: absolute;
+  text-transform: uppercase;
+  top: 10px;
+}
 .suggested-action .suggested-action-title {
-  color: #005987;
+  color: #c10c3e;
 }
 .vertical-shadow {
   border: 1px solid #ccc;
@@ -432,13 +451,15 @@ footer.footer p {
   box-shadow: 0 1px 3px #ccc;
 }
 h2.suggested-action-title {
-  font-size: 21px;
+  font-size: 17px;
+  line-height: 22px;
+  height: 44px;
 }
 .pulled {
   opacity: .8;
   filter: alpha(opacity=80);
-  margin-bottom: 22px;
-  margin-top: 11px;
+  margin-bottom: 10px;
+  margin-top: 5px;
 }
 .section-separator {
   position: relative;
@@ -541,10 +562,15 @@ hr.thin {
 .navbar .nav > li > a {
   text-decoration: underline;
   text-transform: uppercase;
+  text-shadow: 0 1px 0 #8d092d;
+}
+
+.navbar .nav > li > a:hover, .navbar .nav > li > a:focus{
+  background-color: #8d092d;
 }
 
 .navbar .nav_action {
-  float: right; 
+  float: right;
 }
 
 .material_category {
@@ -574,4 +600,14 @@ ul.action_first {
 
 .tabs-left > .nav-tabs .active > a, .tabs-left > .nav-tabs .active > a:hover {
   outline: none;
+}
+
+.navbar-inner{
+  background-color: #c10c3e;
+  background-image: none;
+  border: 0;
+}
+
+#our_libs li{
+  line-height: 30px;
 }
