@@ -613,7 +613,7 @@ ul.action_first {
 }
 
 .voer-sidenav1{
-  width: 270px;
+  /*width: 270px;*/
 }
 
 /* Landscape phone to portrait tablet */
@@ -627,4 +627,135 @@ ul.action_first {
   body{
     padding-top: 0px;
   }
+}
+
+input.category_check {
+  float: left;
+  margin-right: 5px;
+}
+
+label.category_label {
+  color: #2FA4E7;
+}
+
+.material-listing-thumbnail {
+  float: left;
+  margin-right: 10px;
+  max-width: 120px;
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.45);
+  padding: 2px;
+}
+
+.material-listing-text {
+  border-bottom: 1px solid #F5F5F5;
+}
+
+.material-listing-desciption {
+  text-align: justify;
+}
+
+/* Landscape phone to portrait tablet */
+@media (max-width: 767px) {
+  .material-listing-text{
+    width: 300px;
+  }
+}
+
+.ui-dialog {
+  border: medium none;
+  padding: 0;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+  background: linear-gradient(to bottom, #F0F0F0 0%, #DEDEDE 100%) repeat scroll 0 0 transparent;
+  border: none;
+  border-radius: 4px 4px 0 0;
+  color: #000;
+  height: 40px;
+  line-height: 40px;
+  font-size: 24px;
+  font-weight: normal;
+}
+
+.ui-dialog .ui-dialog-titlebar-close {
+  background: none repeat scroll 0 0 transparent;
+  border: medium none;
+  border-radius: 0 0 0 0;
+  height: 26px;
+  margin-top: -20px;
+  width: 26px;
+}
+
+.ui-dialog .ui-dialog-titlebar-close .ui-icon-closethick {
+  background: url("../images/close.png") no-repeat scroll left top transparent;
+  height: 26px;
+  margin-left: -13px;
+  margin-top: -13px;
+  width: 26px;
+}
+
+.ui-dialog .ui-dialog-titlebar-close:hover  .ui-icon-closethick{
+  background-position: left bottom;
+}
+
+.ui-widget-overlay {
+  background: url("../images/ui-widget-background.png") repeat scroll 0 0 transparent;
+  opacity: 0.9;
+}
+
+.ui-widget-content a.btn {
+  color: #FFFFFF;
+  font-size: 16px;
+}
+
+.instructor-profile {
+  float: left;
+  position: relative;
+}
+
+.instructor-profile-image{
+  background-image:url(../images/author1.jpg);
+  background-color:#fff;
+  border:4px solid #fff;
+  -webkit-box-shadow:0 0 2px 0 #808080;
+  box-shadow:0 0 2px 0 #808080;
+  top:0;left:0;
+  width:180px;
+  height:180px;
+  border:4px solid #fff;
+  -webkit-box-shadow:0 0 2px 0 #808080;
+  box-shadow:0 0 2px 0 #808080;
+  -webkit-border-radius:600px;
+  border-radius:600px;
+  background-position:center center;
+  -webkit-background-size:100% auto;
+  -moz-background-size:100% auto;
+  background-size:100% auto;
+  background-repeat:no-repeat
+}
+
+.instructor-profile-inner-shadow {
+  border-radius: 92px 92px 92px 92px;
+  box-shadow: 0 0 3px 0 #808080 inset;
+  height: 172px;
+  left: 4px;
+  position: absolute;
+  top: 4px;
+  width: 172px;
+}
+
+.internal-home img {
+  border: 1px solid #CCCCCC;
+  float: left;
+  margin-right: 10px;
+  padding: 2px;
+}
+
+.internal-home img:hover {
+  -webkit-box-shadow: 0 0 10px #c25171;
+  -moz-box-shadow: 0 0 10px #c25171;
+  box-shadow: 0 0 10px #c25171;
+  color: #444!important;
+  text-decoration: none!important;
+  border-color: #e9afbf;
 }

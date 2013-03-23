@@ -40,13 +40,21 @@
       jQuery('.signin_form_wrapper').toggle();
     });
 
-    $("#dialog").dialog({
-			//autoOpen: true,
-      modal: true,
-      resizable: false,
-      draggable: false,
-      minWidth: 1070
-		});
+    if ($('.dashboard').size() > 0) {
+      $("#dialog").dialog({
+        autoOpen: false,
+        modal: true,
+        resizable: false,
+        draggable: false,
+        minWidth: 1070
+      });
+
+      // Link to open the dialog
+      $(".dashboard").click(function( event ) {
+        $("#dialog").dialog( "open" );
+        event.preventDefault();
+      });
+    }
     
     $("#create_material").dialog({
 			//autoOpen: true,
@@ -54,12 +62,6 @@
       resizable: false,
       draggable: false,
       minWidth: 1070
-		});
-
-		// Link to open the dialog
-		$(".dashboard").click(function( event ) {
-			$("#dialog").dialog( "open" );
-			event.preventDefault();
 		});
 
     randomPictures('help');
