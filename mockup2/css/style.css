@@ -613,7 +613,7 @@ ul.action_first {
 }
 
 .voer-sidenav1{
-  /*width: 270px;*/
+  width: 270px;
 }
 
 /* Landscape phone to portrait tablet */
@@ -758,4 +758,10 @@ label.category_label {
   color: #444!important;
   text-decoration: none!important;
   border-color: #e9afbf;
+}
+img.book{
+  float: right;
+  border: 1px solid #999;
+  padding: 1px;
+  height: 200px;
 }
