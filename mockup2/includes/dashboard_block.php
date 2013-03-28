@@ -59,8 +59,8 @@
         <li>
           <ul class="unstyled action_first">
             <li><a href="create_material.php">Create a material</a></li>
-            <li><a href="#">Create a collection</a></li>
-            <li><a href="#">Create a course</a></li>
+            <li><a href="create_textbook.php">Create a textbook</a></li>
+            <li><a href="create_courseware.php">Create a courseware</a></li>
           </ul>
         </li>
         <li><a href="#">My list</a></li>
