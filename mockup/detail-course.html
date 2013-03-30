@@ -11,6 +11,7 @@
     <link href="css/jui/blitzer/jquery-ui-1.10.1.custom.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet" media="screen">
     <link href="css/abc.css" rel="stylesheet" media="screen">
+	<link rel="stylesheet" href="js/jRating.jquery.css" type="text/css" />
   </head>
   <body data-offset="80" data-target=".subnav" data-spy="scroll" style="height:1000px">
     <div class="navbar navbar-fixed-top">
@@ -63,7 +64,9 @@
             <h1>Internet Technologies</h1>
             <span>Author: IIT Kharagpur Course, Prof. I. Sengupta</span>
           </div>
-
+			<div class="basic">
+			
+			</div>
           <div class="btn-toolbar">
             <div class="btn-group">
               <a href="#" class="btn btn-inverse disabled"><i class="icon-white icon-thumbs-up"></i></a>
@@ -117,5 +120,12 @@
     <script src="bootstrap/js/bootstrap.min.js"></script>
     <script src="js/jquery-ui-1.10.1.custom.js"></script>
     <script src="js/main.js"></script>
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<script type="text/javascript" src="js/jRating.jquery.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$('.basic').jRating();
+		});
+	</script>
   </body>
 </html>
