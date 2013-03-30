@@ -36,5 +36,50 @@
       }
     });
 
+    jQuery('.sign_in').click(function(){
+      jQuery('.signin_form_wrapper').toggle();
+    });
+
+    if ($('.dashboard').size() > 0) {
+      $("#dialog").dialog({
+        autoOpen: false,
+        modal: true,
+        resizable: false,
+        draggable: false,
+        minWidth: 1070
+      });
+
+      // Link to open the dialog
+      $(".dashboard").click(function( event ) {
+        $("#dialog").dialog( "open" );
+        event.preventDefault();
+      });
+    }
+    
+    $("#create_material").dialog({
+			//autoOpen: true,
+      modal: true,
+      resizable: false,
+      draggable: false,
+      minWidth: 1070
+		});
+
+    randomPictures('help');
+    randomPictures('questionnaire');
+    randomPictures('courseware');
+    randomPictures('textbook');
+    randomPictures('collection');
+    randomPictures('module');
   })
 }(window.jQuery);
+
+function randomPictures(ele)
+{
+  var randomNumber = randomRange(1, 3);
+
+  jQuery('.cls_' + ele).css('background-image', 'url(images/' + ele + randomNumber + '.jpg)');
+}
+
+function randomRange(min, max) {
+  return ~~(Math.random() * (max - min + 1)) + min
+}
