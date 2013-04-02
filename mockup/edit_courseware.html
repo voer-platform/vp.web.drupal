@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Internet Technologies - Courseware | VOER</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet" media="screen">
+    <link href="bootstrap/css/bootstrap-blue.css" rel="stylesheet" media="screen">
+    <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/jui/blitzer/jquery-ui-1.10.1.custom.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet" media="screen">
+    <link href="css/abc.css" rel="stylesheet" media="screen">
+
+    <script src="js/jquery-latest.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="js/jquery-ui-1.10.1.custom.js"></script>
+
+    <script>
+        $(function() {
+            $("#course-time-start").datepicker();
+            $("#course-time-end").datepicker();
+        });
+    </script>
+
+  </head>
+  <body data-offset="80" data-target=".subnav" data-spy="scroll" style="height:1000px">
+
+    <style>
+        label {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a id="logo" href="index.html"><img src="images/voer_logo.png" /></a>
+          <ul class="nav">
+            <li><a href="#">Learn</a></li>
+            <li><a href="#">Contribute</a></li>
+            <li><a href="aboutus.html">About us</a></li>
+            <li><a href="#">Support</a></li>
+          </ul>
+          <ul class="nav pull-right">
+            <li><a class="dashboard" href="#">Dashboard</a></li>
+            <li><a href="#">Sign out</a></li>
+          </ul>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="span3">
+          <div class="voer-sidenav1" data-spy="affix" data-offset-top="5">
+            <div class="well">
+              <ul class="nav nav-list">
+                <li class="nav-header">COURSE</li>
+                <li class="active"><a href="#">Home</a></li>
+                <li><a href="#">Syllabus</a></li>
+                <li><a href="#">Reading and lecture notes</a></li>
+                <li><a href="#">Exam</a></li>
+                <li><a href="#">Biology topics</a></li>
+                <li><a href="#">Video lectures</a></li>
+                <li><a href="#">Download materials</a></li>
+                <li class="divider"></li>
+                <li><a href="#">Help</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="span9">
+          <ul class="breadcrumb">
+            <li><a href="index.html">Home</a> <span class="divider">/</span></li>
+            <li><a href="#">Courseware</a> <span class="divider">/</span></li>
+            <li><a href="#">Infomation, Tech and Design</a> <span class="divider">/</span></li>
+            <li class="active">New Courseware</li>
+          </ul>
+          <div class="page-header">
+            <h3>New Courseware</h3>
+            <span>Author: IIT Kharagpur Course, Prof. I. Sengupta</span>
+          </div>
+          <div class="course-basic-info">
+            <label>Title of Course:</label>
+            <input type="text" class="span6" value="New Course Title">
+            <label>Category:</label>
+            <input type="text" class="span4" value="Computer Science">
+            <label>Course Time:</label>
+            From: <input id="course-time-start" type="text" value=""> &nbsp;To: 
+            <input id="course-time-end" type="text" value="">
+            <label>Professor:</label>
+            <input type="text" class="span4" value="Computer Science">
+          </div>
+          <div>
+            <hr>
+            <button class="btn btn-primary">Next Step: Detail Information</button>    
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <div class="container">
+    <p>Vietnam Open Educational Resources (VOER) is supported by the Vietnam Foundation</p>
+    <p>Content license: Creative Commons CC by version 3.0.
+    <p>Contact us: <a href="#">voer@voer.edu.vn</a></p>
+      </div>
+    </footer>
+
+    <script src="js/jquery-latest.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="js/jquery-ui-1.10.1.custom.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>
