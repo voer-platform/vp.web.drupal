@@ -23,6 +23,7 @@
             $("#accordion").accordion({
                 heightStyle: "content"
             });
+            $("#selectable").selectable();
 
             $("#next1").click(function() {
                 $("#courseware-step-1").hide();
@@ -30,7 +31,16 @@
                 title = $("#cwtitle").val();
                 $("#path-cwtitle").html(title);
                 $("#heading-cwtitle").html(title);
+            });
 
+
+            $("#next2").click(function() {
+                $("#courseware-step-2").hide();
+                $("#courseware-step-3").show();
+            });
+
+            $('#selected-lectures li').click(function() {
+                $('#accordion').accordion({ active: 1 });
             });
         });
     </script>
@@ -43,6 +53,11 @@
             font-weight: bold;
             margin-top: 10px;
         }
+        #feedback { font-size: 1.4em; }
+        #selectable .ui-selecting { background: #FECA40; }
+        #selectable .ui-selected { background: #F39814; color: white; }
+        #selectable { list-style-type: none; margin: 0; padding: 0; }
+        #selectable li { margin: 3px; padding: 0.4em; height: 18px; }
     </style>
 
     <div class="navbar navbar-fixed-top">
@@ -102,28 +117,67 @@
                     //background: lightgrey;
                     margin-bottom: 10px;
                 }
+
+                .course-lectures a {
+                    text-decoration: none;
+                }
+
+                
             </style>
 
-            <div id="courseware-step-3" >
+            <div id="courseware-step-3" style="display:none">
                 <div class="course-lectures" style="clear:both; height:400px">
-                    <div id="selected-lectures" style="height:100%; width: 25%; padding:5px; border:1px solid lightgray;border-radius:5px;">HEllo</div>
+                    <div id="selected-lectures" style="background:#f0f0f0;height:100%;width:25%;padding:5px;border:1px solid lightgray;border-radius:5px;">
+                        <ol id="selectable">
+                            <li class="ui-widget-content">Computer Architecture</li>
+                            <li class="ui-widget-content">Software Engineering</li>
+                            <li class="ui-widget-content">Computer Architecture</li>
+                            <li class="ui-widget-content">Computer Architecture</li>
+                        </ol>
+                    </div>
+
                     <div id="search-pane"style="width:72%; float:right">
                         <div id="accordion" style="margin-top:-2px;">
                           <h3>Search for modules</h3> 
                           <div>
-                            <div>
+                            <div style="margin-bottom:10px;">
                                 <input type="text" style="width:18em; margin-bottom:0px; margin-right:10px;" value="title:calculation author:minh category:math">
-                                <span>Browse: </span>
-                                <button class="">Title</button>
-                                <button class="">Author</button>
-                                <button class="">Category</button>
+                                <span>Filter by&nbsp;</span>
+                                <button class="btn btn-mini btn-primary">Title</button>
+                                <button class="btn btn-mini btn-primary">Author</button>
+                                <button class="btn btn-mini btn-primary">Category</button>
                             </div>
-                            <div id="search-content" style="height:270px">
+                            <style>
+                                #search-content a {
+                                    font-weight: bold;
+                                    color: #002289;
+                                }
+                            </style>
+                            <div id="search-content" style="height:260px;overflow-y:scroll;overflow-x:hidden">
+                                <table class="table table-hover table-striped" width="90%">
+                                    <tr><td><i class="icon-ok"></i></td><td><a id="12345" href="#">Computer Architecture</a></td><td>Hoang Lan Nguyen</td>
+                                    <tr><td></td><td><a href="#">Software Engineering</a></td><td>Hung Vo</td>
+                                    <tr><td></td><td><a href="#">Data Structures and Algorithms</a></td><td>Quang Dung Vu</td>
+                                    <tr><td></td><td><a href="#">Computer Architecture</a></td><td>Hoang Lan Nguyen</td>
+                                    <tr><td></td><td><a href="#">Software Engineering</a></td><td>Hung Vo</td>
+                                    <tr><td></td><td><a href="#">Data Structures and Algorithms</a></td><td>Quang Dung Vu</td>
+                                    <tr><td></td><td><a href="#">Computer Architecture</a></td><td>Hoang Lan Nguyen</td>
+                                    <tr><td></td><td><a href="#">Software Engineering</a></td><td>Hung Vo</td>
+                                    <tr><td></td><td><a href="#">Data Structures and Algorithms</a></td><td>Quang Dung Vu</td>
+                                </table>
                             </div>   
                           </div>
-                          <h3>Lecture details:</h3> 
-                          <div>
-                            <span>Nothing yet</span>
+                          <h3>Video lecture details:</h3> 
+                          <div style="height: 302px;overflow-y:scroll">
+                            <h4>Computer Architecture</h4>
+                            <div>Version: <strong>2 (12 Feb, 2013)</strong></div>
+                            <div>Author: <strong>Hoang Lan Nguyen></strong></div>
+                            <div>
+                                <label>Lecture notes:</label>
+                                <textarea class="mceEditor" style="width:700px"> 
+                                    Please enter notes for this lecture here...
+                                </textarea>
+                            </div>
                           </div>
                         </div>
                     </div>
@@ -131,10 +185,11 @@
                 </div>
                 <div>
                     <hr>
-                    <button id="next1" class="btn btn-primary">Next Step: Detail Information</button>    
+                    <button id="next3" class="btn btn-primary">Next Step: Finish</button>    
                 </div>
             </div>
-            <div id="courseware-step-1" style="display:none">
+
+            <div id="courseware-step-1" >
                 <div class="course-basic-info">
                     <label>Title of Course:</label>
                     <input id="cwtitle" type="text" class="span6" value="New Course Title">
@@ -151,12 +206,13 @@
                     <button id="next1" class="btn btn-primary">Next Step: Detail Information</button>    
                 </div>
             </div>
+
             <div id="courseware-step-2" style="display:none">
                 <div class="course-basic-info">
                     <label>Course Syllabus:</label>
-                    <textarea class="mceEditor" style="width:700px" rows="20">Sample syllabus</textarea>
+                    <textarea class="mceEditor" style="width:750px" rows="20">Sample syllabus</textarea>
                     <label>Reading and Lecture Notes:</label>
-                    <textarea class="mceEditor" style="width:700px" rows="20">Sample lecture notes</textarea>
+                    <textarea class="mceEditor" style="width:750px" rows="20">Sample lecture notes</textarea>
                 </div>
                 <div>
                     <hr>
