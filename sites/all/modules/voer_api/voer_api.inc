@@ -3,6 +3,7 @@
 $module_path = drupal_get_path('module', 'voer_api');
 require_once($module_path . '/lib/http.php');
 require_once('voer_api.lib.php');
+require_once('voer_transformer.lib.php');
 
 define('VOER_API_COMMAND_MATERIAL', '' . VOER_API_VERSION . '/materials/');
 define('VOER_API_COMMAND_CATEGORY', '' . VOER_API_VERSION . '/categories/');
@@ -477,4 +478,9 @@ function voer_api_refresh_token(){
 
 function voer_api_delete(){
 
+}
+
+function voer_api_import($file){
+  $voer_transformer = new VoerTransformer();
+  return $voer_transformer->transform_import($file);
 }

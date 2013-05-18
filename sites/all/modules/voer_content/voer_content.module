@@ -7,6 +7,311 @@ define('VOER_MATERIAL_METADATA_FORM', 'material_metadata_form');
 define('VOER_MATERIAL_CONTENT_FORM', 'material_content_form');
 
 /**
+ * Implements hook_entity_info().
+ *
+ * This is the fundamental description of the entity.
+ *
+ * It provides a single entity with a single bundle and without revision
+ * support.
+ */
+function voer_content_entity_info() {
+  $info['voer_content'] = array(
+    // A human readable label to identify our entity.
+    'label' => t('VOER Content'),
+
+    // The controller for our Entity, extending the Drupal core controller.
+    'controller class' => 'VoerContentController',
+
+    // The table for this entity defined in hook_schema()
+    'base table' => 'voer_content',
+
+    // Returns the uri elements of an entity
+    'uri callback' => 'voer_content_uri',
+
+    // IF fieldable == FALSE, we can't attach fields.
+    'fieldable' => TRUE,
+
+    // entity_keys tells the controller what database fields are used for key
+    // functions. It is not required if we don't have bundles or revisions.
+    // Here we do not support a revision, so that entity key is omitted.
+    'entity keys' => array(
+      'id' => 'id' , // The 'id' (basic_id here) is the unique id.
+      'bundle' => 'bundle_type' // Bundle will be determined by the 'bundle_type' field
+    ),
+    'bundle keys' => array(
+      'bundle' => 'bundle_type',
+    ),
+
+    // FALSE disables caching. Caching functionality is handled by Drupal core.
+    'static cache' => TRUE,
+
+    // Bundles are alternative groups of fields or configuration
+    // associated with a base entity type.
+    'bundles' => array(
+      'voer_module' => array(
+        'label' => 'VOER Module',
+        // 'admin' key is used by the Field UI to provide field and
+        // display UI pages.
+        'admin' => array(
+          'path' => 'admin/structure/voer_content/manage',
+          'access arguments' => array('administer voer content entities'),
+        ),
+      ),
+    ),
+    // View modes allow entities to be displayed differently based on context.
+    // As a demonstration we'll support "Tweaky", but we could have and support
+    // multiple display modes.
+    'view modes' => array(
+      'full' => array(
+        'label' => t('Full Display'),
+        'custom settings' =>  TRUE,
+      ),
+    )
+  );
+
+  return $info;
+}
+
+/**
+ * Fetch a basic object.
+ *
+ * This function ends up being a shim between the menu system and
+ * entity_example_basic_load_multiple().
+ *
+ * This function gets its name from the menu system's wildcard
+ * naming conventions. For example, /path/%wildcard would end
+ * up calling wildcard_load(%wildcard value). In our case defining
+ * the path: examples/entity_example/basic/%entity_example_basic in
+ * hook_menu() tells Drupal to call entity_example_basic_load().
+ *
+ * @param $basic_id
+ *   Integer specifying the basic entity id.
+ * @param $reset
+ *   A boolean indicating that the internal cache should be reset.
+ * @return
+ *   A fully-loaded $basic object or FALSE if it cannot be loaded.
+ *
+ * @see entity_example_basic_load_multiple()
+ * @see entity_example_menu()
+ */
+function voer_content_load($id = NULL, $reset = FALSE) {
+  $ids = (isset($id) ? array($id) : array());
+  $basic = voer_content_load_multiple($ids, array(), $reset);
+  return $basic ? reset($basic) : FALSE;
+}
+
+/**
+ * Loads multiple basic entities.
+ *
+ * We only need to pass this request along to entity_load(), which
+ * will in turn call the load() method of our entity controller class.
+ */
+function voer_content_load_multiple($ids = FALSE, $conditions = array(), $reset = FALSE) {
+  return entity_load('voer_content', $ids, $conditions, $reset);
+}
+
+/**
+ * Implements the uri callback.
+ */
+function voer_content_uri($info) {
+  return array(
+    'path' => 'voer_content/' . $info->id,
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function voer_content_menu() {
+  // $items['examples/entity_example'] = array(
+  //   'title' => 'Entity Example',
+  //   'page callback' => 'entity_example_info_page',
+  //   'access arguments' => array('view any entity_example_basic entity'),
+  // );
+
+  // This provides a place for Field API to hang its own
+  // interface and has to be the same as what was defined
+  // in basic_entity_info() above.
+  $items['admin/structure/voer_content/manage'] = array(
+    'title' => 'VOER Content types',
+    'page callback' => 'entity_example_basic_list_entities',
+    'access arguments' => array('administer entity_example_basic entities'),
+  );
+
+  // // Add example entities.
+  // $items['admin/structure/entity_example_basic/manage/add'] = array(
+  //   'title' => 'Add an Entity Example Basic Entity',
+  //   'page callback' => 'entity_example_basic_add',
+  //   'access arguments' => array('create entity_example_basic entities'),
+  //   'type' => MENU_LOCAL_ACTION,
+  // );
+
+  // List of all entity_example_basic entities.
+  $items['admin/structure/voer_content/manage/list'] = array(
+    'title' => 'List',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+  );
+
+  // The page to view our entities - needs to follow what
+  // is defined in basic_uri and will use load_basic to retrieve
+  // the necessary entity info.
+  // $items['examples/entity_example/basic/%entity_example_basic'] = array(
+  //   'title callback' => 'entity_example_basic_title',
+  //   'title arguments' => array(3),
+  //   'page callback' => 'entity_example_basic_view',
+  //   'page arguments' => array(3),
+  //   'access arguments' => array('view any entity_example_basic entity'),
+  // );
+
+  // // 'View' tab for an individual entity page.
+  // $items['examples/entity_example/basic/%entity_example_basic/view'] = array(
+  //   'title' => 'View',
+  //   'type' => MENU_DEFAULT_LOCAL_TASK,
+  //   'weight' => -10,
+  // );
+
+  // // 'Edit' tab for an individual entity page.
+  // $items['examples/entity_example/basic/%entity_example_basic/edit'] = array(
+  //   'title' => 'Edit',
+  //   'page callback' => 'drupal_get_form',
+  //   'page arguments' => array('entity_example_basic_form', 3),
+  //   'access arguments' => array('edit any entity_example_basic entity'),
+  //   'type' => MENU_LOCAL_TASK,
+  // );
+
+  // // Add example entities.
+  // $items['examples/entity_example/basic/add'] = array(
+  //   'title' => 'Add an Entity Example Basic Entity',
+  //   'page callback' => 'entity_example_basic_add',
+  //   'access arguments' => array('create entity_example_basic entities'),
+  // );
+
+  return $items;
+}
+
+/**
+ * EntityExampleBasicControllerInterface definition.
+ *
+ * We create an interface here because anyone could come along and
+ * use hook_entity_info_alter() to change our controller class.
+ * We want to let them know what methods our class needs in order
+ * to function with the rest of the module, so here's a handy list.
+ *
+ * @see hook_entity_info_alter()
+ */
+
+interface VoerContentControllerInterface
+  extends DrupalEntityControllerInterface {
+  public function create();
+  public function save($entity);
+  public function delete($entity);
+}
+
+/**
+ * EntityExampleBasicController extends DrupalDefaultEntityController.
+ *
+ * Our subclass of DrupalDefaultEntityController lets us add a few
+ * important create, update, and delete methods.
+ */
+class VoerContentController
+  extends DrupalDefaultEntityController
+  implements VoerContentControllerInterface {
+
+  /**
+   * Create and return a new entity_example_basic entity.
+   */
+  public function create() {
+    $entity = new stdClass();
+    $entity->type = 'entity_example_basic';
+    $entity->basic_id = 0;
+    $entity->bundle_type = 'first_example_bundle';
+    $entity->item_description = '';
+    return $entity;
+  }
+
+  /**
+   * Saves the custom fields using drupal_write_record()
+   */
+  public function save($entity) {
+    // If our entity has no basic_id, then we need to give it a
+    // time of creation.
+    if (empty($entity->basic_id)) {
+      $entity->created = time();
+    }
+    // Invoke hook_entity_presave().
+    module_invoke_all('entity_presave', $entity, 'entity_example_basic');
+    // The 'primary_keys' argument determines whether this will be an insert
+    // or an update. So if the entity already has an ID, we'll specify
+    // basic_id as the key.
+    $primary_keys = $entity->basic_id ? 'basic_id' : array();
+    // Write out the entity record.
+    drupal_write_record('entity_example_basic', $entity, $primary_keys);
+    // We're going to invoke either hook_entity_update() or
+    // hook_entity_insert(), depending on whether or not this is a
+    // new entity. We'll just store the name of hook_entity_insert()
+    // and change it if we need to.
+    $invocation = 'entity_insert';
+    // Now we need to either insert or update the fields which are
+    // attached to this entity. We use the same primary_keys logic
+    // to determine whether to update or insert, and which hook we
+    // need to invoke.
+    if (empty($primary_keys)) {
+      field_attach_insert('entity_example_basic', $entity);
+    }
+    else {
+      field_attach_update('entity_example_basic', $entity);
+      $invocation = 'entity_update';
+    }
+    // Invoke either hook_entity_update() or hook_entity_insert().
+    module_invoke_all($invocation, $entity, 'entity_example_basic');
+    return $entity;
+  }
+
+  /**
+   * Delete a single entity.
+   *
+   * Really a convenience function for delete_multiple().
+   */
+  public function delete($entity) {
+    $this->delete_multiple(array($entity));
+  }
+
+  /**
+   * Delete one or more entity_example_basic entities.
+   *
+   * Deletion is unfortunately not supported in the base
+   * DrupalDefaultEntityController class.
+   *
+   * @param $basic_ids
+   *   An array of entity IDs or a single numeric ID.
+   */
+  public function delete_multiple($entities) {
+    $basic_ids = array();
+    if (!empty($entities)) {
+      $transaction = db_transaction();
+      try {
+        foreach ($entities as $entity) {
+          // Invoke hook_entity_delete().
+          module_invoke_all('entity_delete', $entity, 'entity_example_basic');
+          field_attach_delete('entity_example_basic', $entity);
+          $basic_ids[] = $entity->basic_id;
+        }
+        db_delete('entity_example_basic')
+          ->condition('basic_id', $basic_ids, 'IN')
+          ->execute();
+      }
+      catch (Exception $e) {
+        $transaction->rollback();
+        watchdog_exception('entity_example', $e);
+        throw $e;
+      }
+    }
+  }
+}
+
+// HUY.VQ --------------------------------
+
+/**
  * Implements hook_form_alter().
  */
 function voer_content_form_alter(&$form, &$form_state, $form_id) {
@@ -155,39 +460,39 @@ function voer_content_form_push($form, &$form_state)
 /**
  * Implements hook_menu().
  */
-function voer_content_menu() {
-  $items = array();
+// function voer_content_menu() {
+//   $items = array();
 
-  $items['materials'] = array(
-    'title' => t('Material list'),
-    'page callback' => 'voer_content_material_list',
-    'access arguments' => array('view VOER content'),
-  );
+//   $items['materials'] = array(
+//     'title' => t('Material list'),
+//     'page callback' => 'voer_content_material_list',
+//     'access arguments' => array('view VOER content'),
+//   );
 
-  $items['material/%'] = array(
-    'title' => t('Versions of material'),
-    'page callback' => 'voer_content_material_version_list',
-    'page arguments' => array(1),
-    'access arguments' => array('view VOER content'),
-    'type' => MENU_NORMAL_ITEM,
-  );
+//   $items['material/%'] = array(
+//     'title' => t('Versions of material'),
+//     'page callback' => 'voer_content_material_version_list',
+//     'page arguments' => array(1),
+//     'access arguments' => array('view VOER content'),
+//     'type' => MENU_NORMAL_ITEM,
+//   );
 
-  $items['material/%/%'] = array(
-    'title' => t('Material detail'),
-    'page callback' => 'voer_content_view_material',
-    'access arguments' => array('view VOER content'),
-    'type' => MENU_NORMAL_ITEM,
-  );
+//   $items['material/%/%'] = array(
+//     'title' => t('Material detail'),
+//     'page callback' => 'voer_content_view_material',
+//     'access arguments' => array('view VOER content'),
+//     'type' => MENU_NORMAL_ITEM,
+//   );
 
-  $items['voer-content/archive-form'] = array(
-    'title' => t('Upload form'),
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('extract_zip_form'),
-    'access arguments' => array('access content'),
-  );
+//   $items['voer-content/archive-form'] = array(
+//     'title' => t('Upload form'),
+//     'page callback' => 'drupal_get_form',
+//     'page arguments' => array('extract_zip_form'),
+//     'access arguments' => array('access content'),
+//   );
 
-  return $items;
-}
+//   return $items;
+// }
 
 /**
  * [voer_content_view_material description]
