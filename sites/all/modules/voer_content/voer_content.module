@@ -49,11 +49,32 @@ function voer_content_entity_info() {
     // associated with a base entity type.
     'bundles' => array(
       'voer_module' => array(
-        'label' => 'VOER Module',
+        'label' => 'Module',
+        'uri callback' => 'voer_content_module',
         // 'admin' key is used by the Field UI to provide field and
         // display UI pages.
         'admin' => array(
-          'path' => 'admin/structure/voer_content/manage',
+          'path' => 'admin/structure/voer_content/manage/module',
+          'access arguments' => array('administer voer content entities'),
+        ),
+      ),
+      'voer_collection' => array(
+        'label' => 'Collection',
+        'uri callback' => 'voer_content_collection',
+        // 'admin' key is used by the Field UI to provide field and
+        // display UI pages.
+        'admin' => array(
+          'path' => 'admin/structure/voer_content/manage/collection',
+          'access arguments' => array('administer voer content entities'),
+        ),
+      ),
+      'voer_course' => array(
+        'label' => 'Course',
+        'uri callback' => 'voer_content_course',
+        // 'admin' key is used by the Field UI to provide field and
+        // display UI pages.
+        'admin' => array(
+          'path' => 'admin/structure/voer_content/manage/course',
           'access arguments' => array('administer voer content entities'),
         ),
       ),
@@ -64,6 +85,14 @@ function voer_content_entity_info() {
     'view modes' => array(
       'full' => array(
         'label' => t('Full Display'),
+        'custom settings' =>  TRUE,
+      ),
+      'list' => array(
+        'label' => t('List Display'),
+        'custom settings' =>  TRUE,
+      ),
+      'brief' => array(
+        'label' => t('Brief Display'),
         'custom settings' =>  TRUE,
       ),
     )
@@ -119,6 +148,24 @@ function voer_content_uri($info) {
   );
 }
 
+function voer_content_module($info){
+  return array(
+    'path' => 'module/' . $info->id,
+  );
+}
+
+function voer_content_collection($info){
+  return array(
+    'path' => 'collection/' . $info->id,
+  );
+}
+
+function voer_content_course($info){
+  return array(
+    'path' => 'course/' . $info->id,
+  );
+}
+
 /**
  * Implements hook_menu().
  */
@@ -135,6 +182,12 @@ function voer_content_menu() {
   $items['admin/structure/voer_content/manage'] = array(
     'title' => 'VOER Content types',
     'page callback' => 'entity_example_basic_list_entities',
+    'access arguments' => array('administer entity_example_basic entities'),
+  );
+
+  $items['admin/structure/voer_content/types'] = array(
+    'title' => 'VOER Content types',
+    'page callback' => 'voer_content_list_bundles',
     'access arguments' => array('administer entity_example_basic entities'),
   );
 
@@ -187,6 +240,56 @@ function voer_content_menu() {
   // );
 
   return $items;
+}
+
+/**
+ * Returns a render array with all entity_example_basic entities.
+ *
+ * In this basic example we know that there won't be many entities,
+ * so we'll just load them all for display. See pager_example.module
+ * to implement a pager. Most implementations would probably do this
+ * with the contrib Entity API module, or a view using views module,
+ * but we avoid using non-core features in the Examples project.
+ *
+ * @see pager_example.module
+ */
+function voer_content_list_bundles() {
+  $content = array();
+  // Load all of our bundles.
+  $bundles = field_info_bundles('voer_content');
+  if (!empty($bundles)) {
+    foreach ( $bundles as $bundle ) {
+      // Create tabular rows for our entities.
+      $rows[] = array(
+        'data' => array(
+          'name' => $bundle['label'],
+          'edit' => l(t('edit'),'aca'),
+          'manage_field' => l(t('manage field'),$bundle['admin']['path'] . '/fields'),
+          'manage_display' => l(t('manage display'),$bundle['admin']['path'] . '/display'),
+        ),
+      );
+    }
+    // Put our entities into a themed table. See theme_table() for details.
+    $content['bundle_table'] = array(
+      '#theme' => 'table',
+      '#rows' => $rows,
+      '#header' => array(
+                      t('Name'),
+                      array(
+                        "data" => t('Operator'),
+                        "colspan" => 3,
+                      )
+                    ),
+    );
+  }
+  else {
+    // There were no entities. Tell the user.
+    $content[] = array(
+      '#type' => 'item',
+      '#markup' => t('No bundles currently exist.'),
+    );
+  }
+  return $content;
 }
 
 /**
