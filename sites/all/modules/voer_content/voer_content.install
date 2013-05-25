@@ -1,0 +1,165 @@
+<?php
+
+/**
+ * Implements hook_schema().
+ */
+function voer_content_schema() {
+  $schema = array();
+
+  $schema['voer_content'] = array(
+    'description' => 'The base table for VOER content.',
+    'fields' => array(
+      'material_id' => array(
+        'description' => 'The primary identifier for a VOER material, used internally only.',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'title' => array(
+        'description' => 'The title of this material, always treated as non-markup plain text.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'description' => array(
+        'description' => 'The description of this material.',
+        'type' => 'varchar',
+        'length' => 1000,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'content' => array(
+        'description' => 'The content of this material.',
+        'type' => 'text',
+        'size' => 'medium',
+        'not null' => TRUE,
+      ),
+      'bundle_type' => array(
+        'description' => 'The type of this material.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'language' => array(
+        'description' => 'The {languages}.language of this material.',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'uid' => array(
+        'description' => 'The {users}.uid that created this material.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'status' => array(
+        'description' => 'Boolean indicating whether or not the material appears in lists and may be added to orders.',
+        'type' => 'int',
+        'size' => 'tiny',
+        'not null' => TRUE,
+        'default' => 1,
+      ),
+      'created' => array(
+        'description' => 'The Unix timestamp when the material was created.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'changed' => array(
+        'description' => 'The Unix timestamp when the material was most recently saved.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+    ),
+    'primary key' => array('material_id'),
+    'indexes' => array(
+      'material_type' => array('bundle_type'),
+      'uid' => array('uid'),
+    ),
+    // 'unique keys' => array(
+    //   'sku' => array('sku'),
+    //   'revision_id' => array('revision_id'),
+    // ),
+    'foreign keys' => array(
+      'creator' => array(
+        'table' => 'users',
+        'columns' => array('uid' => 'uid'),
+      ),
+    ),
+  );
+
+  return $schema;
+}
+
+/**
+ * Implementation of hook_install().
+ */
+function voer_content_install() {
+  // IMAGE FIELD
+  // Check if our field is not already created.
+  if (!field_info_field('field_voer_image')){
+    $field_voer_image = array(
+      'field_name' => 'field_voer_image',
+      'type' => 'image',
+      'entity_types' => array('voer_content'),
+    );
+    field_create_field($field_voer_image);
+  }
+
+  // Create the instance on the bundle.
+  $instance = array(
+      'field_name' => 'field_voer_image',
+      'entity_type' => 'voer_content',
+      'label' => 'Image',
+      'bundle' => 'voer_module',
+      // If you don't set the "required" property then the field wont be required by default.
+      'required' => TRUE,
+  );
+  field_create_instance($instance);
+
+  // LANGUAGE FIELD
+  if (!field_info_field('field_voer_language')) {
+    $field_voer_language = array(
+        'field_name' => 'field_voer_language',
+        'type' => 'taxonomy_term_reference',
+        'entity_types' => array('voer_content'),
+    );
+    field_create_field($field_voer_language);
+  }
+
+  // Create the instance on the bundle.
+  $instance = array(
+      'field_name' => 'field_voer_language',
+      'entity_type' => 'voer_content',
+      'label' => 'Language',
+      'bundle' => 'voer_module',
+      // If you don't set the "required" property then the field wont be required by default.
+      'required' => TRUE,
+  );
+  field_create_instance($instance);
+
+  // LANGUAGE FIELD
+  if (!field_info_field('field_voer_file')) {
+    $field_voer_language = array(
+        'field_name' => 'field_voer_file',
+        'type' => 'file',
+        'entity_types' => array('voer_content'),
+    );
+    field_create_field($field_voer_language);
+  }
+
+  // Create the instance on the bundle.
+  $instance = array(
+      'field_name' => 'field_voer_file',
+      'entity_type' => 'voer_content',
+      'label' => 'File',
+      'bundle' => 'voer_module',
+      // If you don't set the "required" property then the field wont be required by default.
+      'required' => TRUE,
+  );
+  field_create_instance($instance);
+}
