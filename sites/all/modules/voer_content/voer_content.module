@@ -6,132 +6,132 @@ define('VOER_MATERIAL_LICENSE_FORM', 'material_license_form');
 define('VOER_MATERIAL_METADATA_FORM', 'material_metadata_form');
 define('VOER_MATERIAL_CONTENT_FORM', 'material_content_form');
 
-/**
- * Implements hook_entity_info().
- *
- * This is the fundamental description of the entity.
- *
- * It provides a single entity with a single bundle and without revision
- * support.
- */
-function voer_content_entity_info() {
-  $info['voer_content'] = array(
-    // A human readable label to identify our entity.
-    'label' => t('VOER Content'),
+// /**
+//  * Implements hook_entity_info().
+//  *
+//  * This is the fundamental description of the entity.
+//  *
+//  * It provides a single entity with a single bundle and without revision
+//  * support.
+//  */
+// function voer_content_entity_info() {
+//   $info['voer_content'] = array(
+//     // A human readable label to identify our entity.
+//     'label' => t('VOER Content'),
 
-    // The controller for our Entity, extending the Drupal core controller.
-    'controller class' => 'VoerContentController',
+//     // The controller for our Entity, extending the Drupal core controller.
+//     'controller class' => 'VoerContentController',
 
-    // The table for this entity defined in hook_schema()
-    'base table' => 'voer_content',
+//     // The table for this entity defined in hook_schema()
+//     'base table' => 'voer_content',
 
-    // Returns the uri elements of an entity
-    'uri callback' => 'voer_content_uri',
+//     // Returns the uri elements of an entity
+//     'uri callback' => 'voer_content_uri',
 
-    // IF fieldable == FALSE, we can't attach fields.
-    'fieldable' => TRUE,
+//     // IF fieldable == FALSE, we can't attach fields.
+//     'fieldable' => TRUE,
 
-    // entity_keys tells the controller what database fields are used for key
-    // functions. It is not required if we don't have bundles or revisions.
-    // Here we do not support a revision, so that entity key is omitted.
-    'entity keys' => array(
-      'id' => 'material_id', // The 'id' (basic_id here) is the unique id.
-      'bundle' => 'bundle_type', // Bundle will be determined by the 'bundle_type' field
-      'label' => 'title',
-    ),
-    'bundle keys' => array(
-      'bundle' => 'bundle_type',
-    ),
+//     // entity_keys tells the controller what database fields are used for key
+//     // functions. It is not required if we don't have bundles or revisions.
+//     // Here we do not support a revision, so that entity key is omitted.
+//     'entity keys' => array(
+//       'id' => 'material_id', // The 'id' (basic_id here) is the unique id.
+//       'bundle' => 'bundle_type', // Bundle will be determined by the 'bundle_type' field
+//       'label' => 'title',
+//     ),
+//     'bundle keys' => array(
+//       'bundle' => 'bundle_type',
+//     ),
 
-    // FALSE disables caching. Caching functionality is handled by Drupal core.
-    'static cache' => TRUE,
+//     // FALSE disables caching. Caching functionality is handled by Drupal core.
+//     'static cache' => TRUE,
 
-    // Bundles are alternative groups of fields or configuration
-    // associated with a base entity type.
-    'bundles' => array(
-      'voer_module' => array(
-        'label' => 'Module',
-        'uri callback' => 'voer_content_module',
-        // 'admin' key is used by the Field UI to provide field and
-        // display UI pages.
-        'admin' => array(
-          'path' => 'admin/structure/voer_content/manage/module',
-          'access arguments' => array('administer voer modules'),
-        ),
-      ),
-      'voer_collection' => array(
-        'label' => 'Collection',
-        'uri callback' => 'voer_content_collection',
-        // 'admin' key is used by the Field UI to provide field and
-        // display UI pages.
-        'admin' => array(
-          'path' => 'admin/structure/voer_content/manage/collection',
-          'access arguments' => array('administer voer collections'),
-        ),
-      ),
-      'voer_course' => array(
-        'label' => 'Course',
-        'uri callback' => 'voer_content_course',
-        // 'admin' key is used by the Field UI to provide field and
-        // display UI pages.
-        'admin' => array(
-          'path' => 'admin/structure/voer_content/manage/course',
-          'access arguments' => array('administer voer courses'),
-        ),
-      ),
-    ),
-    // View modes allow entities to be displayed differently based on context.
-    // As a demonstration we'll support "Tweaky", but we could have and support
-    // multiple display modes.
-    'view modes' => array(
-      'full' => array(
-        'label' => t('Full Display'),
-        'custom settings' =>  TRUE,
-      ),
-      'list' => array(
-        'label' => t('List Display'),
-        'custom settings' =>  TRUE,
-      ),
-      'brief' => array(
-        'label' => t('Brief Display'),
-        'custom settings' =>  TRUE,
-      ),
-    )
-  );
+//     // Bundles are alternative groups of fields or configuration
+//     // associated with a base entity type.
+//     'bundles' => array(
+//       'voer_module' => array(
+//         'label' => 'Module',
+//         'uri callback' => 'voer_content_module',
+//         // 'admin' key is used by the Field UI to provide field and
+//         // display UI pages.
+//         'admin' => array(
+//           'path' => 'admin/structure/voer_content/manage/module',
+//           'access arguments' => array('administer voer modules'),
+//         ),
+//       ),
+//       'voer_collection' => array(
+//         'label' => 'Collection',
+//         'uri callback' => 'voer_content_collection',
+//         // 'admin' key is used by the Field UI to provide field and
+//         // display UI pages.
+//         'admin' => array(
+//           'path' => 'admin/structure/voer_content/manage/collection',
+//           'access arguments' => array('administer voer collections'),
+//         ),
+//       ),
+//       'voer_course' => array(
+//         'label' => 'Course',
+//         'uri callback' => 'voer_content_course',
+//         // 'admin' key is used by the Field UI to provide field and
+//         // display UI pages.
+//         'admin' => array(
+//           'path' => 'admin/structure/voer_content/manage/course',
+//           'access arguments' => array('administer voer courses'),
+//         ),
+//       ),
+//     ),
+//     // View modes allow entities to be displayed differently based on context.
+//     // As a demonstration we'll support "Tweaky", but we could have and support
+//     // multiple display modes.
+//     'view modes' => array(
+//       'full' => array(
+//         'label' => t('Full Display'),
+//         'custom settings' =>  TRUE,
+//       ),
+//       'list' => array(
+//         'label' => t('List Display'),
+//         'custom settings' =>  TRUE,
+//       ),
+//       'brief' => array(
+//         'label' => t('Brief Display'),
+//         'custom settings' =>  TRUE,
+//       ),
+//     )
+//   );
 
-  return $info;
-}
+//   return $info;
+// }
 
-/**
- * Implements hook_field_extra_fields().
- */
-function voer_content_field_extra_fields() {
-  $extra = array();
+// /**
+//  * Implements hook_field_extra_fields().
+//  */
+// function voer_content_field_extra_fields() {
+//   $extra = array();
 
-  foreach (voer_content_bundles() as $type => $bundle_type) {
-    $extra['voer_content'][$type] = array(
-      'form' => array(
-        'title' => array(
-          'label' => t('Title'),
-          'description' => t('Textfield'),
-          'weight' => -100,
-        ),
-        'description' => array(
-          'label' => t('Description'),
-          'description' => t('Textarea'),
-          'weight' => -90,
-        ),
-        'content' => array(
-          'label' => t('Content'),
-          'description' => t('Textarea'),
-          'weight' => -10,
-        )
-      )
-    );
-  }
+//   foreach (voer_content_bundles() as $type => $bundle_type) {
+//     $extra['voer_content'][$type] = array(
+//       'form' => array(
+//         'title' => array(
+//           'label' => t('Title'),
+//           'description' => t('Textfield'),
+//           'weight' => -100,
+//         ),
+//         'description' => array(
+//           'label' => t('Description'),
+//           'description' => t('Textarea'),
+//           'weight' => -90,
+//         ),
+//         'content' => array(
+//           'label' => t('Content'),
+//           'description' => t('Textarea'),
+//           'weight' => -10,
+//         )
+//       )
+//     );
+//   }
 
-  return $extra;
-}
+//   return $extra;
+// }
 /**
  * Fetch a basic object.
  *
@@ -206,6 +206,20 @@ function voer_content_admin_paths(){
     'voer_content/*/add' => TRUE,
   );
   return $paths;
+}
+
+/**
+ * Implements hook_menu_alter().
+ */
+function voer_content_menu_alter(&$items) {
+  // Example - disable the page at node/add
+  $items['node/add/voer-module'] = array(
+    'title' => t('Module'),
+    'page callback' => 'voer_module_creation',
+    'access arguments' => array('create voer module'),
+    'file' => drupal_get_path('module', 'voer_content') . '/voer_content_module.inc',
+    // 'file path' => drupal_get_path('module', 'voer_content'),
+  );
 }
 
 /**
@@ -420,129 +434,10 @@ function voer_content_form($form, &$form_state, $entity) {
 /**
  * We save the entity by calling the controller.
  */
-function voer_module_save(&$entity) {
-  return entity_get_controller('voer_content')->save($entity);
+function voer_content_save(&$entity) {
+  node_save($entity);
 }
 
-/**
- * EntityExampleBasicControllerInterface definition.
- *
- * We create an interface here because anyone could come along and
- * use hook_entity_info_alter() to change our controller class.
- * We want to let them know what methods our class needs in order
- * to function with the rest of the module, so here's a handy list.
- *
- * @see hook_entity_info_alter()
- */
-
-interface VoerContentControllerInterface
-  extends DrupalEntityControllerInterface {
-  public function create($bundle_type);
-  public function save($entity);
-  public function delete($entity);
-}
-
-/**
- * EntityExampleBasicController extends DrupalDefaultEntityController.
- *
- * Our subclass of DrupalDefaultEntityController lets us add a few
- * important create, update, and delete methods.
- */
-class VoerContentController
-  extends DrupalDefaultEntityController
-  implements VoerContentControllerInterface {
-
-  /**
-   * Create and return a new entity_example_basic entity.
-   */
-  public function create($bundle_type) {
-    $entity = new stdClass();
-    $entity->type = 'voer_content';
-    $entity->material_id = 0;
-    $entity->bundle_type = $bundle_type;
-    $entity->description = '';
-    return $entity;
-  }
-
-  /**
-   * Saves the custom fields using drupal_write_record()
-   */
-  public function save($entity) {
-    // If our entity has no basic_id, then we need to give it a
-    // time of creation.
-    if (empty($entity->basic_id)) {
-      $entity->created = time();
-    }
-    // Invoke hook_entity_presave().
-    module_invoke_all('entity_presave', $entity, 'voer_content');
-    // The 'primary_keys' argument determines whether this will be an insert
-    // or an update. So if the entity already has an ID, we'll specify
-    // basic_id as the key.
-    $primary_keys = $entity->basic_id ? 'basic_id' : array();
-    // Write out the entity record.
-    drupal_write_record('voer_content', $entity, $primary_keys);
-    // We're going to invoke either hook_entity_update() or
-    // hook_entity_insert(), depending on whether or not this is a
-    // new entity. We'll just store the name of hook_entity_insert()
-    // and change it if we need to.
-    $invocation = 'entity_insert';
-    // Now we need to either insert or update the fields which are
-    // attached to this entity. We use the same primary_keys logic
-    // to determine whether to update or insert, and which hook we
-    // need to invoke.
-    if (empty($primary_keys)) {
-      field_attach_insert('voer_content', $entity);
-    }
-    else {
-      field_attach_update('voer_content', $entity);
-      $invocation = 'entity_update';
-    }
-    // Invoke either hook_entity_update() or hook_entity_insert().
-    module_invoke_all($invocation, $entity, 'voer_content');
-    return $entity;
-  }
-
-  /**
-   * Delete a single entity.
-   *
-   * Really a convenience function for delete_multiple().
-   */
-  public function delete($entity) {
-    $this->delete_multiple(array($entity));
-  }
-
-  /**
-   * Delete one or more entity_example_basic entities.
-   *
-   * Deletion is unfortunately not supported in the base
-   * DrupalDefaultEntityController class.
-   *
-   * @param $basic_ids
-   *   An array of entity IDs or a single numeric ID.
-   */
-  public function delete_multiple($entities) {
-    $basic_ids = array();
-    if (!empty($entities)) {
-      $transaction = db_transaction();
-      try {
-        foreach ($entities as $entity) {
-          // Invoke hook_entity_delete().
-          module_invoke_all('entity_delete', $entity, 'entity_example_basic');
-          field_attach_delete('entity_example_basic', $entity);
-          $basic_ids[] = $entity->basic_id;
-        }
-        db_delete('entity_example_basic')
-          ->condition('basic_id', $basic_ids, 'IN')
-          ->execute();
-      }
-      catch (Exception $e) {
-        $transaction->rollback();
-        watchdog_exception('entity_example', $e);
-        throw $e;
-      }
-    }
-  }
-}
 
 // HUY.VQ --------------------------------
 

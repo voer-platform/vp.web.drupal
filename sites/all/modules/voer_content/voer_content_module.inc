@@ -259,14 +259,9 @@ function voer_module_metadata_info($form, &$form_state, $entity) {
     '#default_value' => isset($entity->title) ? $entity->title : "",
   );
 
-  $form['description'] = array(
-    '#type' => 'textarea',
-    '#title' => t('Description'),
-    '#required' => TRUE,
-    '#default_value' => isset($entity->description) ? $entity->description : "",
-  );
+  field_attach_form('node', $entity, $form, $form_state);
 
-  field_attach_form('voer_content', $entity, $form, $form_state);
+  unset($form['body']); //Visible bode field
 
   return $form;
 }
@@ -325,31 +320,12 @@ function voer_module_creation_wizard_submit($form, &$form_state) {
 
   $entity = $form_state['step_information'][1]['stored_values']['voer_content_entity'];
   $entity->title = $form_state['step_information'][2]['stored_values']['title'];
-  $entity->description = $form_state['step_information'][2]['stored_values']['description'];
-  $entity->content = $form_state['step_information'][3]['stored_values']['content'];
-  field_attach_submit('voer_content', $entity, $form, $form_state);
+
+  field_attach_submit('node', $entity, $form, $form_state);
+
   $entity = voer_content_save($entity);
-  $form_state['redirect'] = 'examples/entity_example/basic/' . $entity->basic_id;
 
-
-  // drupal_set_message(t('Result: <pre>@form</pre>', array('@form' => print_r($form_state, true))));
-  // // In this case we've completed the final page of the wizard, so process the
-  // // submitted information.
-  // drupal_set_message(t('This information was collected by this wizard:'));
-  // foreach ($form_state['step_information'] as $index => $value) {
-  //   // Remove FAPI fields included in the values (form_token, form_id and form_build_id
-  //   // This is not required, you may access the values using $value['stored_values']
-  //   // but I'm removing them to make a more clear representation of the collected
-  //   // information as the complete array will be passed through drupal_set_message().
-  //   unset($value['stored_values']['form_id']);
-  //   unset($value['stored_values']['form_build_id']);
-  //   unset($value['stored_values']['form_token']);
-
-  //   // Now show all the values.
-  //   drupal_set_message(t('Step @num collected the following values: <pre>@result</pre>', array('@num' => $index, '@result' => print_r($value['stored_values'], TRUE))));
-  // }
-
-
+  $form_state['redirect'] = 'module/' . $entity->nid;
 
 }
 
@@ -359,8 +335,13 @@ function voer_module_creation_wizard_submit($form, &$form_state) {
 function voer_module_creation() {
   // Create a basic entity structure to be used and passed to the validation
   // and submission functions.
-  $entity = entity_get_controller('voer_content')->create('voer_module');
-  return drupal_get_form('voer_module_creation_wizard', $entity);
+  $node = new stdClass();
+  $node->type = 'voer_module';
+  node_object_prepare($node);
+  $node->title    = '';
+  $node->language = LANGUAGE_NONE;
+  // $entity = entity_get_controller('voer_content')->create('voer_module');
+  return drupal_get_form('voer_module_creation_wizard', $node);
 }
 
 
