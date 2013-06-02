@@ -132,6 +132,14 @@ define('VOER_MATERIAL_CONTENT_FORM', 'material_content_form');
 
 //   return $extra;
 // }
+
+/**
+ * Implements hook_entity_info_alter
+ */
+// function voer_content_entity_info_alter(&$entity_info){
+//   $entity_info['node']['bundles']['voer_module']['uri callback'] = 'voer_content_module_uri';
+// }
+
 /**
  * Fetch a basic object.
  *
@@ -179,21 +187,21 @@ function voer_content_uri($info) {
   );
 }
 
-function voer_content_module($info){
+function voer_content_module_uri($info){
   return array(
-    'path' => 'module/' . $info->id,
+    'path' => 'module/' . $info->nid,
   );
 }
 
-function voer_content_collection($info){
+function voer_content_collection_uri($info){
   return array(
-    'path' => 'collection/' . $info->id,
+    'path' => 'collection/' . $info->nid,
   );
 }
 
-function voer_content_course($info){
+function voer_content_course_uri($info){
   return array(
-    'path' => 'course/' . $info->id,
+    'path' => 'course/' . $info->nid,
   );
 }
 
@@ -213,13 +221,9 @@ function voer_content_admin_paths(){
  */
 function voer_content_menu_alter(&$items) {
   // Example - disable the page at node/add
-  $items['node/add/voer-module'] = array(
-    'title' => t('Module'),
-    'page callback' => 'voer_module_creation',
-    'access arguments' => array('create voer module'),
-    'file' => drupal_get_path('module', 'voer_content') . '/voer_content_module.inc',
-    // 'file path' => drupal_get_path('module', 'voer_content'),
-  );
+  $items['node/add/voer-module']['page callback'] = 'voer_module_creation';
+  $items['node/add/voer-module']['file'] =  'voer_content_module.inc';
+  $items['node/add/voer-module']['file path'] = drupal_get_path('module', 'voer_content');
 }
 
 /**
@@ -240,17 +244,17 @@ function voer_content_menu() {
   // This provides a place for Field API to hang its own
   // interface and has to be the same as what was defined
   // in basic_entity_info() above.
-  $items['admin/structure/voer_content/manage'] = array(
-    'title' => 'VOER Content types',
-    'page callback' => 'entity_example_basic_list_entities',
-    'access arguments' => array('administer entity_example_basic entities'),
-  );
+  // $items['admin/structure/voer_content/manage'] = array(
+  //   'title' => 'VOER Content types',
+  //   'page callback' => 'entity_example_basic_list_entities',
+  //   'access arguments' => array('administer entity_example_basic entities'),
+  // );
 
-  $items['admin/structure/voer_content/types'] = array(
-    'title' => 'VOER Content types',
-    'page callback' => 'voer_content_list_bundles',
-    'access arguments' => array('administer entity_example_basic entities'),
-  );
+  // $items['admin/structure/voer_content/types'] = array(
+  //   'title' => 'VOER Content types',
+  //   'page callback' => 'voer_content_list_bundles',
+  //   'access arguments' => array('administer entity_example_basic entities'),
+  // );
 
   // Add a module.
   $items['voer_content/module/add'] = array(
@@ -435,7 +439,7 @@ function voer_content_form($form, &$form_state, $entity) {
  * We save the entity by calling the controller.
  */
 function voer_content_save(&$entity) {
-  node_save($entity);
+  return node_save($entity);
 }
 
 

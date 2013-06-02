@@ -1,4 +1,5 @@
 <?php
+
 function voer_module_ui_theme(&$existing) {
   $themes = array(
     'node__voer__module' => array(
@@ -14,6 +15,7 @@ function voer_module_ui_theme(&$existing) {
  * Override or insert variables into the node template.
  */
 function voer_module_ui_preprocess_node(&$vars) {
+  // drupal_set_message(t('DEBUG: <pre>@vars<pre>', array('@vars' => print_r($vars, true))));
   if (isset($vars['type']) && $vars['type'] == 'voer_module') {
     $vars['theme_hook_suggestions'][] = 'node__voer__module';
     $vars['classes_array'][] = 'node-voer-module';

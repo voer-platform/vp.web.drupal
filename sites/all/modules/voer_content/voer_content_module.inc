@@ -321,11 +321,18 @@ function voer_module_creation_wizard_submit($form, &$form_state) {
   $entity = $form_state['step_information'][1]['stored_values']['voer_content_entity'];
   $entity->title = $form_state['step_information'][2]['stored_values']['title'];
 
-  field_attach_submit('node', $entity, $form, $form_state);
+  foreach ($form_state['step_information'] as $index => $value){
+    $form_tmp_state = array();
+    $form_tmp_state['values'] = array();
+    $form_tmp = array();
+    $form_tmp['#parents'] = array();
+    $form_tmp_state['values'] = $value['stored_values'];
+    field_attach_submit('node', $entity, $form_tmp, $form_tmp_state);
+  }
 
-  $entity = voer_content_save($entity);
+  node_save($entity);
 
-  $form_state['redirect'] = 'module/' . $entity->nid;
+  $form_state['redirect'] = 'node/' . $entity->nid;
 
 }
 
