@@ -50,6 +50,9 @@ function _voer_module_creation_steps() {
         'form' => 'voer_module_metadata_info',
       ),
       3 => array(
+        'form' => 'voer_module_import_content',
+      ),
+      4 => array(
         'form' => 'voer_module_content',
       ),
     );
@@ -126,7 +129,8 @@ function voer_module_creation_wizard($form, &$form_state, $entity) {
     // form_example_wizard_submit handler will be called.
     $form['finish'] = array(
       '#type' => 'submit',
-      '#value' => t('Finish'),
+      '#value' => t('Save'),
+      '#weight' => 1001,
     );
   }
 
@@ -261,7 +265,10 @@ function voer_module_metadata_info($form, &$form_state, $entity) {
 
   field_attach_form('node', $entity, $form, $form_state);
 
+  $form_state['storage']['body'] = $form['body'];
+
   unset($form['body']); //Visible bode field
+  unset($form['field_voer_file']);
 
   return $form;
 }
@@ -280,6 +287,84 @@ function voer_module_metadata_info_validate($form, &$form_state) {
   // }
 }
 
+function voer_module_import_content($form, &$form_state){
+  $form = array();
+
+  $form['import_file'] = array(
+    '#type' => 'file',
+    '#title' => t('Document for import'),
+    '#description' => t('Upload a file, allowed extensions: doc, docx, odt'),
+  );
+
+  return $form;
+}
+
+function voer_module_import_content_validate($form, &$form_state){
+  $file = file_save_upload('import_file', array(
+    // 'file_validate_is_image' => array(), // Validates file is really an image.
+    'file_validate_extensions' => array('doc docx odt'), // Validate extensions.
+  ));
+  // If the file passed validation:
+  if ($file) {
+    // Move the file, into the Drupal file system
+    if ($file = file_move($file, 'public://')) {
+      // Save the file for use in the submit handler.
+      $form_state['storage']['file'] = $file;
+      // drupal_set_message(t('File: <pre>@file</pre>', array('@file' => print_r($file, true))));
+
+      // Gui noi dung file cho phan vp.transporter
+      module_load_include('inc', 'voer_api');
+      $realpath = drupal_realpath($file->uri);
+      $zipContent = voer_api_import($realpath);
+      // Luu ra thu muc import-result
+      $uniqueFilename = md5($file->filename . microtime());
+      //drupal_mkdir("public://import-result/");
+      $zipFile = file_unmanaged_save_data($zipContent, "public://import-result/" . $uniqueFilename . ".zip", FILE_EXISTS_RENAME);
+      // $fp = fopen('./upload/result.zip', 'w');
+      // fwrite($fp, $out);
+      // fclose($fp);
+      //Delete all file
+      // $files = glob('./upload/unzip/*'); // get all file names
+      // foreach($files as $file){ // iterate files
+      //   if(is_file($file))
+      //     unlink($file); // delete file
+      // }
+
+      //Unzip it
+      $realZipFile = drupal_realpath($zipFile);
+      $parentDir = dirname($realZipFile);
+      // drupal_set_message('Zip file: '. $realZipFile);
+      // drupal_set_message('Dir path: '. $parentDir);
+      $unzipDir = $parentDir . "/" . $uniqueFilename;
+      // drupal_set_message('Dir path: '. $unzipDir);
+      $zip = new ZipArchive;
+      $res = $zip->open($realZipFile);
+      if ($res === TRUE) {
+          $zip->extractTo($unzipDir);
+          $zip->close();
+      }
+
+      // $filename = 'image.txt';
+      // $image = file_get_contents('http://www.ibiblio.org/wm/paint/auth/gogh/gogh.white-house.jpg');
+      // $file = file_save_data($image, 'public://' . $filename, FILE_EXISTS_RENAME);
+      // $node->field_image = array(LANGUAGE_NONE => array('0' => (array)$file));
+
+      if (file_exists($unzipDir . '/index.html')){
+          $importContent = file_get_contents($unzipDir . '/index.html');
+          $importContent = preg_replace('/<img src="([^"]*)"/', '<img src="/sites/default/files/import-result/' . $uniqueFilename . '/$1"', $importContent);
+          //$form_state['storage']['import_content'] = $importContent;
+          $form_state['storage']['body'][LANGUAGE_NONE][0]['#default_value'] = $importContent;
+      }
+    }
+    else {
+      form_set_error('file', t('Failed to write the uploaded file to the site\'s file folder.'));
+    }
+  }
+  // else {
+  //   form_set_error('file', t('No file was uploaded.'));
+  // }
+}
+
 /**
  * Returns form elements for the 'other info' page of the wizard. This is the
  * thid and last step of the example wizard.
@@ -289,12 +374,8 @@ function voer_module_metadata_info_validate($form, &$form_state) {
 function voer_module_content($form, &$form_state) {
   $form = array();
 
-  $form['content'] = array(
-    '#type' => 'text_format',
-    '#title' => t('Body'),
-    '#required' => TRUE,
-    '#default_value' => isset($entity->content) ? $entity->content : "",
-  );
+  $form['body'] = $form_state['storage']['body'];
+  //drupal_set_message(t('File: <pre>@body</pre>', array('@body' => print_r($form['body'], true))));
 
   return $form;
 }
