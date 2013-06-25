@@ -33,23 +33,9 @@ function voer_api_get_all_materials(){
  * @param  Object $material [description]
  * @return [type]           [description]
  */
-function voer_api_create_material($material){
+function voer_api_create_material($params){
   $voer = new VoerApi();
   $url = VOER_API_COMMAND_MATERIAL;
-  $params = array(
-    "text" => $material->text,
-    "title" => $material->title,
-    "description" => $material->description,
-    "keywords" => $material->keywords,
-    "categories" => $material->categories,
-    "authors" => $material->authors,
-    "editor_id" => $material->editor_id,
-    "file" => $material->file,
-    "file_type" => $material->file_type,
-    "license_id" => $material->license_id,
-    "language" => $material->language,
-    "derived_from" => $material->derived_from
-  );
   $response = $voer->auth_request($url, "POST", $params);
 
   return json_decode($response);
@@ -65,9 +51,6 @@ function voer_api_checkin_material($material){
   $voer = new VoerApi();
   $url = VOER_API_COMMAND_MATERIAL .$material['material_id'] . '/';
   $response = $voer->auth_request($url, "PUT", $material);
-  // $client = voer_api_client();
-  // $response = $client->doPut(VOER_API_COMMAND_MATERIAL . $material['material_id'] . '/', $material);
-
   return json_decode($response);
 }
 
@@ -81,9 +64,18 @@ function voer_api_get_materials_by_id($id) {
   $voer = new VoerApi();
   $url = VOER_API_COMMAND_MATERIAL . $id . '/all/';
   $response = $voer->auth_request($url);
-  // $client = voer_api_client();
-  // $response = $client->doGet(VOER_API_COMMAND_MATERIAL . $id . '/all/');
 
+  return json_decode($response);
+}
+
+function voer_api_get_detail_material($material_id, $version = NULL){
+  $voer = new VoerApi();
+  if ($version == NULL){
+    $url = VOER_API_COMMAND_MATERIAL . $material_id . "/";
+  }else{
+    $url = VOER_API_COMMAND_MATERIAL . $material_id . "/" . $version . "/";
+  }
+  $response = $voer->auth_request($url);
   return json_decode($response);
 }
 
@@ -98,8 +90,6 @@ function voer_api_get_materials_by_categories($cagetories = array()){
   $url = VOER_API_COMMAND_MATERIAL . "?categories=" . implode(",", $cagetories);
   $response = $voer->auth_request($url);
 
-  // $client = voer_api_client();
-  // $response = $client->doGet(VOER_API_COMMAND_MATERIAL . "?categories=" . implode(",", $cagetories));
   return json_decode($response);
 }
 

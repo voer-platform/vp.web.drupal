@@ -1,0 +1,6 @@
+name = VOER Blocks
+description = The utilities blocks for VOER System.
+core = 7.x
+package = VOER
+dependencies[] = voer_api
+files[] = voer_blocks.module

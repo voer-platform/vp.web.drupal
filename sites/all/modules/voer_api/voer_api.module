@@ -31,6 +31,17 @@ function voer_api_menu() {
   return $items;
 }
 
+/**
+ * Implements hook_cron().
+ *
+ * @return [type] [description]
+ */
+function voer_api_cron(){
+  module_load_include('inc', 'voer_api');
+  watchdog('voer_api', 'Update token key');
+  voer_api_refresh_token();
+}
+
 function _voer_api_test(){
   module_load_include('inc', 'voer_api');
 

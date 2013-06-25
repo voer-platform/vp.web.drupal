@@ -49,10 +49,10 @@ function _voer_module_creation_steps() {
       2 => array(
         'form' => 'voer_module_metadata_info',
       ),
+      // 3 => array(
+      //   'form' => 'voer_module_import_content',
+      // ),
       3 => array(
-        'form' => 'voer_module_import_content',
-      ),
-      4 => array(
         'form' => 'voer_module_content',
       ),
     );
@@ -131,6 +131,12 @@ function voer_module_creation_wizard($form, &$form_state, $entity) {
       '#type' => 'submit',
       '#value' => t('Save'),
       '#weight' => 1001,
+    );
+    $form['publish'] = array(
+      '#type' => 'submit',
+      '#value' => t('Publish'),
+      '#weight' => 1002,
+      '#submit' => array('voer_module_publish_submit'),
     );
   }
 
@@ -267,10 +273,16 @@ function voer_module_metadata_info($form, &$form_state, $entity) {
 
   $form_state['storage']['body'] = $form['body'];
 
-  unset($form['body']); //Visible bode field
-  unset($form['field_voer_file']);
+  hiden_fields($form);
 
   return $form;
+}
+
+function hiden_fields(&$form){
+  $fields = array('body', 'field_voer_file', 'field_voer_material_id', 'field_voer_material_type', 'field_voer_material_version');
+  foreach ($fields as $value) {
+    unset($form[$value]);
+  }
 }
 
 /**
@@ -309,7 +321,7 @@ function voer_module_import_content_validate($form, &$form_state){
     // Move the file, into the Drupal file system
     if ($file = file_move($file, 'public://')) {
       // Save the file for use in the submit handler.
-      $form_state['storage']['file'] = $file;
+      // $form_state['storage']['file'] = $file;
       // drupal_set_message(t('File: <pre>@file</pre>', array('@file' => print_r($file, true))));
 
       // Gui noi dung file cho phan vp.transporter
@@ -353,7 +365,8 @@ function voer_module_import_content_validate($form, &$form_state){
           $importContent = file_get_contents($unzipDir . '/index.html');
           $importContent = preg_replace('/<img src="([^"]*)"/', '<img src="/sites/default/files/import-result/' . $uniqueFilename . '/$1"', $importContent);
           //$form_state['storage']['import_content'] = $importContent;
-          $form_state['storage']['body'][LANGUAGE_NONE][0]['#default_value'] = $importContent;
+          // $form_state['storage']['body'][LANGUAGE_NONE][0]['#default_value'] = $importContent;
+          $form_state['input']['body'][LANGUAGE_NONE][0]['value'] = $importContent;
       }
     }
     else {
@@ -374,8 +387,21 @@ function voer_module_import_content_validate($form, &$form_state){
 function voer_module_content($form, &$form_state) {
   $form = array();
 
+  $form['import_file'] = array(
+    '#type' => 'file',
+    '#title' => t('Document for import'),
+    '#description' => t('Upload a file, allowed extensions: doc, docx, odt'),
+    '#weight' => 0,
+  );
+
+  $form['upload_file'] = array(
+    '#type' => 'button',
+    '#weight' => 5,
+    '#value' => t('Import'),
+    '#validate' => array('voer_module_import_content_validate'),
+  );
   $form['body'] = $form_state['storage']['body'];
-  //drupal_set_message(t('File: <pre>@body</pre>', array('@body' => print_r($form['body'], true))));
+  $form['body']['#weight'] = 10;
 
   return $form;
 }
@@ -396,6 +422,28 @@ function voer_module_content($form, &$form_state) {
  * @ingroup form_example
  */
 function voer_module_creation_wizard_submit($form, &$form_state) {
+  $module = save_module($form, $form_state);
+
+  $form_state['redirect'] = 'node/' . $module->nid;
+
+}
+
+function voer_module_publish_submit($form, &$form_state){
+  $module = save_module($form, $form_state);
+  $result = publish_module($module);
+  if ($result === FALSE){
+    drupal_set_message("The module publish was not successful!");
+  }
+  $form_state['redirect'] = 'node/' . $module->nid;
+}
+
+/**
+ * Save module to WEB DB
+ * @param  [type] $form       [description]
+ * @param  [type] $form_state [description]
+ * @return [type]             [description]
+ */
+function save_module($form, &$form_state){
   $current_step = &$form_state['step'];
   $form_state['step_information'][$current_step]['stored_values'] = $form_state['values'];
 
@@ -413,8 +461,49 @@ function voer_module_creation_wizard_submit($form, &$form_state) {
 
   node_save($entity);
 
-  $form_state['redirect'] = 'node/' . $entity->nid;
+  return $entity;
+}
 
+function publish_module($module){
+  module_load_include('inc', 'voer_api');
+  try {
+    $material_id = $module->field_voer_material_id[LANGUAGE_NONE][0]['value'];
+  } catch (Exception $e) {
+    $material_id = "";
+  }
+
+  $categories = "";
+  $arr_cats = array();
+  foreach ($module->field_voer_categories[LANGUAGE_NONE] as $val) {
+    $arr_cats[] = $val['value'];
+  }
+  $categories = implode(",", $arr_cats);
+
+  $params = array(
+    "material_id" => $material_id,
+    "text" => $module->body[LANGUAGE_NONE][0]['value'],
+    "title" => $module->title,
+    "material_type" => 1, //$module->field_voer_material_type[LANGUAGE_NONE][0]['value'],
+    "version" => "1",
+    "description" => $module->field_voer_description[LANGUAGE_NONE][0]['value'],
+    "keywords" => $module->field_voer_keywords[LANGUAGE_NONE][0]['value'],
+    "categories" => $categories,
+    "authors" => "huyvq",
+    "editor_id" => $module->uid,
+    "license_id" => 1,
+    "language" => "en",
+  );
+
+  try {
+    if (empty($material_id)){
+      return voer_api_create_material($params);
+    }else{
+      return voer_api_checkin_material($params);
+    }
+  } catch (Exception $e) {
+    drupal_set_message("Error: " + $e->getMessage());
+    return FALSE;
+  }
 }
 
 /**

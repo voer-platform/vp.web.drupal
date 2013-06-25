@@ -40,6 +40,13 @@ function voer_content_install() {
     node_add_body_field($type);
   }
 
+  //add fields
+  _voer_content_create_fields();
+  //add instances
+  _voer_content_create_instance_fields();
+}
+
+function _voer_content_create_fields(){
   //DESCRIPTION
   if (!field_info_field('field_voer_description')){
     $field_voer_image = array(
@@ -48,16 +55,6 @@ function voer_content_install() {
       'entity_types' => array('node'),
     );
     field_create_field($field_voer_image);
-    // Create the instance on the bundle.
-    $instance = array(
-        'field_name' => 'field_voer_description',
-        'entity_type' => 'node',
-        'label' => st('Description'),
-        'bundle' => 'voer_module',
-        // If you don't set the "required" property then the field wont be required by default.
-        'required' => TRUE,
-    );
-    field_create_instance($instance);
   }
 
   // IMAGE FIELD
@@ -69,16 +66,6 @@ function voer_content_install() {
       'entity_types' => array('node'),
     );
     field_create_field($field_voer_image);
-    // Create the instance on the bundle.
-    $instance = array(
-        'field_name' => 'field_voer_image',
-        'entity_type' => 'node',
-        'label' => st('Image'),
-        'bundle' => 'voer_module',
-        // If you don't set the "required" property then the field wont be required by default.
-        'required' => TRUE,
-    );
-    field_create_instance($instance);
   }
 
 
@@ -96,18 +83,7 @@ function voer_content_install() {
         'entity_types' => array('node'),
     );
     field_create_field($field_voer_language);
-    // Create the instance on the bundle.
-    $instance = array(
-        'field_name' => 'field_voer_language',
-        'entity_type' => 'node',
-        'label' => st('Language'),
-        'bundle' => 'voer_module',
-        // If you don't set the "required" property then the field wont be required by default.
-        'required' => TRUE,
-    );
-    field_create_instance($instance);
   }
-
 
   // LANGUAGE FIELD
   if (!field_info_field('field_voer_file')) {
@@ -120,23 +96,163 @@ function voer_content_install() {
         'entity_types' => array('node'),
     );
     field_create_field($field_voer_file);
-    // Create the instance on the bundle.
-    $instance = array(
-        'field_name' => 'field_voer_file',
-        'entity_type' => 'node',
-        'label' => st('File'),
-        'bundle' => 'voer_module',
-        // If you don't set the "required" property then the field wont be required by default.
-        'required' => FALSE,
-    );
-    field_create_instance($instance);
   }
 
+  // KEYWORD FIELD
+  if (!field_info_field('field_voer_keywords')) {
+    $field_voer_keywords = array(
+        'field_name' => 'field_voer_keywords',
+        'type' => 'text',
+        'entity_types' => array('node'),
+    );
+    field_create_field($field_voer_keywords);
+  }
+
+  // MATERIAL_ID FIELD
+  if (!field_info_field('field_voer_material_id')) {
+    $field_voer_material_id = array(
+        'field_name' => 'field_voer_material_id',
+        'type' => 'text',
+        'entity_types' => array('node'),
+    );
+    field_create_field($field_voer_material_id);
+  }
+
+  // MATERIAL_TYPE
+  if (!field_info_field('field_voer_material_type')) {
+    $field_voer_material_type = array(
+        'field_name' => 'field_voer_material_type',
+        'type' => 'number_integer',
+        'entity_types' => array('node'),
+    );
+    field_create_field($field_voer_material_type);
+  }
+
+  // VERSION FIELD
+  if (!field_info_field('field_voer_material_version')) {
+    $field_voer_material_version = array(
+        'field_name' => 'field_voer_material_version',
+        'type' => 'text',
+        'entity_types' => array('node'),
+    );
+    field_create_field($field_voer_material_version);
+  }
+
+  // VERSION FIELD
+  if (!field_info_field('field_voer_categories')) {
+    $field_voer_categories = array(
+        'field_name' => 'field_voer_categories',
+        'type' => 'field_voer_categories',
+        'entity_types' => array('node'),
+    );
+    field_create_field($field_voer_categories);
+  }
+}
+
+function _voer_content_create_instance_fields(){
+  $instance = array(
+      'field_name' => 'field_voer_description',
+      'entity_type' => 'node',
+      'label' => st('Description'),
+      'bundle' => 'voer_module',
+      // If you don't set the "required" property then the field wont be required by default.
+      'required' => TRUE,
+  );
+  field_create_instance($instance);
+
+  // CATEGORIES
+  $instance = array(
+    'field_name' => 'field_voer_categories',
+    'entity_type' => 'node',
+    'label' => st('Categories'),
+    'bundle' => 'voer_module',
+    'required' => TRUE,
+  );
+  field_create_instance($instance);
+
+  // IMAGE
+  $instance = array(
+      'field_name' => 'field_voer_image',
+      'entity_type' => 'node',
+      'label' => st('Image'),
+      'bundle' => 'voer_module',
+      // If you don't set the "required" property then the field wont be required by default.
+      'required' => TRUE,
+  );
+  field_create_instance($instance);
+
+  // LANGUAGE FIELD
+  $instance = array(
+      'field_name' => 'field_voer_language',
+      'entity_type' => 'node',
+      'label' => st('Language'),
+      'bundle' => 'voer_module',
+      // If you don't set the "required" property then the field wont be required by default.
+      'required' => TRUE,
+  );
+  field_create_instance($instance);
+
+  // LANGUAGE FIELD
+  $instance = array(
+      'field_name' => 'field_voer_file',
+      'entity_type' => 'node',
+      'label' => st('File'),
+      'bundle' => 'voer_module',
+      // If you don't set the "required" property then the field wont be required by default.
+      'required' => FALSE,
+  );
+  field_create_instance($instance);
+
+  // KEYWORD FIELD
+  $instance = array(
+      'field_name' => 'field_voer_keywords',
+      'entity_type' => 'node',
+      'label' => st('Keywords'),
+      'bundle' => 'voer_module',
+      // If you don't set the "required" property then the field wont be required by default.
+      'required' => FALSE,
+  );
+  field_create_instance($instance);
+
+  // MATERIAL_ID FIELD
+  $instance = array(
+    'field_name' => 'field_voer_material_id',
+    'entity_type' => 'node',
+    'label' => st('Material ID'),
+    'bundle' => 'voer_module',
+    // If you don't set the "required" property then the field wont be required by default.
+    'required' => FALSE,
+  );
+  field_create_instance($instance);
+
+  // MATERIAL_TYPE
+  $instance = array(
+    'field_name' => 'field_voer_material_type',
+    'entity_type' => 'node',
+    'label' => st('Type'),
+    'bundle' => 'voer_module',
+  );
+  field_create_instance($instance);
+
+  // MATERIAL_VERSION
+  $instance = array(
+    'field_name' => 'field_voer_material_version',
+    'entity_type' => 'node',
+    'label' => st('Version'),
+    'bundle' => 'voer_module',
+  );
+  field_create_instance($instance);
 }
 
 function voer_content_uninstall(){
   field_delete_field('field_voer_image');
   field_delete_field('field_voer_language');
   field_delete_field('field_voer_file');
+  field_delete_field('field_voer_description');
+  field_delete_field('field_voer_keywords');
+  field_delete_field('field_voer_material_id');
+  field_delete_field('field_voer_material_type');
+  field_delete_field('field_voer_material_version');
+  field_delete_field('field_voer_categories');
   // field_purge_batch(10); // delete immediately!
 }

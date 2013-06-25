@@ -267,7 +267,6 @@ class Http
     {
         $headers = $this->_headers;
         $s = curl_init();
-
         if(!is_null($this->_user)){
             curl_setopt($s, CURLOPT_USERPWD, $this->_user.':'.$this->_pass);
         }
