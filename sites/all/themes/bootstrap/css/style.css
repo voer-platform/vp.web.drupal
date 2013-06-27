@@ -402,11 +402,14 @@ hr.thin {
   margin-bottom: 20px;
 }
 ul.category_list {
+  float: none !important;
   list-style: none outside none;
-  margin-left: 35% !important;
+  margin: 0 auto !important;
 }
 .category_list li {
+  float: left;
   line-height: 30px;
+  width: 49%;
 }
 .category_list li.views-row-odd {
   margin-left: 0;
@@ -442,4 +445,10 @@ h1, h2, h3, h4, h5, h6 {
 }
 .material-listing-text {
   border-bottom: 1px solid #F5F5F5;
+}
+article.node-voer-module h2 {
+  font-size: 20px;
+}
+article.node-voer-module h1 {
+  font-size: 25px;
 }

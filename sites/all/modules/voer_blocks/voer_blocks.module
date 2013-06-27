@@ -32,11 +32,11 @@ function voer_categories_block_view(){
   $output = array();
 
   module_load_include('inc', 'voer_api');
-  //$categories = voer_api_get_all_categories();
+  $categories = voer_api_get_all_categories();
   $list = array();
   if (isset($categories) && isset($categories->results)){
     foreach ($categories->results as $category) {
-      $list[$category->id] = $category->name;
+      $list[$category->id] = l($category->name, 'category/' . $category->id, array('class' => 'category-link'));
     }
   }
 
@@ -44,6 +44,7 @@ function voer_categories_block_view(){
   $output[] = array(
     '#theme' => 'item_list',
     '#items' => $list,
+    '#attributes' => array('class' => 'category_list span6'),
   );
 
   return $output;
