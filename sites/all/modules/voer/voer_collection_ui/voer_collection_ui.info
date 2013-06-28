@@ -1,0 +1,6 @@
+name = VOER collection UI
+description = The interface display collections with VOER API.
+core = 7.x
+package = VOER
+dependencies[] = voer_api
+files[] = voer_collection_ui.module
