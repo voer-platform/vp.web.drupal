@@ -400,6 +400,7 @@ hr.thin {
 }
 .front #page-header .row-fluid .span4 {
   margin-bottom: 20px;
+  margin-left: 15px;
 }
 ul.category_list {
   float: none !important;
@@ -422,10 +423,10 @@ ul.category_list {
   height: 100%;
   width: 100%;
 }
-.btn-inverse:hover, 
-.btn-inverse:active, 
-.btn-inverse.active, 
-.btn-inverse.disabled, 
+.btn-inverse:hover,
+.btn-inverse:active,
+.btn-inverse.active,
+.btn-inverse.disabled,
 .btn-inverse[disabled] {
   background-color: #033C73;
   color: #FFFFFF;
