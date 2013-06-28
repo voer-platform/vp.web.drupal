@@ -39,22 +39,26 @@ function voer_categories_block_view(){
   $output = array();
 
   module_load_include('inc', 'voer_api');
-  $categories = voer_api_get_all_categories();
-  $list = array();
-  if (isset($categories) && isset($categories->results)){
-    foreach ($categories->results as $category) {
-      $list[$category->id] = l($category->name, 'category/' . $category->id, array('class' => 'category-link'));
+  try {
+    $categories = voer_api_get_all_categories();
+    $list = array();
+    if (isset($categories) && isset($categories->results)){
+      foreach ($categories->results as $category) {
+        $list[$category->id] = l($category->name, 'category/' . $category->id, array('class' => 'category-link'));
+      }
     }
+
+    // Block output in HTML with div wrapper
+    $output[] = array(
+      '#theme' => 'item_list',
+      '#items' => $list,
+      '#attributes' => array('class' => 'category_list span6'),
+    );
+
+    return $output;
+  } catch (Exception $e) {
+    return "";
   }
-
-  // Block output in HTML with div wrapper
-  $output[] = array(
-    '#theme' => 'item_list',
-    '#items' => $list,
-    '#attributes' => array('class' => 'category_list span6'),
-  );
-
-  return $output;
 }
 
 function voer_modules_block_view()
@@ -63,19 +67,24 @@ function voer_modules_block_view()
   $module_id = 'd6b8604a485be63dcecc358789dfbaef';
 
   module_load_include('inc', 'voer_api');
-  $module_list = voer_api_get_all_materials();
+  try {
+    $module_list = voer_api_get_all_materials();
 
-  $module = (array)voer_api_get_detail_material($module_id);
-  $module['content_type'] = 'module';
-  $module['total_count'] = $module_list->count;
+    $module = (array)voer_api_get_detail_material($module_id);
+    $module['content_type'] = 'module';
+    $module['total_count'] = $module_list->count;
 
-  $category = (array)voer_api_get_category($module['categories']);
+    $category = (array)voer_api_get_category($module['categories']);
 
-  if ($category) {
-    $module['category_name'] = $category['name'];
+    if ($category) {
+      $module['category_name'] = $category['name'];
+    }
+
+    return theme('voer_module_custom', $module);
+
+  } catch (Exception $e) {
+    return "";
   }
-
-  return theme('voer_module_custom', $module);
 }
 
 /**
