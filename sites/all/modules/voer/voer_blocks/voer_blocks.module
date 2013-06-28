@@ -10,6 +10,10 @@ function voer_blocks_block_info(){
     'info' => t('VOER - Categories'),
   );
 
+  $blocks['voer_modules_block'] = array(
+    'info' => t('VOER - Modules'),
+  );
+
   return $blocks;
 }
 
@@ -22,6 +26,9 @@ function voer_blocks_block_view($delta='') {
   switch($delta) {
     case 'voer_categories_block' :
       $block['content'] = voer_categories_block_view();
+      break;
+    case 'voer_modules_block' :
+      $block['content'] = voer_modules_block_view();
       break;
   }
 
@@ -48,4 +55,37 @@ function voer_categories_block_view(){
   );
 
   return $output;
+}
+
+function voer_modules_block_view()
+{
+  //Fix module_id
+  $module_id = 'd6b8604a485be63dcecc358789dfbaef';
+
+  module_load_include('inc', 'voer_api');
+  $module_list = voer_api_get_all_materials();
+
+  $module = (array)voer_api_get_detail_material($module_id);
+  $module['content_type'] = 'module';
+  $module['total_count'] = $module_list->count;
+
+  $category = (array)voer_api_get_category($module['categories']);
+
+  if ($category) {
+    $module['category_name'] = $category['name'];
+  }
+
+  return theme('voer_module_custom', $module);
+}
+
+/**
+* Implemtnation of hook_theme()
+*/
+function voer_blocks_theme($existing, $type, $theme, $path) {
+  return array(
+    'voer_module_custom' => array(
+      'arguments' => array('module' => array()),
+      'template' => 'templates/block--voer-module',
+    ),
+  );
 }

@@ -9,7 +9,7 @@ define('VOER_API_COMMAND_MATERIAL', '' . VOER_API_VERSION . '/materials/');
 define('VOER_API_COMMAND_CATEGORY', '' . VOER_API_VERSION . '/categories/');
 define('VOER_API_COMMAND_AUTHOR', '' . VOER_API_VERSION . '/authors/');
 define('VOER_API_COMMAND_EDITOR', '' . VOER_API_VERSION . '/editors/');
-
+define('VOER_API_RESULT_NOT_FOUND', 'Not found');
 
 /*** BEGIN: MATERIAL ***/
 /**
@@ -236,7 +236,12 @@ function voer_api_get_category($id){
   $response = $voer->auth_request($url);
   // $client = voer_api_client();
   // $response = $client->doGet(VOER_API_COMMAND_CATEGORY . $id . "/");
-  return json_decode($response);
+
+  if (!isset($response->detail)) {
+    return json_decode($response);
+  }
+
+  return NULL;
 }
 
 /**
