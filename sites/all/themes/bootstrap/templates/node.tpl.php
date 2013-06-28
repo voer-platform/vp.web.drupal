@@ -1,3 +1,4 @@
+<?php if ($page) : ?>
 <div class="btn-toolbar">
   <div class="btn-group">
   <a href="#" class="btn btn-inverse disabled"><i class="icon-white icon-thumbs-up"></i></a>
@@ -6,10 +7,10 @@
   <a href="#" class="btn btn-inverse disabled"><i class="icon-white icon-share-alt"></i></a>
   </div>
 </div>
+<?php endif; ?>
 
 <article id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
 
-  <!--
   <header>
     <?php print render($title_prefix); ?>
     <?php if (!$page && $title): ?>
@@ -23,7 +24,7 @@
         <?php print $submitted; ?>
       </span>
     <?php endif; ?>
-  </header> -->
+  </header>
 
   <?php
     // Hide comments, tags, and links now so that we can render them later.

@@ -20,13 +20,14 @@ body.in-maintenance {
   background: #256ba7 url("../images/installation-bg.png") repeat 0 0;
 }
 body.in-maintenance .body-wrapper {
-  background: #256ba7;
-  background: -moz-linear-gradient(top, #569ad4 0%, #256ba7 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #569ad4), color-stop(100%, #256ba7));
-  background: -webkit-linear-gradient(top, #569ad4 0%, #256ba7 100%);
-  background: -o-linear-gradient(top, #569ad4 0%, #256ba7 100%);
-  background: -ms-linear-gradient(top, #569ad4 0%, #256ba7 100%);
-  background: linear-gradient(to bottom, #569ad4 0%, #256ba7 100%);
+  background: #88bfe8; /* Old browsers */
+  background: -moz-linear-gradient(top,  #88bfe8 0%, #70b0e0 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#88bfe8), color-stop(100%,#70b0e0)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top,  #88bfe8 0%,#70b0e0 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top,  #88bfe8 0%,#70b0e0 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top,  #88bfe8 0%,#70b0e0 100%); /* IE10+ */
+  background: linear-gradient(to bottom,  #88bfe8 0%,#70b0e0 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#88bfe8', endColorstr='#70b0e0',GradientType=0 ); /* IE6-9 */
 }
 body.in-maintenance .body-wrapper .page-outer {
   background: transparent url("../images/installation-bg.png") repeat 0 0;
@@ -678,20 +679,20 @@ body.in-maintenance #credit {
 
 /* CG Logo on White */
 #credit .logo a {
-  background: transparent url("../images/logo-cg2.png") no-repeat 0 0;
+  background: transparent url("../images/voervn_logo.png") no-repeat 0 0;
   clear: right;
   /* LTR */
   float: right;
   /* LTR */
   height: 0;
   overflow: hidden;
-  padding: 50px 0 0;
-  width: 180px;
+  padding: 100px 0 0;
+  width: 200px;
 }
 
 /* CG Logo on Blue */
 body.in-maintenance #credit .logo a {
-  background: transparent url("../images/logo-cg3.png") no-repeat 0 0;
+  background: transparent url("../images/voervn_logo.png") no-repeat 0 0;
 }
 
 /* CG Logo on Black */
