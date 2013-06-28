@@ -64,7 +64,7 @@ function voer_categories_block_view(){
 function voer_modules_block_view()
 {
   //Fix module_id
-  $module_id = 'd6b8604a485be63dcecc358789dfbaef';
+  $module_id = '57ebcd97c561ed90d7957953df39fc9c';
 
   module_load_include('inc', 'voer_api');
   try {
