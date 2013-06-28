@@ -1,0 +1,6 @@
+name = VOER module UI
+description = The interface display modules with VOER API.
+core = 7.x
+package = VOER
+dependencies[] = voer_content
+files[] = voer_module_ui.module

@@ -1,0 +1,454 @@
+
+@media(min-width: 980px) {
+  body {
+    padding-top: 60px;
+  }
+}
+
+#site-name {
+  line-height: 1;
+  margin: 0;
+}
+
+.submitted {
+  margin-bottom: 1em;
+  font-style: italic;
+  font-weight: normal;
+  color: #777;
+}
+
+.footer {
+  margin-top: 45px;
+  padding: 35px 0 36px;
+  border-top: 1px solid #E5E5E5;
+}
+footer.footer {
+  background-color: #F5F5F5;
+  border-top: 1px solid #E5E5E5;
+  margin-top: 30px;
+  padding: 10px 0 30px;
+}
+footer.footer p {
+  color: #777;
+  margin-bottom: 0;
+}
+ul.action-links {
+  margin-bottom: 2em;
+}
+
+ul.action-links li {
+  display: inline;
+  padding-right: 1.5em;
+}
+
+ul.action-links [class^="icon-"],
+ul.action-links [class*=" icon-"] {
+  padding-right: .5em;
+}
+
+/**
+ * Admin Styling
+ */
+
+/* Fix Toolbar for .navbar-fixed-top */
+body.toolbar .navbar-fixed-top {
+ top: 30px;
+}
+
+body.toolbar-drawer .navbar-fixed-top {
+ top: 65px;
+}
+
+@media(min-width: 980px) {
+  body.toolbar {
+    padding-top: 94px !important;
+  }
+
+  body.toolbar-drawer {
+    padding-top: 129px !important;
+  }
+}
+
+html.overlay-open .navbar-fixed-top {
+  z-index: 400;
+}
+
+/**
+ * Search form stylings.
+ */
+
+.region-navigation form#search-block-form {
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+
+@media(max-width: 979px) {
+  .region-navigation form#search-block-form {
+    float: none;
+  }
+}
+
+fieldset.search-advanced {
+  padding-bottom: 1.5em;
+  margin-top: 1em;
+}
+
+/* Admin toolbar fix */
+body.admin-expanded.admin-vertical.admin-nw .navbar,
+body.admin-expanded.admin-vertical.admin-sw .navbar {
+  margin-left: 260px;
+}
+
+div#admin-toolbar {
+  z-index: 500;
+}
+
+/* Admin_menu fix */
+#admin-menu {
+  z-index: 1100;
+  position: fixed;
+}
+
+body.admin-menu .navbar-fixed-top {
+  top: 30px;
+}
+
+#admin-menu .dropdown li {
+  line-height: normal;
+}
+
+/* System base fix */
+.container-inline div, .container-inline label {
+  display: block;
+}
+
+/* Default form fields to auto */
+input, textarea, select, .uneditable-input {
+  width:auto;
+}
+
+/* Default textfield styles inside vertical tabs */
+.vertical-tabs .form-type-textfield input {
+  -moz-box-sizing: inherit;
+  -webkit-box-sizing: inherit;
+  box-sizing: inherit;
+  width: auto;
+}
+
+/* Vertical tabs form elements alighment */
+.vertical-tabs .form-item{
+  margin: 1em 0;
+}
+
+/* Collapsible field groups fix */
+html.js fieldset.collapsed {
+ height: auto;
+}
+
+/* throbber fix */
+html.js input.form-autocomplete {
+  background-position: 100% 8px; /* LTR */
+  background-repeat: no-repeat;
+}
+
+html.js input.throbbing {
+  background-position: 100% -13px; /* LTR */
+}
+
+.navbar-search .control-group {
+  margin-bottom:0px;
+}
+
+input.error {
+  color: #B94A48;
+  border-color: #B94A48;
+}
+
+/**
+ * Password strength indicator.
+ */
+.password-strength {
+  width: 17em;
+  float: right;  /* LTR */
+  margin-top: 1.4em;
+}
+
+.password-strength-title {
+  display: inline;
+}
+
+.password-strength-text {
+  float: right; /* LTR */
+  font-weight: bold;
+}
+
+.password-indicator {
+  background-color: #C4C4C4;
+  height: 0.3em;
+  width: 100%;
+}
+
+.password-indicator div {
+  height: 100%;
+  width: 0%;
+  background-color: #47C965;
+}
+
+input.password-confirm,
+input.password-field {
+  width: 16em;
+  margin-bottom: 0.4em;
+}
+
+div.password-confirm {
+  float: right;  /* LTR */
+  margin-top: 1.5em;
+  visibility: hidden;
+  width: 17em;
+}
+
+div.form-item div.password-suggestions {
+  padding: 0.2em 0.5em;
+  margin: 0.7em 0;
+  width: 38.5em;
+  border: 1px solid #B4B4B4;
+}
+
+div.password-suggestions ul {
+  margin-bottom: 0;
+}
+
+.confirm-parent,
+.password-parent {
+  clear: left; /* LTR */
+  margin: 0;
+  width: 36.3em;
+}
+/* added an extra clear both in the situation the form actions is preceded by an badly wrapped float element and they overlap
+e.g. multipage*/
+
+.form-actions{
+  clear: both;
+}
+
+/* VOER Customize */
+.navbar-inner{
+  background-color: #C10C3E;
+  background-image: none;
+}
+
+.navbar .nav > li > a{
+  color: #fff;
+  text-decoration: none;
+  text-shadow: 0 1px 0 #8D092D;
+  text-transform: uppercase;
+}
+.navbar .nav > li > a:hover, .navbar .nav > li > a:focus, .navbar .nav > li > a.active{
+  background-color: #8d092d;
+}
+.navbar .nav > li > a:focus,
+.navbar .nav > li > a:hover {
+  color: #ffffff;
+  text-decoration: none;
+}
+/* END */
+
+.box-header {
+  background-color: #FAFAFA;
+  background-image: linear-gradient(to bottom, #fafafa, #efefef);
+  border: 1px solid #DDDDDD;
+  border-radius: 2px 2px 0 0;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  height: 20px;
+  margin-bottom: -1px;
+  overflow: hidden;
+  padding: 10px;
+}
+.box-header h2 {
+  color: #646464;
+  float: left;
+  font-size: 16px;
+  font-weight: normal;
+  line-height: 16px;
+  margin-top: 2px;
+  text-shadow: 0 1px 0 #FFFFFF;
+}
+.box-header .break {
+  border-left: 1px solid #FCFCFC;
+  border-right: 1px solid #DDDDDD;
+  margin: -12px 10px -10px;
+  padding: 12px 0 10px;
+}
+.box-content {
+  background: none repeat scroll 0 0 #FCFCFC;
+  border: 1px solid #DDDDDD;
+  border-radius: 0 0 2px 2px;
+  margin-top: -1px;
+  padding: 10px;
+}
+.suggested-action:hover {
+  -webkit-box-shadow: 0 0 10px #c25171;
+  -moz-box-shadow: 0 0 10px #c25171;
+  box-shadow: 0 0 10px #c25171;
+  color: #444!important;
+  text-decoration: none!important;
+  border-color: #e9afbf;
+}
+.suggested-action {
+  background-color: #f7f7f7;
+  color: #444!important;
+  display: block;
+  margin-bottom: 0;
+  position: relative;
+  padding: 14px;
+}
+.suggested-action .suggested-action-image-link {
+  background-size: cover;
+  background-repeat: no-repeat;
+  border-bottom: 1px solid #dce0b3;
+  display: block;
+  height: 130px;
+  margin: -14px -14px 22px;
+}
+.suggested-action{
+  text-decoration: none;
+}
+.suggested-action h5{
+  color: #555;
+  font-size: 10pt;
+}
+.suggested-action .caption{
+  background: none repeat scroll 0 0 #555;
+  color: white;
+  font-size: 9pt;
+  left: 0;
+  filter:alpha(opacity=80); /* IE */
+  -moz-opacity:0.8; /* Mozilla */
+  opacity: 0.8; /* CSS3 */  padding: 3px 10px;
+  position: absolute;
+  text-transform: uppercase;
+  top: 10px;
+}
+.suggested-action .suggested-action-title {
+  color: #c10c3e;
+}
+.vertical-shadow {
+  border: 1px solid #ccc;
+  border-bottom: 1px solid #aaa;
+  -webkit-box-shadow: 0 1px 3px #ccc;
+  -moz-box-shadow: 0 1px 3px #ccc;
+  box-shadow: 0 1px 3px #ccc;
+}
+h2.suggested-action-title {
+  font-size: 17px;
+  line-height: 22px;
+  height: 44px;
+}
+.pulled {
+  opacity: .8;
+  filter: alpha(opacity=80);
+  margin-bottom: 10px;
+  margin-top: 5px;
+}
+.section-separator {
+  position: relative;
+  margin: 25px auto;
+}
+.section-separator h2 {
+  color: #898989;
+  width: auto;
+  font-size: 16px;
+  font-weight: normal;
+  position: relative;
+  z-index: 1;
+  margin: 0;
+}
+hr {
+  background: #CCC;
+  border: 0;
+  -moz-box-shadow: 0 2px 2px rgba(0, 0, 0, 0.075);
+  -webkit-box-shadow: 0 2px 2px rgba(0, 0, 0, 0.075);
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.075);
+  clear: both;
+  color: #CCC;
+  display: block;
+  height: 1px;
+  width: 100%;
+  margin: 18px 0 36px;
+  padding: 0;
+}
+hr.thin {
+  margin-bottom: 18px;
+  margin-left: auto;
+  margin-right: auto;
+  opacity: .40;
+  filter: alpha(opacity=40);
+  width: 50%;
+}
+.section-separator .section-separator-text {
+  background: #fff;
+  display: inline-block;
+  text-transform: uppercase;
+  padding: 0 15px 0 0;
+}
+.section-separator hr {
+  position: relative;
+  top: -20px;
+  margin: 0;
+}
+.front #page-header .row-fluid .span4 {
+  margin-bottom: 20px;
+}
+ul.category_list {
+  float: none !important;
+  list-style: none outside none;
+  margin: 0 auto !important;
+}
+.category_list li {
+  float: left;
+  line-height: 30px;
+  width: 49%;
+}
+.category_list li.views-row-odd {
+  margin-left: 0;
+}
+.library-section {
+  overflow: hidden;
+}
+.suggested-action .suggested-action-image-link a {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+.btn-inverse:hover, 
+.btn-inverse:active, 
+.btn-inverse.active, 
+.btn-inverse.disabled, 
+.btn-inverse[disabled] {
+  background-color: #033C73;
+  color: #FFFFFF;
+}
+h1, h2, h3, h4, h5, h6 {
+  color: #317EAC;
+}
+.material-listing-text img {
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.45);
+  float: left;
+  margin-right: 10px;
+  max-width: 120px;
+  padding: 2px;
+}
+.material-listing-text p {
+  text-align: justify;
+}
+.material-listing-text {
+  border-bottom: 1px solid #F5F5F5;
+}
+article.node-voer-module h2 {
+  font-size: 20px;
+}
+article.node-voer-module h1 {
+  font-size: 25px;
+}

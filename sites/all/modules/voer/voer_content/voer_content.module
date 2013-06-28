@@ -1,0 +1,891 @@
+<?php
+define('VOER_MATERIAL_TYPE_TEXT', 1);
+define('VOER_MATERIAL_TYPE_VIDEO', 2);
+
+define('VOER_MATERIAL_LICENSE_FORM', 'material_license_form');
+define('VOER_MATERIAL_METADATA_FORM', 'material_metadata_form');
+define('VOER_MATERIAL_CONTENT_FORM', 'material_content_form');
+
+// /**
+//  * Implements hook_entity_info().
+//  *
+//  * This is the fundamental description of the entity.
+//  *
+//  * It provides a single entity with a single bundle and without revision
+//  * support.
+//  */
+// function voer_content_entity_info() {
+//   $info['voer_content'] = array(
+//     // A human readable label to identify our entity.
+//     'label' => t('VOER Content'),
+
+//     // The controller for our Entity, extending the Drupal core controller.
+//     'controller class' => 'VoerContentController',
+
+//     // The table for this entity defined in hook_schema()
+//     'base table' => 'voer_content',
+
+//     // Returns the uri elements of an entity
+//     'uri callback' => 'voer_content_uri',
+
+//     // IF fieldable == FALSE, we can't attach fields.
+//     'fieldable' => TRUE,
+
+//     // entity_keys tells the controller what database fields are used for key
+//     // functions. It is not required if we don't have bundles or revisions.
+//     // Here we do not support a revision, so that entity key is omitted.
+//     'entity keys' => array(
+//       'id' => 'material_id', // The 'id' (basic_id here) is the unique id.
+//       'bundle' => 'bundle_type', // Bundle will be determined by the 'bundle_type' field
+//       'label' => 'title',
+//     ),
+//     'bundle keys' => array(
+//       'bundle' => 'bundle_type',
+//     ),
+
+//     // FALSE disables caching. Caching functionality is handled by Drupal core.
+//     'static cache' => TRUE,
+
+//     // Bundles are alternative groups of fields or configuration
+//     // associated with a base entity type.
+//     'bundles' => array(
+//       'voer_module' => array(
+//         'label' => 'Module',
+//         'uri callback' => 'voer_content_module',
+//         // 'admin' key is used by the Field UI to provide field and
+//         // display UI pages.
+//         'admin' => array(
+//           'path' => 'admin/structure/voer_content/manage/module',
+//           'access arguments' => array('administer voer modules'),
+//         ),
+//       ),
+//       'voer_collection' => array(
+//         'label' => 'Collection',
+//         'uri callback' => 'voer_content_collection',
+//         // 'admin' key is used by the Field UI to provide field and
+//         // display UI pages.
+//         'admin' => array(
+//           'path' => 'admin/structure/voer_content/manage/collection',
+//           'access arguments' => array('administer voer collections'),
+//         ),
+//       ),
+//       'voer_course' => array(
+//         'label' => 'Course',
+//         'uri callback' => 'voer_content_course',
+//         // 'admin' key is used by the Field UI to provide field and
+//         // display UI pages.
+//         'admin' => array(
+//           'path' => 'admin/structure/voer_content/manage/course',
+//           'access arguments' => array('administer voer courses'),
+//         ),
+//       ),
+//     ),
+//     // View modes allow entities to be displayed differently based on context.
+//     // As a demonstration we'll support "Tweaky", but we could have and support
+//     // multiple display modes.
+//     'view modes' => array(
+//       'full' => array(
+//         'label' => t('Full Display'),
+//         'custom settings' =>  TRUE,
+//       ),
+//       'list' => array(
+//         'label' => t('List Display'),
+//         'custom settings' =>  TRUE,
+//       ),
+//       'brief' => array(
+//         'label' => t('Brief Display'),
+//         'custom settings' =>  TRUE,
+//       ),
+//     )
+//   );
+
+//   return $info;
+// }
+
+// /**
+//  * Implements hook_field_extra_fields().
+//  */
+// function voer_content_field_extra_fields() {
+//   $extra = array();
+
+//   foreach (voer_content_bundles() as $type => $bundle_type) {
+//     $extra['voer_content'][$type] = array(
+//       'form' => array(
+//         'title' => array(
+//           'label' => t('Title'),
+//           'description' => t('Textfield'),
+//           'weight' => -100,
+//         ),
+//         'description' => array(
+//           'label' => t('Description'),
+//           'description' => t('Textarea'),
+//           'weight' => -90,
+//         ),
+//         'content' => array(
+//           'label' => t('Content'),
+//           'description' => t('Textarea'),
+//           'weight' => -10,
+//         )
+//       )
+//     );
+//   }
+
+//   return $extra;
+// }
+
+/**
+ * Implements hook_entity_info_alter
+ */
+// function voer_content_entity_info_alter(&$entity_info){
+//   $entity_info['node']['bundles']['voer_module']['uri callback'] = 'voer_content_module_uri';
+// }
+
+/**
+ * Fetch a basic object.
+ *
+ * This function ends up being a shim between the menu system and
+ * entity_example_basic_load_multiple().
+ *
+ * This function gets its name from the menu system's wildcard
+ * naming conventions. For example, /path/%wildcard would end
+ * up calling wildcard_load(%wildcard value). In our case defining
+ * the path: examples/entity_example/basic/%entity_example_basic in
+ * hook_menu() tells Drupal to call entity_example_basic_load().
+ *
+ * @param $basic_id
+ *   Integer specifying the basic entity id.
+ * @param $reset
+ *   A boolean indicating that the internal cache should be reset.
+ * @return
+ *   A fully-loaded $basic object or FALSE if it cannot be loaded.
+ *
+ * @see entity_example_basic_load_multiple()
+ * @see entity_example_menu()
+ */
+function voer_content_load($id = NULL, $reset = FALSE) {
+  $ids = (isset($id) ? array($id) : array());
+  $basic = voer_content_load_multiple($ids, array(), $reset);
+  return $basic ? reset($basic) : FALSE;
+}
+
+
+/**
+ * Loads multiple basic entities.
+ *
+ * We only need to pass this request along to entity_load(), which
+ * will in turn call the load() method of our entity controller class.
+ */
+function voer_content_load_multiple($ids = FALSE, $conditions = array(), $reset = FALSE) {
+  return entity_load('voer_content', $ids, $conditions, $reset);
+}
+
+/**
+ * Implements the uri callback.
+ */
+function voer_content_uri($info) {
+  return array(
+    'path' => 'voer_content/' . $info->id,
+  );
+}
+
+function voer_content_module_uri($info){
+  return array(
+    'path' => 'module/' . $info->nid,
+  );
+}
+
+function voer_content_collection_uri($info){
+  return array(
+    'path' => 'collection/' . $info->nid,
+  );
+}
+
+function voer_content_course_uri($info){
+  return array(
+    'path' => 'course/' . $info->nid,
+  );
+}
+
+/**
+ * Implements hook_admin_paths
+ * @return [type] [description]
+ */
+function voer_content_admin_paths(){
+  $paths = array(
+    'voer_content/*/add' => TRUE,
+    'node/*/publish' => TRUE,
+  );
+  return $paths;
+}
+
+/**
+ * Implements hook_menu_alter().
+ */
+function voer_content_menu_alter(&$items) {
+  // Modify add voer module
+  $items['node/add/voer-module']['page callback'] = 'voer_module_creation';
+  $items['node/add/voer-module']['file'] =  'voer_content_module.inc';
+  $items['node/add/voer-module']['file path'] = drupal_get_path('module', 'voer_content');
+
+  // Modify add voer module
+  $items['node/add/voer-collection']['page callback'] = 'voer_collection_creation';
+  $items['node/add/voer-collection']['file'] =  'voer_content_collection.inc';
+  $items['node/add/voer-collection']['file path'] = drupal_get_path('module', 'voer_content');
+}
+
+/**
+ * Implements hook_menu().
+ */
+function voer_content_menu() {
+  // Add a module.
+  $items['voer_content/module/add'] = array(
+    'title' => 'Add a module',
+    'page callback' => 'voer_module_creation',
+    'access arguments' => array('create voer module'),
+    'type' => MENU_LOCAL_ACTION,
+    'file' => 'voer_content_module.inc',
+  );
+
+  // Add a collection.
+  $items['voer_content/collection/add'] = array(
+    'title' => 'Add a module',
+    'page callback' => 'voer_content_collection_add',
+    'access arguments' => array('create voer collection'),
+    'type' => MENU_LOCAL_ACTION,
+  );
+
+  // Add a course.
+  $items['voer_content/course/add'] = array(
+    'title' => 'Add a module',
+    'page callback' => 'voer_content_course_add',
+    'access arguments' => array('create voer course'),
+    'type' => MENU_LOCAL_ACTION,
+  );
+
+
+  // List of all modules.
+  $items['admin/structure/voer_content/manage/module/list'] = array(
+    'title' => 'List',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+  );
+
+  $items['node/%node/publish'] = array(
+    'title' => 'Publish',
+    'page callback' => 'voer_content_publish',
+    'page arguments' => array(1),
+    'access arguments' => array('access publish node'),
+    'type' => MENU_LOCAL_TASK,
+    'file' => 'voer_content.pages.inc',
+    'weight' => 50,
+  );
+
+  return $items;
+}
+
+/**
+ * [voer_content_title description]
+ * @param  [type] $content [description]
+ * @return [type]          [description]
+ */
+function voer_content_title($content){
+  return $content->title;
+}
+
+/**
+ * Returns a bundles list of VOER content
+ *
+ * @return [type]
+ */
+function voer_content_bundles(){
+  return field_info_bundles('voer_content');
+}
+
+/**
+ * Returns a render array with all entity_example_basic entities.
+ *
+ * In this basic example we know that there won't be many entities,
+ * so we'll just load them all for display. See pager_example.module
+ * to implement a pager. Most implementations would probably do this
+ * with the contrib Entity API module, or a view using views module,
+ * but we avoid using non-core features in the Examples project.
+ *
+ * @see pager_example.module
+ */
+function voer_content_list_bundles() {
+  $content = array();
+  // Load all of our bundles.
+  $bundles = voer_content_bundles();
+  if (!empty($bundles)) {
+    foreach ( $bundles as $bundle ) {
+      // Create tabular rows for our entities.
+      $rows[] = array(
+        'data' => array(
+          'name' => $bundle['label'],
+          'edit' => l(t('edit'),'aca'),
+          'manage_field' => l(t('manage field'),$bundle['admin']['path'] . '/fields'),
+          'manage_display' => l(t('manage display'),$bundle['admin']['path'] . '/display'),
+        ),
+      );
+    }
+    // Put our entities into a themed table. See theme_table() for details.
+    $content['bundle_table'] = array(
+      '#theme' => 'table',
+      '#rows' => $rows,
+      '#header' => array(
+                      t('Name'),
+                      array(
+                        "data" => t('Operator'),
+                        "colspan" => 3,
+                      )
+                    ),
+    );
+  }
+  else {
+    // There were no entities. Tell the user.
+    $content[] = array(
+      '#type' => 'item',
+      '#markup' => t('No bundles currently exist.'),
+    );
+  }
+  return $content;
+}
+
+/**
+ * Form function to create an voer_content entity.
+ *
+ * The pattern is:
+ * - Set up the form for the data that is specific to your
+ *   entity: the columns of your base table.
+ * - Call on the Field API to pull in the form elements
+ *   for fields attached to the entity.
+ */
+function voer_content_form($form, &$form_state, $entity) {
+  $form['title'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Title'),
+    '#required' => TRUE,
+    '#default_value' => isset($entity->title) ? $entity->title : "",
+  );
+
+  $form['description'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Description'),
+    '#required' => TRUE,
+    '#default_value' => isset($entity->description) ? $entity->description : "",
+  );
+
+  $form['content'] = array(
+    '#type' => 'text_format',
+    '#title' => t('Body'),
+    '#required' => TRUE,
+    '#default_value' => isset($entity->content) ? $entity->content : "",
+  );
+
+  field_attach_form('voer_content', $entity, $form, $form_state);
+
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Save'),
+    '#weight' => 100,
+  );
+  $form['delete'] = array(
+    '#type' => 'submit',
+    '#value' => t('Delete'),
+    '#submit' => array('entity_example_basic_edit_delete'),
+    '#weight' => 200,
+  );
+
+  return $form;
+}
+
+/**
+ * We save the entity by calling the controller.
+ */
+function voer_content_save(&$entity) {
+  return node_save($entity);
+}
+
+
+// HUY.VQ --------------------------------
+
+/**
+ * Implements hook_form_alter().
+ */
+function voer_content_form_alter(&$form, &$form_state, $form_id) {
+  $node = new stdClass();
+
+  if (arg(0) == 'node') {
+    $nid = arg(1);
+
+    if ($nid) {
+      $node = node_load($nid);
+    }
+  }
+
+  if ($form_id == 'voer_module_node_form') {
+    if (empty($form_state['step'])) {
+      $form_state['step'] = 1;
+      $form_state['step_infor'] = _voer_content_material_form_steps();
+    }
+    dpm($form);
+    $step = &$form_state['step'];
+
+    if ($step < count($form_state['step_infor']) && empty($node->nid)) {
+      $form = $form_state['step_infor'][$step]['form']($form, $form_state);
+
+    } else {
+      global $user;
+
+      //hide if user has not roles
+      if (!in_array('administrator', $user->roles)) {
+        $form['menu']['#access'] = FALSE;
+        $form['revision_information']['#access'] = false;
+        $form['options']['#access'] = false;
+        $form['comment_settings']['#access'] = false;
+        $form['author']['#access'] = false;
+        $form['path']['#access'] = false;
+      }
+
+      $form['material_content_form'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Metadata'),
+        '#group' => 'additional_settings',
+        '#weight' => -10,
+      );
+
+      $form['material_content_form']['title'] = $form['title'];
+      $form['material_content_form']['field_voer_description'] = $form['field_voer_description'];
+      $form['material_content_form']['field_image'] = $form['field_voer_image'];
+      $form['material_content_form']['field_language'] = $form['field_voer_language'];
+      $form['material_content_form']['field_voer_file'] = $form['field_voer_file'];
+      $form['material_content_form']['field_keyword'] = $form['field_keyword'];
+      $form['material_content_form']['field_id'] = $form['field_id'];
+      $form['material_content_form']['field_version'] = $form['field_version'];
+
+      unset($form['title']);
+      unset($form['field_voer_description']);
+      unset($form['field_voer_image']);
+      unset($form['field_voer_language']);
+      unset($form['field_voer_file']);
+      unset($form['field_id']);
+      unset($form['field_version']);
+
+      $form['actions']['publish'] = array(
+        '#type'=> 'submit',
+        '#value'=> 'Publish',
+        '#weight'=> 11,
+        '#submit' => array('voer_content_form_push'),
+      );
+    }
+  }
+
+  return $form;
+}
+
+/**
+ * post data to server
+ *
+ * @param unknown_type $form
+ * @param unknown_type $form_state
+ */
+function voer_content_form_push($form, &$form_state)
+{
+  global $user;
+
+  $node = new stdClass();
+
+  if (arg(0) == 'node') {
+    $nid = arg(1);
+
+    if ($nid) {
+      $node = node_load($nid);
+    }
+  }
+
+  $mod_data = array();
+  $mod_data['title'] = $form_state['values']['title'];
+  $mod_data['text'] = $form_state['values']['body'][LANGUAGE_NONE][0]['value'];
+  $mod_data['language'] = $form_state['values']['field_language'][LANGUAGE_NONE][0]['value'];
+  $mod_data['description'] = $form_state['values']['field_summary'][LANGUAGE_NONE][0]['value'];
+  $mod_data['categories'] = $form_state['values']['field_category'][LANGUAGE_NONE][0]['value'];
+  $mod_data['authors'] = $user->uid;
+  $mod_data['editor_id'] = 1;
+  $mod_data['keywords'] = $form_state['values']['field_keyword'][LANGUAGE_NONE][0]['value'];
+  $mod_data['license_id'] = '3';
+  $mod_data['material_type'] = VOER_MATERIAL_TYPE_TEXT;
+  $mod_data['file'] = '';
+  $mod_data['file_type'] = '';
+  $mod_data['derived_from'] = 1;
+
+  module_load_include('inc', 'voer_api');
+
+  if (isset($node->nid) && $form_state['values']['field_id'][LANGUAGE_NONE][0]['value']) {
+    $mod_data['material_id'] = $form_state['values']['field_id'][LANGUAGE_NONE][0]['value'];
+    $result = voer_api_checkin_material($mod_data);
+    unset($node->nid);
+    unset($node->vid);
+
+  } else {
+    $result = voer_api_create_material((object)$mod_data);
+  }
+
+  if ($result && $result->material_id) {
+    $node->title = $result->title;
+    $node->uid = $mod_data['authors'];
+    $node->body = $form_state['values']['body'];
+    $node->type = 'voer_content';
+    $node->language = LANGUAGE_NONE;
+    // $node->created = $result->modified;
+    $node->status = 1;
+    $node->promote = 1;
+
+    $node->field_keyword = $form_state['values']['field_keyword'];
+    $node->field_language = $form_state['values']['field_language'];
+    $node->field_summary = $form_state['values']['field_summary'];
+    $node->field_category = $form_state['values']['field_category'];
+    $node->field_id[LANGUAGE_NONE][0]['value'] = $result->material_id;
+    $node->field_version[LANGUAGE_NONE][0]['value'] = $result->version;
+
+    node_submit($node);
+    node_save($node);
+
+    drupal_set_message('Commit data to server successfull');
+
+    drupal_goto('node/' . $node->nid);
+  }
+}
+
+/**
+ * Implements hook_menu().
+ */
+// function voer_content_menu() {
+//   $items = array();
+
+//   $items['materials'] = array(
+//     'title' => t('Material list'),
+//     'page callback' => 'voer_content_material_list',
+//     'access arguments' => array('view VOER content'),
+//   );
+
+//   $items['material/%'] = array(
+//     'title' => t('Versions of material'),
+//     'page callback' => 'voer_content_material_version_list',
+//     'page arguments' => array(1),
+//     'access arguments' => array('view VOER content'),
+//     'type' => MENU_NORMAL_ITEM,
+//   );
+
+//   $items['material/%/%'] = array(
+//     'title' => t('Material detail'),
+//     'page callback' => 'voer_content_view_material',
+//     'access arguments' => array('view VOER content'),
+//     'type' => MENU_NORMAL_ITEM,
+//   );
+
+//   $items['voer-content/archive-form'] = array(
+//     'title' => t('Upload form'),
+//     'page callback' => 'drupal_get_form',
+//     'page arguments' => array('extract_zip_form'),
+//     'access arguments' => array('access content'),
+//   );
+
+//   return $items;
+// }
+
+/**
+ * [voer_content_view_material description]
+ * @return object          [description]
+ */
+function voer_content_view_material()
+{
+  $material_id = arg(1);
+  $version = arg(2);
+
+  if (!$version) {
+    $version = '';
+  }
+
+  $material = array();
+
+  $node_id = _voer_content_get_data($material_id, $version);
+
+  if (!$node_id) {
+    module_load_include('inc', 'voer_api');
+    $material = voer_api_get_content($material_id, $version);
+
+    if (isset($material['material_id'])) {
+      $node_id = _voer_content_save_node($material);
+    }
+  }
+
+  if (!$node_id) {
+    return drupal_not_found();
+  }
+
+  return drupal_render(node_view(node_load($node_id)));
+}
+
+/**
+ * [_voer_content_save_node description]
+ *
+ * @param array $material [description]
+ * @return int       [description]
+ */
+function _voer_content_save_node($material)
+{
+  $node = new stdClass();
+  $node->title = $material['title'];
+  $node->uid = $material['authors'];
+  $node->body[LANGUAGE_NONE][0]['value'] = $material['text'];
+  $node->body[LANGUAGE_NONE][0]['format'] = 'full_html';
+  $node->type = 'voer_content';
+  $node->language = LANGUAGE_NONE;
+  $node->status = 1;
+  $node->promote = 1;
+
+  $node->field_keyword[LANGUAGE_NONE][0]['value'] = $material['keywords'];
+  $node->field_language[LANGUAGE_NONE][0]['value'] = $material['language'];
+  $node->field_summary[LANGUAGE_NONE][0]['value'] = $material['description'];
+  $node->field_category[LANGUAGE_NONE][0]['value'] = $material['categories'];
+  $node->field_id[LANGUAGE_NONE][0]['value'] = $material['material_id'];
+  $node->field_version[LANGUAGE_NONE][0]['value'] = $material['version'];
+
+  node_submit($node);
+  node_save($node);
+
+  return $node->nid;
+}
+
+function voer_content_material_list()
+{
+  global $user;
+
+  module_load_include('inc', 'voer_api');
+  $material_list = voer_api_get_materials_by_authors(array($user->uid));
+
+  if ($material_list['results']) {
+    $items = array();
+
+    foreach ($material_list['results'] as $key => $value) {
+      $items[] = l($value['title'], 'material/' . $value['material_id']);
+    }
+
+    return theme('item_list', array('items' => $items));
+
+  } else {
+    return drupal_not_found();
+  }
+}
+
+/**
+ * [voer_content_material_version_list description]
+ *
+ * @param  int $material_id [description]
+ * @return [type]              [description]
+ */
+function voer_content_material_version_list($material_id)
+{
+  module_load_include('inc', 'voer_api');
+  $version_list = voer_api_get_materials_by_id($material_id);
+
+  if ($version_list->results) {
+    $materials = array();
+
+    foreach ($version_list->results as $key => $material_info) {
+      $materials[] = l($material_info->title, sprintf('material/%s/%s', $material_info->material_id, $material_info->version));
+    }
+
+    return theme('item_list', array('items' => $materials));
+
+  } else {
+    return drupal_not_found();
+  }
+}
+
+/**
+ * [_voer_content_get_data description]
+ *
+ * @param  int $material_id     [description]
+ * @param  int $version      [description]
+ * @return object            [description]
+ */
+function _voer_content_get_data($material_id, $version)
+{
+  $sql = "SELECT node.nid AS nid "
+        ."FROM {node} AS node "
+        ."LEFT JOIN {field_data_field_id} field_data_field_id ON node.nid = field_data_field_id.entity_id AND (field_data_field_id.entity_type = 'node' AND field_data_field_id.deleted = '0') "
+        ."LEFT JOIN {field_data_field_version} field_data_field_version ON node.nid = field_data_field_version.entity_id AND (field_data_field_version.entity_type = 'node' AND field_data_field_version.deleted = '0') "
+        ."WHERE node.status = '1' "
+        ."AND node.type IN  ('voer_content') "
+        ."AND field_data_field_id.field_id_value LIKE :material_id "
+        ."AND field_data_field_version.field_version_value LIKE :version";
+
+  $node_id = db_query($sql, array(':material_id' => $material_id, ':version' => $version))->fetchField();
+
+  return $node_id;
+}
+
+/**
+ * Create a new form accpet license.
+ *
+ * @return form
+ */
+function material_license_form(&$form, &$form_state) {
+  unset($_SESSION['material_data']);
+
+  unset($form['title']);
+  unset($form['body']);
+  unset($form['field_category']);
+  unset($form['field_language']);
+  unset($form['field_keyword']);
+  unset($form['field_summary']);
+  unset($form['field_id']);
+  unset($form['field_version']);
+
+  $form['additional_settings']['#access'] = FALSE;
+  $form['actions']['#access'] = FALSE;
+
+  $form['material_license_form'] = array(
+    '#type' => 'fieldset',
+    '#title' => 'License agreement',
+    '#collapsible' => TRUE,
+  );
+
+  $form['material_license_form']['license_text'] = array(
+    '#type' => 'textarea',
+    '#value' => t('I recently played the role of Information Architect on a site remodel. We were charged with the task of doing a brand new build to replace an existing Flash site. One of the priorities of the client was to retain the elaborate Request for Quote form. There were many, many form fields that comprised this web form so I began to ponder if we should break the form up into a multiple step form, to improve the overall user experience. After careful consideration, I decided that we should definitely split the form up (for more on this matter check out Pagination in Web Forms | Evaluating the Effectiveness of Web Forms on UXmatter.com). Since there was no logic needed in the progression of the form, I felt that Javascript would be an acceptable solution, over using an actual server-side wizard. Thanks to Janko and his Turn any webform into a powerful wizard with jQuery blog, I found his JQuery plugin very easy to implement. This tutorial assumes that you have some basic working knowledge of the Webform module and how to create a custom module of your own.'),
+    '#weight' => 0,
+    '#disabled' => TRUE,
+    '#resizable' => FALSE,
+    '#attributes' => array(
+      'class' => array('license_text'),
+    )
+  );
+
+  $form['material_license_form']['accept_license'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('I have read the above, and I agree to license this new work under its terms.'),
+    '#required' => TRUE,
+  );
+
+  $form['material_license_form']['submit_license'] = array(
+    '#type' => 'submit',
+    '#value' => t('Next »'),
+    '#submit' => array('material_form_submit'),
+  );
+
+  return $form;
+}
+
+/**
+ * Create a new form input metadata for material.
+ *
+ * @return form
+ */
+function material_metadata_form(&$form, &$form_state)
+{
+  unset($form['body']);
+  unset($form['field_id']);
+  unset($form['field_version']);
+
+  $form['additional_settings']['#access'] = FALSE;
+  $form['actions']['#access'] = FALSE;
+
+  $form['submit_metadata'] = array(
+    '#type' => 'submit',
+    '#value' => t('Next »'),
+    '#submit' => array('material_form_submit'),
+    '#weight' => 10,
+  );
+
+  return $form;
+}
+
+function material_form_submit($form, &$form_state)
+{
+  $current_step = &$form_state['step'];
+  $form_state['step_infor'][$current_step]['stored_values'] = $form_state['values'];
+
+  if ($current_step < count($form_state['step_infor'])) {
+    $current_step++;
+
+    if (!empty($form_state['step_infor'][$current_step]['stored_values'])) {
+      $form_state['values'] = $form_state['step_infor'][$current_step]['stored_values'];
+    } else {
+      $form_state['values'] = array();
+    }
+
+    $form_state['rebuild'] = TRUE;
+    return;
+  }
+}
+
+function _voer_content_material_form_steps() {
+  return array(
+    1 => array(
+      'form' => VOER_MATERIAL_LICENSE_FORM,
+    ),
+    2 => array(
+      'form' => VOER_MATERIAL_METADATA_FORM,
+    ),
+    3 => array(
+      'form' => VOER_MATERIAL_CONTENT_FORM,
+    ),
+  );
+}
+
+function extract_zip_form()
+{
+  $form = array();
+
+  $form['archive_form'] = array(
+    '#type' => 'fieldset',
+    '#title' => 'Đính kèm file',
+    '#collapsible' => TRUE,
+  );
+
+  $form['archive_form']['file_luong'] = array(
+    '#type' => 'file',
+    '#title' => t('Chọn file'),
+    '#description' => t('Pick a video file to upload.'),
+  );
+
+  $form['archive_form']['submit'] = array(
+      '#type' => 'submit',
+      '#value' => t('Tải lên'),
+  );
+
+  return $form;
+}
+
+function extract_zip_form_submit($form, &$form_state)
+{
+  $filepath = 'temporary://test/';
+  file_prepare_directory($filepath, FILE_CREATE_DIRECTORY);
+  $file = file_save_upload('file_luong', array('file_validate_extensions' => array('zip')), $filepath);
+
+  $file_name = $file->filename;
+  echo $file_name;
+  open_file_zip($file_name);die;
+}
+
+function open_file_zip($file_name) {
+  $filepath = drupal_realpath('temporary://test/');
+
+  $zip = zip_open($filepath . '/' . $file_name);
+
+  do {
+    $entry = zip_read($zip);
+  } while ($entry && FALSE === strpos(zip_entry_name($entry), 'index.cnxml'));
+
+  zip_entry_open($zip, $entry);
+
+  $entryContent = zip_entry_read($entry, zip_entry_filesize($entry));
+
+  $xml = simplexml_load_string($entryContent);
+
+  echo '<h1>' . $xml->title . '</h1>';
+
+  zip_entry_close($entry);
+  zip_close($zip);
+}
