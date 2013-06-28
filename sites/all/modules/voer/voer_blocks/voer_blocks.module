@@ -11,7 +11,15 @@ function voer_blocks_block_info(){
   );
 
   $blocks['voer_modules_block'] = array(
-    'info' => t('VOER - Modules'),
+    'info' => t('VOER - Featured modules'),
+  );
+
+  $blocks['voer_collections_block'] = array(
+    'info' => t('VOER - Featured collections'),
+  );
+
+  $blocks['voer_courses_block'] = array(
+    'info' => t('VOER - Featured courses'),
   );
 
   return $blocks;
@@ -28,6 +36,12 @@ function voer_blocks_block_view($delta='') {
       $block['content'] = voer_categories_block_view();
       break;
     case 'voer_modules_block' :
+      $block['content'] = voer_modules_block_view();
+      break;
+    case 'voer_collections_block' :
+      $block['content'] = voer_modules_block_view();
+      break;
+    case 'voer_courses_block' :
       $block['content'] = voer_modules_block_view();
       break;
   }
