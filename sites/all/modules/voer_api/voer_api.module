@@ -31,14 +31,25 @@ function voer_api_menu() {
   return $items;
 }
 
+/**
+ * Implements hook_cron().
+ *
+ * @return [type] [description]
+ */
+function voer_api_cron(){
+  module_load_include('inc', 'voer_api');
+  watchdog('voer_api', 'Update token key');
+  voer_api_refresh_token();
+}
+
 function _voer_api_test(){
   module_load_include('inc', 'voer_api');
 
   //get all category
   // voer_api_refresh_token();
-  $categories = voer_api_get_all_materials();
+  // $categories = voer_api_get_all_materials();
   // print_r($categories);
-  dpm($categories);
+  // dpm($categories);
 
   // $category = voer_api_get_category(2);
   // dpm($category);
@@ -56,6 +67,14 @@ function _voer_api_test(){
   //get all authors
   //$authors = voer_api_get_all_authors();
   //dpm($authors);
+
+  //TEST for TRANSFORMER
+  $file = "@" . realpath("./test1.docx") . ";filename=test1.docx";
+  //print $file;
+  // voer_api_refresh_token();
+  $result = voer_api_import($file);
+
+  print $result;
 
   return "";
 }

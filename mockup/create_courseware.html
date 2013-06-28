@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Internet Technologies - Courseware | VOER</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet" media="screen">
+    <link href="bootstrap/css/bootstrap-blue.css" rel="stylesheet" media="screen">
+    <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/jui/blitzer/jquery-ui-1.10.1.custom.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet" media="screen">
+    <link href="css/abc.css" rel="stylesheet" media="screen">
+
+    <script src="js/jquery-latest.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="js/jquery-ui-1.10.1.custom.js"></script>
+
+    <script>
+        $(function() {
+            $("#course-time-start").datepicker();
+            $("#course-time-end").datepicker();
+            $("#accordion").accordion({
+                heightStyle: "content"
+            });
+            $("#selectable").selectable();
+
+            $("#next1").click(function() {
+                $("#courseware-step-1").hide();
+                $("#courseware-step-2").show();
+                title = $("#cwtitle").val();
+                $("#path-cwtitle").html(title);
+                $("#heading-cwtitle").html(title);
+            });
+
+
+            $("#next2").click(function() {
+                $("#courseware-step-2").hide();
+                $("#courseware-step-3").show();
+            });
+
+            $('#selected-lectures li').click(function() {
+                $('#accordion').accordion({ active: 1 });
+            });
+        });
+    </script>
+
+  </head>
+  <body data-offset="80" data-target=".subnav" data-spy="scroll" style="height:1000px">
+
+    <style>
+        label {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        #feedback { font-size: 1.4em; }
+        #selectable .ui-selecting { background: #FECA40; }
+        #selectable .ui-selected { background: #F39814; color: white; }
+        #selectable { list-style-type: none; margin: 0; padding: 0; }
+        #selectable li { margin: 3px; padding: 0.4em; height: 18px; }
+    </style>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a id="logo" href="index.html"><img src="images/voer_logo.png" /></a>
+          <ul class="nav">
+            <li><a href="#">Learn</a></li>
+            <li><a href="#">Contribute</a></li>
+            <li><a href="aboutus.html">About us</a></li>
+            <li><a href="#">Support</a></li>
+          </ul>
+          <ul class="nav pull-right">
+            <li><a class="dashboard" href="#">Dashboard</a></li>
+            <li><a href="#">Sign out</a></li>
+          </ul>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="span3">
+          <div class="voer-sidenav1" data-spy="affix" data-offset-top="5">
+            <div class="well">
+              <ul class="nav nav-list">
+                <li class="nav-header">COURSE</li>
+                <li class="active"><a href="#">Home</a></li>
+                <li><a href="#">Syllabus</a></li>
+                <li><a href="#">Reading and lecture notes</a></li>
+                <li><a href="#">Video lectures</a></li>
+                <li><a href="#">Exam</a></li>
+                <li class="divider"></li>
+                <li><a href="#">Help</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="span9">
+          <ul class="breadcrumb">
+            <li><a href="index.html">Home</a> <span class="divider">/</span></li>
+            <li><a href="#">Courseware</a> <span class="divider">/</span></li>
+            <li><a href="#">Infomation, Tech and Design</a> <span class="divider">/</span></li>
+            <li id="path-cwtitle" class="active">New Courseware</li>
+          </ul>
+          <div class="page-header">
+                <h3 id="heading-cwtitle">New Courseware</h3>
+                <span>Author: IIT Kharagpur Course, Prof. I. Sengupta</span>
+          </div>
+
+            <style>
+                #selected-lectures, 
+                #search-pane {
+                    height: 100%; 
+                    float: left;
+                    //background: lightgrey;
+                    margin-bottom: 10px;
+                }
+
+                .course-lectures a {
+                    text-decoration: none;
+                }
+
+                
+            </style>
+
+            <div id="courseware-step-3" style="display:none">
+                <div class="course-lectures" style="clear:both; height:400px">
+                    <div id="selected-lectures" style="background:#f0f0f0;height:100%;width:25%;padding:5px;border:1px solid lightgray;border-radius:5px;">
+                        <ol id="selectable">
+                            <li class="ui-widget-content">Computer Architecture</li>
+                            <li class="ui-widget-content">Software Engineering</li>
+                            <li class="ui-widget-content">Computer Architecture</li>
+                            <li class="ui-widget-content">Computer Architecture</li>
+                        </ol>
+                    </div>
+
+                    <div id="search-pane"style="width:72%; float:right">
+                        <div id="accordion" style="margin-top:-2px;">
+                          <h3>Search for modules</h3> 
+                          <div>
+                            <div style="margin-bottom:10px;">
+                                <input type="text" style="width:18em; margin-bottom:0px; margin-right:10px;" value="title:calculation author:minh category:math">
+                                <span>Filter by&nbsp;</span>
+                                <button class="btn btn-mini btn-primary">Title</button>
+                                <button class="btn btn-mini btn-primary">Author</button>
+                                <button class="btn btn-mini btn-primary">Category</button>
+                            </div>
+                            <style>
+                                #search-content a {
+                                    font-weight: bold;
+                                    color: #002289;
+                                }
+                            </style>
+                            <div id="search-content" style="height:260px;overflow-y:scroll;overflow-x:hidden">
+                                <table class="table table-hover table-striped" width="90%">
+                                    <tr><td><i class="icon-ok"></i></td><td><a id="12345" href="#">Computer Architecture</a></td><td>Hoang Lan Nguyen</td>
+                                    <tr><td></td><td><a href="#">Software Engineering</a></td><td>Hung Vo</td>
+                                    <tr><td></td><td><a href="#">Data Structures and Algorithms</a></td><td>Quang Dung Vu</td>
+                                    <tr><td></td><td><a href="#">Computer Architecture</a></td><td>Hoang Lan Nguyen</td>
+                                    <tr><td></td><td><a href="#">Software Engineering</a></td><td>Hung Vo</td>
+                                    <tr><td></td><td><a href="#">Data Structures and Algorithms</a></td><td>Quang Dung Vu</td>
+                                    <tr><td></td><td><a href="#">Computer Architecture</a></td><td>Hoang Lan Nguyen</td>
+                                    <tr><td></td><td><a href="#">Software Engineering</a></td><td>Hung Vo</td>
+                                    <tr><td></td><td><a href="#">Data Structures and Algorithms</a></td><td>Quang Dung Vu</td>
+                                </table>
+                            </div>   
+                          </div>
+                          <h3>Video lecture details:</h3> 
+                          <div style="height: 302px;overflow-y:scroll">
+                            <h4>Computer Architecture</h4>
+                            <div>Version: <strong>2 (12 Feb, 2013)</strong></div>
+                            <div>Author: <strong>Hoang Lan Nguyen></strong></div>
+                            <div>
+                                <label>Lecture notes:</label>
+                                <textarea class="mceEditor" style="width:700px"> 
+                                    Please enter notes for this lecture here...
+                                </textarea>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div>
+                    <hr>
+                    <button id="next3" class="btn btn-primary">Next Step: Finish</button>    
+                </div>
+            </div>
+
+            <div id="courseware-step-1" >
+                <div class="course-basic-info">
+                    <label>Title of Course:</label>
+                    <input id="cwtitle" type="text" class="span6" value="New Course Title">
+                    <label>Category:</label>
+                    <input type="text" class="span4" value="Computer Science">
+                    <label>Course Time:</label>
+                    From: <input id="course-time-start" type="text" value=""> &nbsp;To: 
+                    <input id="course-time-end" type="text" value="">
+                    <label>Professor:</label>
+                    <input type="text" class="span4" value="Computer Science">
+                </div>
+                <div>
+                    <hr>
+                    <button id="next1" class="btn btn-primary">Next Step: Detail Information</button>    
+                </div>
+            </div>
+
+            <div id="courseware-step-2" style="display:none">
+                <div class="course-basic-info">
+                    <label>Course Syllabus:</label>
+                    <textarea class="mceEditor" style="width:750px" rows="20">Sample syllabus</textarea>
+                    <label>Reading and Lecture Notes:</label>
+                    <textarea class="mceEditor" style="width:750px" rows="20">Sample lecture notes</textarea>
+                </div>
+                <div>
+                    <hr>
+                    <button id="next2" class="btn btn-primary">Next Step: Video Lectures</button>    
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <div class="container">
+    <p>Vietnam Open Educational Resources (VOER) is supported by the Vietnam Foundation</p>
+    <p>Content license: Creative Commons CC by version 3.0.
+    <p>Contact us: <a href="#">voer@voer.edu.vn</a></p>
+      </div>
+    </footer>
+
+    <script src="js/jquery-latest.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="js/jquery-ui-1.10.1.custom.js"></script>
+    <script src="js/main.js"></script>
+    <script language="javascript" type="text/javascript" src="js/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
+    <script language="javascript" type="text/javascript">
+    tinyMCE.init({
+      theme : "advanced",
+      mode : "specific_textareas",
+      editor_selector : /(mceEditor|mceRichText)/,
+      keep_styles : false
+    });
+    </script>
+  </body>
+</html>

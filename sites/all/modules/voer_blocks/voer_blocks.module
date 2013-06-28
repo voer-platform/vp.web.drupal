@@ -1,0 +1,51 @@
+<?php
+
+/**
+ * Implements hook_block_info().
+ * @return [type] [description]
+ */
+function voer_blocks_block_info(){
+  // This example comes from node.module.
+  $blocks['voer_categories_block'] = array(
+    'info' => t('VOER - Categories'),
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function voer_blocks_block_view($delta='') {
+  $block = array();
+
+  switch($delta) {
+    case 'voer_categories_block' :
+      $block['content'] = voer_categories_block_view();
+      break;
+  }
+
+  return $block;
+}
+
+function voer_categories_block_view(){
+  $output = array();
+
+  module_load_include('inc', 'voer_api');
+  $categories = voer_api_get_all_categories();
+  $list = array();
+  if (isset($categories) && isset($categories->results)){
+    foreach ($categories->results as $category) {
+      $list[$category->id] = l($category->name, 'category/' . $category->id, array('class' => 'category-link'));
+    }
+  }
+
+  // Block output in HTML with div wrapper
+  $output[] = array(
+    '#theme' => 'item_list',
+    '#items' => $list,
+    '#attributes' => array('class' => 'category_list span6'),
+  );
+
+  return $output;
+}

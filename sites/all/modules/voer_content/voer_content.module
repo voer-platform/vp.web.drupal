@@ -6,6 +6,430 @@ define('VOER_MATERIAL_LICENSE_FORM', 'material_license_form');
 define('VOER_MATERIAL_METADATA_FORM', 'material_metadata_form');
 define('VOER_MATERIAL_CONTENT_FORM', 'material_content_form');
 
+// /**
+//  * Implements hook_entity_info().
+//  *
+//  * This is the fundamental description of the entity.
+//  *
+//  * It provides a single entity with a single bundle and without revision
+//  * support.
+//  */
+// function voer_content_entity_info() {
+//   $info['voer_content'] = array(
+//     // A human readable label to identify our entity.
+//     'label' => t('VOER Content'),
+
+//     // The controller for our Entity, extending the Drupal core controller.
+//     'controller class' => 'VoerContentController',
+
+//     // The table for this entity defined in hook_schema()
+//     'base table' => 'voer_content',
+
+//     // Returns the uri elements of an entity
+//     'uri callback' => 'voer_content_uri',
+
+//     // IF fieldable == FALSE, we can't attach fields.
+//     'fieldable' => TRUE,
+
+//     // entity_keys tells the controller what database fields are used for key
+//     // functions. It is not required if we don't have bundles or revisions.
+//     // Here we do not support a revision, so that entity key is omitted.
+//     'entity keys' => array(
+//       'id' => 'material_id', // The 'id' (basic_id here) is the unique id.
+//       'bundle' => 'bundle_type', // Bundle will be determined by the 'bundle_type' field
+//       'label' => 'title',
+//     ),
+//     'bundle keys' => array(
+//       'bundle' => 'bundle_type',
+//     ),
+
+//     // FALSE disables caching. Caching functionality is handled by Drupal core.
+//     'static cache' => TRUE,
+
+//     // Bundles are alternative groups of fields or configuration
+//     // associated with a base entity type.
+//     'bundles' => array(
+//       'voer_module' => array(
+//         'label' => 'Module',
+//         'uri callback' => 'voer_content_module',
+//         // 'admin' key is used by the Field UI to provide field and
+//         // display UI pages.
+//         'admin' => array(
+//           'path' => 'admin/structure/voer_content/manage/module',
+//           'access arguments' => array('administer voer modules'),
+//         ),
+//       ),
+//       'voer_collection' => array(
+//         'label' => 'Collection',
+//         'uri callback' => 'voer_content_collection',
+//         // 'admin' key is used by the Field UI to provide field and
+//         // display UI pages.
+//         'admin' => array(
+//           'path' => 'admin/structure/voer_content/manage/collection',
+//           'access arguments' => array('administer voer collections'),
+//         ),
+//       ),
+//       'voer_course' => array(
+//         'label' => 'Course',
+//         'uri callback' => 'voer_content_course',
+//         // 'admin' key is used by the Field UI to provide field and
+//         // display UI pages.
+//         'admin' => array(
+//           'path' => 'admin/structure/voer_content/manage/course',
+//           'access arguments' => array('administer voer courses'),
+//         ),
+//       ),
+//     ),
+//     // View modes allow entities to be displayed differently based on context.
+//     // As a demonstration we'll support "Tweaky", but we could have and support
+//     // multiple display modes.
+//     'view modes' => array(
+//       'full' => array(
+//         'label' => t('Full Display'),
+//         'custom settings' =>  TRUE,
+//       ),
+//       'list' => array(
+//         'label' => t('List Display'),
+//         'custom settings' =>  TRUE,
+//       ),
+//       'brief' => array(
+//         'label' => t('Brief Display'),
+//         'custom settings' =>  TRUE,
+//       ),
+//     )
+//   );
+
+//   return $info;
+// }
+
+// /**
+//  * Implements hook_field_extra_fields().
+//  */
+// function voer_content_field_extra_fields() {
+//   $extra = array();
+
+//   foreach (voer_content_bundles() as $type => $bundle_type) {
+//     $extra['voer_content'][$type] = array(
+//       'form' => array(
+//         'title' => array(
+//           'label' => t('Title'),
+//           'description' => t('Textfield'),
+//           'weight' => -100,
+//         ),
+//         'description' => array(
+//           'label' => t('Description'),
+//           'description' => t('Textarea'),
+//           'weight' => -90,
+//         ),
+//         'content' => array(
+//           'label' => t('Content'),
+//           'description' => t('Textarea'),
+//           'weight' => -10,
+//         )
+//       )
+//     );
+//   }
+
+//   return $extra;
+// }
+
+/**
+ * Implements hook_entity_info_alter
+ */
+// function voer_content_entity_info_alter(&$entity_info){
+//   $entity_info['node']['bundles']['voer_module']['uri callback'] = 'voer_content_module_uri';
+// }
+
+/**
+ * Fetch a basic object.
+ *
+ * This function ends up being a shim between the menu system and
+ * entity_example_basic_load_multiple().
+ *
+ * This function gets its name from the menu system's wildcard
+ * naming conventions. For example, /path/%wildcard would end
+ * up calling wildcard_load(%wildcard value). In our case defining
+ * the path: examples/entity_example/basic/%entity_example_basic in
+ * hook_menu() tells Drupal to call entity_example_basic_load().
+ *
+ * @param $basic_id
+ *   Integer specifying the basic entity id.
+ * @param $reset
+ *   A boolean indicating that the internal cache should be reset.
+ * @return
+ *   A fully-loaded $basic object or FALSE if it cannot be loaded.
+ *
+ * @see entity_example_basic_load_multiple()
+ * @see entity_example_menu()
+ */
+function voer_content_load($id = NULL, $reset = FALSE) {
+  $ids = (isset($id) ? array($id) : array());
+  $basic = voer_content_load_multiple($ids, array(), $reset);
+  return $basic ? reset($basic) : FALSE;
+}
+
+
+/**
+ * Loads multiple basic entities.
+ *
+ * We only need to pass this request along to entity_load(), which
+ * will in turn call the load() method of our entity controller class.
+ */
+function voer_content_load_multiple($ids = FALSE, $conditions = array(), $reset = FALSE) {
+  return entity_load('voer_content', $ids, $conditions, $reset);
+}
+
+/**
+ * Implements the uri callback.
+ */
+function voer_content_uri($info) {
+  return array(
+    'path' => 'voer_content/' . $info->id,
+  );
+}
+
+function voer_content_module_uri($info){
+  return array(
+    'path' => 'module/' . $info->nid,
+  );
+}
+
+function voer_content_collection_uri($info){
+  return array(
+    'path' => 'collection/' . $info->nid,
+  );
+}
+
+function voer_content_course_uri($info){
+  return array(
+    'path' => 'course/' . $info->nid,
+  );
+}
+
+/**
+ * Implements hook_admin_paths
+ * @return [type] [description]
+ */
+function voer_content_admin_paths(){
+  $paths = array(
+    'voer_content/*/add' => TRUE,
+    'node/*/publish' => TRUE,
+  );
+  return $paths;
+}
+
+/**
+ * Implements hook_menu_alter().
+ */
+function voer_content_menu_alter(&$items) {
+  // Example - disable the page at node/add
+  $items['node/add/voer-module']['page callback'] = 'voer_module_creation';
+  $items['node/add/voer-module']['file'] =  'voer_content_module.inc';
+  $items['node/add/voer-module']['file path'] = drupal_get_path('module', 'voer_content');
+}
+
+/**
+ * Implements hook_menu().
+ */
+function voer_content_menu() {
+  // $items['voer_content/create'] = array(
+  //   'title' => 'Create VOER content',
+  //   'page callback' => 'entity_example_info_page',
+  //   'access arguments' => array('view any entity_example_basic entity'),
+  // );
+  // $items['examples/entity_example'] = array(
+  //   'title' => 'Entity Example',
+  //   'page callback' => 'entity_example_info_page',
+  //   'access arguments' => array('view any entity_example_basic entity'),
+  // );
+
+  // This provides a place for Field API to hang its own
+  // interface and has to be the same as what was defined
+  // in basic_entity_info() above.
+  // $items['admin/structure/voer_content/manage'] = array(
+  //   'title' => 'VOER Content types',
+  //   'page callback' => 'entity_example_basic_list_entities',
+  //   'access arguments' => array('administer entity_example_basic entities'),
+  // );
+
+  // $items['admin/structure/voer_content/types'] = array(
+  //   'title' => 'VOER Content types',
+  //   'page callback' => 'voer_content_list_bundles',
+  //   'access arguments' => array('administer entity_example_basic entities'),
+  // );
+
+  // Add a module.
+  $items['voer_content/module/add'] = array(
+    'title' => 'Add a module',
+    'page callback' => 'voer_module_creation',
+    'access arguments' => array('create voer module'),
+    'type' => MENU_LOCAL_ACTION,
+    'file' => 'voer_content_module.inc',
+
+  );
+
+  // Add a collection.
+  $items['voer_content/collection/add'] = array(
+    'title' => 'Add a module',
+    'page callback' => 'voer_content_collection_add',
+    'access arguments' => array('create voer collection'),
+    'type' => MENU_LOCAL_ACTION,
+  );
+
+  // Add a course.
+  $items['voer_content/course/add'] = array(
+    'title' => 'Add a module',
+    'page callback' => 'voer_content_course_add',
+    'access arguments' => array('create voer course'),
+    'type' => MENU_LOCAL_ACTION,
+  );
+
+
+  // List of all modules.
+  $items['admin/structure/voer_content/manage/module/list'] = array(
+    'title' => 'List',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+  );
+
+  $items['node/%node/publish'] = array(
+    'title' => 'Publish',
+    'page callback' => 'voer_content_publish',
+    'page arguments' => array(1),
+    'access arguments' => array('access publish node'),
+    'type' => MENU_LOCAL_TASK,
+    'file' => 'voer_content.pages.inc',
+    'weight' => 50,
+  );
+
+  return $items;
+}
+
+/**
+ * [voer_content_title description]
+ * @param  [type] $content [description]
+ * @return [type]          [description]
+ */
+function voer_content_title($content){
+  return $content->title;
+}
+
+/**
+ * Returns a bundles list of VOER content
+ *
+ * @return [type]
+ */
+function voer_content_bundles(){
+  return field_info_bundles('voer_content');
+}
+
+/**
+ * Returns a render array with all entity_example_basic entities.
+ *
+ * In this basic example we know that there won't be many entities,
+ * so we'll just load them all for display. See pager_example.module
+ * to implement a pager. Most implementations would probably do this
+ * with the contrib Entity API module, or a view using views module,
+ * but we avoid using non-core features in the Examples project.
+ *
+ * @see pager_example.module
+ */
+function voer_content_list_bundles() {
+  $content = array();
+  // Load all of our bundles.
+  $bundles = voer_content_bundles();
+  if (!empty($bundles)) {
+    foreach ( $bundles as $bundle ) {
+      // Create tabular rows for our entities.
+      $rows[] = array(
+        'data' => array(
+          'name' => $bundle['label'],
+          'edit' => l(t('edit'),'aca'),
+          'manage_field' => l(t('manage field'),$bundle['admin']['path'] . '/fields'),
+          'manage_display' => l(t('manage display'),$bundle['admin']['path'] . '/display'),
+        ),
+      );
+    }
+    // Put our entities into a themed table. See theme_table() for details.
+    $content['bundle_table'] = array(
+      '#theme' => 'table',
+      '#rows' => $rows,
+      '#header' => array(
+                      t('Name'),
+                      array(
+                        "data" => t('Operator'),
+                        "colspan" => 3,
+                      )
+                    ),
+    );
+  }
+  else {
+    // There were no entities. Tell the user.
+    $content[] = array(
+      '#type' => 'item',
+      '#markup' => t('No bundles currently exist.'),
+    );
+  }
+  return $content;
+}
+
+/**
+ * Form function to create an voer_content entity.
+ *
+ * The pattern is:
+ * - Set up the form for the data that is specific to your
+ *   entity: the columns of your base table.
+ * - Call on the Field API to pull in the form elements
+ *   for fields attached to the entity.
+ */
+function voer_content_form($form, &$form_state, $entity) {
+  $form['title'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Title'),
+    '#required' => TRUE,
+    '#default_value' => isset($entity->title) ? $entity->title : "",
+  );
+
+  $form['description'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Description'),
+    '#required' => TRUE,
+    '#default_value' => isset($entity->description) ? $entity->description : "",
+  );
+
+  $form['content'] = array(
+    '#type' => 'text_format',
+    '#title' => t('Body'),
+    '#required' => TRUE,
+    '#default_value' => isset($entity->content) ? $entity->content : "",
+  );
+
+  field_attach_form('voer_content', $entity, $form, $form_state);
+
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Save'),
+    '#weight' => 100,
+  );
+  $form['delete'] = array(
+    '#type' => 'submit',
+    '#value' => t('Delete'),
+    '#submit' => array('entity_example_basic_edit_delete'),
+    '#weight' => 200,
+  );
+
+  return $form;
+}
+
+/**
+ * We save the entity by calling the controller.
+ */
+function voer_content_save(&$entity) {
+  return node_save($entity);
+}
+
+
+// HUY.VQ --------------------------------
+
 /**
  * Implements hook_form_alter().
  */
@@ -20,12 +444,12 @@ function voer_content_form_alter(&$form, &$form_state, $form_id) {
     }
   }
 
-  if ($form_id == 'voer_content_node_form') {
+  if ($form_id == 'voer_module_node_form') {
     if (empty($form_state['step'])) {
       $form_state['step'] = 1;
       $form_state['step_infor'] = _voer_content_material_form_steps();
     }
-// dpm($form_state);
+    dpm($form);
     $step = &$form_state['step'];
 
     if ($step < count($form_state['step_infor']) && empty($node->nid)) {
@@ -52,24 +476,25 @@ function voer_content_form_alter(&$form, &$form_state, $form_id) {
       );
 
       $form['material_content_form']['title'] = $form['title'];
-      $form['material_content_form']['field_language'] = $form['field_language'];
-      $form['material_content_form']['field_category'] = $form['field_category'];
+      $form['material_content_form']['field_voer_description'] = $form['field_voer_description'];
+      $form['material_content_form']['field_image'] = $form['field_voer_image'];
+      $form['material_content_form']['field_language'] = $form['field_voer_language'];
+      $form['material_content_form']['field_voer_file'] = $form['field_voer_file'];
       $form['material_content_form']['field_keyword'] = $form['field_keyword'];
-      $form['material_content_form']['field_summary'] = $form['field_summary'];
       $form['material_content_form']['field_id'] = $form['field_id'];
       $form['material_content_form']['field_version'] = $form['field_version'];
 
       unset($form['title']);
-      unset($form['field_language']);
-      unset($form['field_category']);
-      unset($form['field_keyword']);
-      unset($form['field_summary']);
+      unset($form['field_voer_description']);
+      unset($form['field_voer_image']);
+      unset($form['field_voer_language']);
+      unset($form['field_voer_file']);
       unset($form['field_id']);
       unset($form['field_version']);
 
-      $form['actions']['commit'] = array(
+      $form['actions']['publish'] = array(
         '#type'=> 'submit',
-        '#value'=> 'Commit',
+        '#value'=> 'Publish',
         '#weight'=> 11,
         '#submit' => array('voer_content_form_push'),
       );
@@ -155,39 +580,39 @@ function voer_content_form_push($form, &$form_state)
 /**
  * Implements hook_menu().
  */
-function voer_content_menu() {
-  $items = array();
+// function voer_content_menu() {
+//   $items = array();
 
-  $items['materials'] = array(
-    'title' => t('Material list'),
-    'page callback' => 'voer_content_material_list',
-    'access arguments' => array('view VOER content'),
-  );
+//   $items['materials'] = array(
+//     'title' => t('Material list'),
+//     'page callback' => 'voer_content_material_list',
+//     'access arguments' => array('view VOER content'),
+//   );
 
-  $items['material/%'] = array(
-    'title' => t('Versions of material'),
-    'page callback' => 'voer_content_material_version_list',
-    'page arguments' => array(1),
-    'access arguments' => array('view VOER content'),
-    'type' => MENU_NORMAL_ITEM,
-  );
+//   $items['material/%'] = array(
+//     'title' => t('Versions of material'),
+//     'page callback' => 'voer_content_material_version_list',
+//     'page arguments' => array(1),
+//     'access arguments' => array('view VOER content'),
+//     'type' => MENU_NORMAL_ITEM,
+//   );
 
-  $items['material/%/%'] = array(
-    'title' => t('Material detail'),
-    'page callback' => 'voer_content_view_material',
-    'access arguments' => array('view VOER content'),
-    'type' => MENU_NORMAL_ITEM,
-  );
+//   $items['material/%/%'] = array(
+//     'title' => t('Material detail'),
+//     'page callback' => 'voer_content_view_material',
+//     'access arguments' => array('view VOER content'),
+//     'type' => MENU_NORMAL_ITEM,
+//   );
 
-  $items['voer-content/archive-form'] = array(
-    'title' => t('Upload form'),
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('extract_zip_form'),
-    'access arguments' => array('access content'),
-  );
+//   $items['voer-content/archive-form'] = array(
+//     'title' => t('Upload form'),
+//     'page callback' => 'drupal_get_form',
+//     'page arguments' => array('extract_zip_form'),
+//     'access arguments' => array('access content'),
+//   );
 
-  return $items;
-}
+//   return $items;
+// }
 
 /**
  * [voer_content_view_material description]

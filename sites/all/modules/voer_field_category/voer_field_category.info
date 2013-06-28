@@ -1,0 +1,13 @@
+name = VOER Field Category
+description = An implementation of a field to show the Field API
+package = VOER
+core = 7.x
+files[] = field_example.test
+dependencies[] = voer_api
+
+; Information added by drupal.org packaging script on 2013-04-04
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "voer"
+datestamp = "1365037010"
+
