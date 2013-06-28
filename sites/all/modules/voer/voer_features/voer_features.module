@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the VOER Features feature.
+ */
+
+include_once 'voer_features.features.inc';
