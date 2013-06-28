@@ -1,5 +1,29 @@
 <?php
 
+require_once('voer_wysiwyg.form.inc');
+
+/*
+ * Implementes hook_menu().
+ */
+function voer_wysiwyg_menu() {
+  $items = array();
+  $items['ajax/voer_wysiwyg/upload/%'] = array(
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('wysiwyg_imageupload_upload_form', 3),
+    'access callback' => 'user_access',
+    'access arguments' => array('use wysiwyg image upload'),
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['ajax/voer_wysiwyg/import/%'] = array(
+    'page callback' => '_wysiwyg_imageupload_upload_js',
+    'page arguments' => array(3),
+    'access callback' => 'user_access',
+    'access arguments' => array('use wysiwyg image upload'),
+    'type' => MENU_CALLBACK,
+  );
+}
+
 /**
  * Implementation of hook_wysiwyg_include_directory().
  *
@@ -16,5 +40,8 @@
  * simply the plugin-type: e.g. "plugin" or "editor".
  */
 function voer_wysiwyg_wysiwyg_include_directory($type) {
-  return $type;
+  switch ($type) {
+    case 'plugins':
+      return $type;
+  }
 }

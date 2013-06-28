@@ -60,6 +60,7 @@ function voer_field_category_field_info() {
     'field_voer_categories' => array(
       'label' => t('VOER Categories'),
       'description' => t('VOER Categories.'),
+      'allowed_values_function' => 'voer_field_category_allowed_values',
       // 'default_widget' => 'field_select_categories',
       // 'default_formatter' => 'field_display_names',
       'default_widget' => 'options_buttons',
@@ -86,6 +87,18 @@ function voer_field_category_field_widget_info_alter(&$info) {
  *
  */
 function voer_field_category_options_list($field, $instance, $entity_type, $entity) {
+  module_load_include('inc', 'voer_api');
+  $categories = voer_api_get_all_categories();
+  $list = array();
+  if (isset($categories) && isset($categories->results)){
+    foreach ($categories->results as $category) {
+      $list[$category->id] = $category->name;
+    }
+  }
+  return $list;
+}
+
+function voer_field_category_allowed_values($field, $instance, $entity_type, $entity, $cacheable = TRUE){
   module_load_include('inc', 'voer_api');
   $categories = voer_api_get_all_categories();
   $list = array();

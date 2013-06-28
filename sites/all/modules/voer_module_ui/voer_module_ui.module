@@ -49,20 +49,28 @@ function voer_module_load($id = NULL, $reset = FALSE){
   $material_id = $id;
   $version = 1;
   module_load_include('inc', 'voer_api');
-  $m = voer_api_get_detail_material($id);
-  // dpm($m);
+  try {
+    $m = voer_api_get_detail_material($id);
 
-  $node = new stdClass();
-  $node->type = 'voer_module';
-  node_object_prepare($node);
-  $node->title = $m->title;
-  $node->language = LANGUAGE_NONE;
-  $node->body[$node->language][0]['value'] = $m->text;
-  $node->body[$node->language][0]['format']  = 'full_html';
-  $node->field_voer_description[$node->language][0]['value'] = $m->description;
+    // dpm($m);
 
-  $node->nid = 0;
-  return $node;
+    $node = new stdClass();
+    $node->type = 'voer_module';
+    node_object_prepare($node);
+    $node->title = $m->title;
+    $node->language = LANGUAGE_NONE;
+    $node->body[$node->language][0]['value'] = $m->text;
+    $node->body[$node->language][0]['format']  = 'full_html';
+    // $node->field_voer_description[$node->language][0]['value'] = $m->description;
+    // $node->field_voer_categories[$node->language][0]['value'] = $m->categories;
+    // $node->field_voer_language[$node->language][0]['value'] = $m->language;
+
+    $node->nid = 0;
+    return $node;
+  } catch (Exception $e) {
+    drupal_set_message(t("There are network problems!. ") . $e->getMessage());
+    return FALSE;
+  }
 }
 
 function voer_module_ui_theme(&$existing) {

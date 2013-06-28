@@ -3,7 +3,7 @@
 $module_path = drupal_get_path('module', 'voer_api');
 require_once($module_path . '/lib/http.php');
 
-define('VOER_TRANSFORMER_URL', 'dev.voer.edu.vn'); //api.voer.edu.vn
+define('VOER_TRANSFORMER_URL', 'dev.voer.vn'); //api.voer.edu.vn
 define('VOER_TRANSFORMER_PORT', 6543); //80
 define('VOER_TRANSFORMER_PROTOCOL', Http::HTTP);
 define('VOER_TRANSFORMER_IMPORT', 'import/');
