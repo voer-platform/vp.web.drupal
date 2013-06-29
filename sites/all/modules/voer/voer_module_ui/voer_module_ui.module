@@ -52,8 +52,6 @@ function voer_module_load($id = NULL, $reset = FALSE){
   try {
     $m = voer_api_get_detail_material($id);
 
-    // dpm($m);
-
     $node = new stdClass();
     $node->type = 'voer_module';
     node_object_prepare($node);
@@ -77,7 +75,8 @@ function voer_module_ui_theme(&$existing) {
   $themes = array(
     'voer_module_detail' => array(
       'path' => drupal_get_path('module', 'voer_module_ui') . '/theme',
-      'variables' => array("module" => NULL),
+      // 'variables' => array("module" => NULL),
+      'render element' => 'element',
       'template' => 'voer-module-detail',
     ),
   );

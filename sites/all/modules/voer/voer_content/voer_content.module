@@ -6,132 +6,6 @@ define('VOER_MATERIAL_LICENSE_FORM', 'material_license_form');
 define('VOER_MATERIAL_METADATA_FORM', 'material_metadata_form');
 define('VOER_MATERIAL_CONTENT_FORM', 'material_content_form');
 
-// /**
-//  * Implements hook_entity_info().
-//  *
-//  * This is the fundamental description of the entity.
-//  *
-//  * It provides a single entity with a single bundle and without revision
-//  * support.
-//  */
-// function voer_content_entity_info() {
-//   $info['voer_content'] = array(
-//     // A human readable label to identify our entity.
-//     'label' => t('VOER Content'),
-
-//     // The controller for our Entity, extending the Drupal core controller.
-//     'controller class' => 'VoerContentController',
-
-//     // The table for this entity defined in hook_schema()
-//     'base table' => 'voer_content',
-
-//     // Returns the uri elements of an entity
-//     'uri callback' => 'voer_content_uri',
-
-//     // IF fieldable == FALSE, we can't attach fields.
-//     'fieldable' => TRUE,
-
-//     // entity_keys tells the controller what database fields are used for key
-//     // functions. It is not required if we don't have bundles or revisions.
-//     // Here we do not support a revision, so that entity key is omitted.
-//     'entity keys' => array(
-//       'id' => 'material_id', // The 'id' (basic_id here) is the unique id.
-//       'bundle' => 'bundle_type', // Bundle will be determined by the 'bundle_type' field
-//       'label' => 'title',
-//     ),
-//     'bundle keys' => array(
-//       'bundle' => 'bundle_type',
-//     ),
-
-//     // FALSE disables caching. Caching functionality is handled by Drupal core.
-//     'static cache' => TRUE,
-
-//     // Bundles are alternative groups of fields or configuration
-//     // associated with a base entity type.
-//     'bundles' => array(
-//       'voer_module' => array(
-//         'label' => 'Module',
-//         'uri callback' => 'voer_content_module',
-//         // 'admin' key is used by the Field UI to provide field and
-//         // display UI pages.
-//         'admin' => array(
-//           'path' => 'admin/structure/voer_content/manage/module',
-//           'access arguments' => array('administer voer modules'),
-//         ),
-//       ),
-//       'voer_collection' => array(
-//         'label' => 'Collection',
-//         'uri callback' => 'voer_content_collection',
-//         // 'admin' key is used by the Field UI to provide field and
-//         // display UI pages.
-//         'admin' => array(
-//           'path' => 'admin/structure/voer_content/manage/collection',
-//           'access arguments' => array('administer voer collections'),
-//         ),
-//       ),
-//       'voer_course' => array(
-//         'label' => 'Course',
-//         'uri callback' => 'voer_content_course',
-//         // 'admin' key is used by the Field UI to provide field and
-//         // display UI pages.
-//         'admin' => array(
-//           'path' => 'admin/structure/voer_content/manage/course',
-//           'access arguments' => array('administer voer courses'),
-//         ),
-//       ),
-//     ),
-//     // View modes allow entities to be displayed differently based on context.
-//     // As a demonstration we'll support "Tweaky", but we could have and support
-//     // multiple display modes.
-//     'view modes' => array(
-//       'full' => array(
-//         'label' => t('Full Display'),
-//         'custom settings' =>  TRUE,
-//       ),
-//       'list' => array(
-//         'label' => t('List Display'),
-//         'custom settings' =>  TRUE,
-//       ),
-//       'brief' => array(
-//         'label' => t('Brief Display'),
-//         'custom settings' =>  TRUE,
-//       ),
-//     )
-//   );
-
-//   return $info;
-// }
-
-// /**
-//  * Implements hook_field_extra_fields().
-//  */
-// function voer_content_field_extra_fields() {
-//   $extra = array();
-
-//   foreach (voer_content_bundles() as $type => $bundle_type) {
-//     $extra['voer_content'][$type] = array(
-//       'form' => array(
-//         'title' => array(
-//           'label' => t('Title'),
-//           'description' => t('Textfield'),
-//           'weight' => -100,
-//         ),
-//         'description' => array(
-//           'label' => t('Description'),
-//           'description' => t('Textarea'),
-//           'weight' => -90,
-//         ),
-//         'content' => array(
-//           'label' => t('Content'),
-//           'description' => t('Textarea'),
-//           'weight' => -10,
-//         )
-//       )
-//     );
-//   }
-
-//   return $extra;
-// }
 
 /**
  * Implements hook_entity_info_alter
@@ -237,36 +111,15 @@ function voer_content_menu_alter(&$items) {
  * Implements hook_menu().
  */
 function voer_content_menu() {
-  // Add a module.
-  $items['voer_content/module/add'] = array(
-    'title' => 'Add a module',
-    'page callback' => 'voer_module_creation',
-    'access arguments' => array('create voer module'),
-    'type' => MENU_LOCAL_ACTION,
-    'file' => 'voer_content_module.inc',
-  );
+  $items = array();
 
-  // Add a collection.
-  $items['voer_content/collection/add'] = array(
-    'title' => 'Add a module',
-    'page callback' => 'voer_content_collection_add',
-    'access arguments' => array('create voer collection'),
-    'type' => MENU_LOCAL_ACTION,
-  );
-
-  // Add a course.
-  $items['voer_content/course/add'] = array(
-    'title' => 'Add a module',
-    'page callback' => 'voer_content_course_add',
-    'access arguments' => array('create voer course'),
-    'type' => MENU_LOCAL_ACTION,
-  );
-
-
-  // List of all modules.
-  $items['admin/structure/voer_content/manage/module/list'] = array(
-    'title' => 'List',
-    'type' => MENU_DEFAULT_LOCAL_TASK,
+  $items['category/%voer_category'] = array(
+    'title callback' => 'voer_category_title',
+    'title arguments' => array(1),
+    'page callback' => 'show_materials_by_category',
+    'page arguments' => array(1),
+    'access arguments' => array('view any module'),
+    'file' => 'voer_content.pages.inc',
   );
 
   $items['node/%node/publish'] = array(
@@ -280,6 +133,16 @@ function voer_content_menu() {
   );
 
   return $items;
+}
+
+function voer_category_load($id = NULL, $reset = FALSE){
+  module_load_include('inc', 'voer_api');
+  try {
+    $c = voer_api_get_category($id);
+    return $c;
+  } catch (Exception $e) {
+    return FALSE;
+  }
 }
 
 /**

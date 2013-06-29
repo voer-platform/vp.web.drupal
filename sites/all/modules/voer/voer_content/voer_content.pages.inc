@@ -54,3 +54,39 @@ function voer_content_publish_form_submit($form, &$form_state){
     $result = voer_api_create_material((object)$mod_data);
   }
 }
+
+function voer_category_title($category){
+  return $category->name;
+}
+
+function show_materials_by_category($category){
+  module_load_include('inc', 'voer_api');
+  try {
+    $materials = voer_api_get_materials_by_categories(array($category->id));
+    if ($materials->count == 0){
+      return t("Materials not found!");
+    }else{
+      $nodes = array();
+      // dpm($materials);
+      // return "";
+      foreach ($materials->results as $key => $material) {
+        $node = new stdClass();
+        $node->type = 'voer_module';
+        node_object_prepare($node);
+        $node->title = $material->title;
+        $node->nid = $key;
+        $node->comment = 0;
+        $node->path = "module/" . $material->material_id;
+        $nodes[] = $node;
+      }
+      // dpm($nodes);
+      // return "";
+      return node_view_multiple($nodes);
+    }
+  } catch (Exception $e) {
+    drupal_set_message($e->getMessage());
+    return "";
+  }
+}
+
+

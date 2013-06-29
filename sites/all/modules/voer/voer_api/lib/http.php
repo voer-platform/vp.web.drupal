@@ -266,13 +266,14 @@ class Http
     private function _exec($type, $url, $params = array())
     {
         $headers = $this->_headers;
+        // dpm($url);
         $s = curl_init();
         if(!is_null($this->_user)){
             curl_setopt($s, CURLOPT_USERPWD, $this->_user.':'.$this->_pass);
         }
 
         if (!is_null($this->_clientid)){
-            //print "vpr_token={$this->_token};vpr_client={$this->_clientid}";
+            // dpm("vpr_token={$this->_token};vpr_client={$this->_clientid}");
             curl_setopt($s, CURLOPT_COOKIE, "vpr_token={$this->_token};vpr_client={$this->_clientid}");
         }
 
@@ -299,7 +300,9 @@ class Http
         curl_setopt($s, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($s, CURLOPT_HTTPHEADER, $headers);
         $_out = curl_exec($s);
+        // dpm($_out);
         $status = curl_getinfo($s, CURLINFO_HTTP_CODE);
+        // dpm($status);
         curl_close($s);
         switch ($status) {
             case self::HTTP_OK:

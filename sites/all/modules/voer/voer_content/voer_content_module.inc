@@ -459,6 +459,8 @@ function save_module($form, &$form_state){
     field_attach_submit('node', $entity, $form_tmp, $form_tmp_state);
   }
 
+  $entity->status = FALSE; //unpublish
+
   node_save($entity);
 
   return $entity;
@@ -517,6 +519,7 @@ function voer_module_creation() {
   node_object_prepare($node);
   $node->title    = '';
   $node->language = LANGUAGE_NONE;
+  $node->status = FALSE;
   // $entity = entity_get_controller('voer_content')->create('voer_module');
   return drupal_get_form('voer_module_creation_wizard', $node);
 }

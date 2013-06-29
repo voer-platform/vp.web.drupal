@@ -3,8 +3,8 @@
 $module_path = drupal_get_path('module', 'voer_api');
 require_once($module_path . '/lib/http.php');
 
-define('VOER_API_URL', 'dev.voer.vn'); //api.voer.edu.vn
-define('VOER_API_PORT', 2013); //80
+define('VOER_API_URL', variable_get('voer_api_server', 'dev.voer.vn')); //api.voer.edu.vn
+define('VOER_API_PORT', variable_get('voer_api_port', '2013')); //80
 define('VOER_API_PROTOCOL', Http::HTTP);
 define('VOER_API_VERSION', '0.1');
 define('VOER_API_AUTH', VOER_API_VERSION . '/auth/');

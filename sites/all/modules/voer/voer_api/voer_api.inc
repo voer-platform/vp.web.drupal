@@ -6,6 +6,7 @@ require_once('voer_api.lib.php');
 require_once('voer_transformer.lib.php');
 
 define('VOER_API_COMMAND_MATERIAL', '' . VOER_API_VERSION . '/materials/');
+define('VOER_API_COMMAND_MATERIAL_1', '' . VOER_API_VERSION . '/materials');
 define('VOER_API_COMMAND_CATEGORY', '' . VOER_API_VERSION . '/categories/');
 define('VOER_API_COMMAND_AUTHOR', '' . VOER_API_VERSION . '/authors/');
 define('VOER_API_COMMAND_EDITOR', '' . VOER_API_VERSION . '/editors/');
@@ -87,9 +88,9 @@ function voer_api_get_detail_material($material_id, $version = NULL){
  */
 function voer_api_get_materials_by_categories($cagetories = array()){
   $voer = new VoerApi();
-  $url = VOER_API_COMMAND_MATERIAL . "?categories=" . implode(",", $cagetories);
-  $response = $voer->auth_request($url);
-
+  $url = VOER_API_COMMAND_MATERIAL; // . "?categories=" . implode(",", $cagetories);
+  $params = array('categories' => implode(',', $cagetories));
+  $response = $voer->auth_request($url, "GET", $params);
   return json_decode($response);
 }
 

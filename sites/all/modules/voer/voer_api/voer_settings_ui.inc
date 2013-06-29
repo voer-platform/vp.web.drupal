@@ -15,6 +15,22 @@ function voer_admin_settings($form, &$form_state) {
     '#title' => t('VOER Initialize'),
   );
 
+  $form['initialization']['voer_api_server'] = array(
+    '#title' => t('VOER Repository Server'),
+    '#type' => 'textfield',
+    '#default_value' => variable_get('voer_api_server', 'dev.voer.vn'),
+    '#size' => 50,
+    '#maxlength' => 255,
+  );
+
+  $form['initialization']['voer_api_port'] = array(
+    '#title' => t('VOER Repository Port'),
+    '#type' => 'textfield',
+    '#default_value' => variable_get('voer_api_port', '2013'),
+    '#size' => 50,
+    '#maxlength' => 255,
+  );
+
   $form['initialization']['voer_api_client_id'] = array(
     '#title' => t('VOER Client ID'),
     '#type' => 'textfield',
