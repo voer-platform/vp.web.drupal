@@ -118,7 +118,7 @@ function voer_content_menu() {
     'title arguments' => array(1),
     'page callback' => 'show_materials_by_category',
     'page arguments' => array(1),
-    'access arguments' => array('view any module'),
+    'access arguments' => array('access content'),
     'file' => 'voer_content.pages.inc',
   );
 
