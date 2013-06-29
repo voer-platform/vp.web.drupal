@@ -44,3 +44,8 @@
   <?php print render($content['comments']); ?>
 
 </article> <!-- /.node -->
+<?php
+ //  print '<pre>';
+ //  var_dump(get_defined_vars());
+ // print '</pre>';
+?>

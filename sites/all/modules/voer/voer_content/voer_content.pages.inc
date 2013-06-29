@@ -74,6 +74,7 @@ function show_materials_by_category($category){
         $node->type = 'voer_module';
         node_object_prepare($node);
         $node->title = $material->title;
+        $node->material_id = $material->material_id;
         $node->nid = $key;
         $node->comment = 0;
         $node->path = "module/" . $material->material_id;
