@@ -434,7 +434,7 @@ function voer_module_publish_submit($form, &$form_state){
   if ($result === FALSE){
     drupal_set_message("The module publish was not successful!");
   }
-  $form_state['redirect'] = 'node/' . $module->nid;
+  $form_state['redirect'] = 'module/' . $result->material_id;
 }
 
 /**
