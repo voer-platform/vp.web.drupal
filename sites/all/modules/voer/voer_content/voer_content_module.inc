@@ -469,7 +469,11 @@ function save_module($form, &$form_state){
 function publish_module($module){
   module_load_include('inc', 'voer_api');
   try {
-    $material_id = $module->field_voer_material_id[LANGUAGE_NONE][0]['value'];
+    if (isset($module->field_voer_material_id)){
+      $material_id = $module->field_voer_material_id[LANGUAGE_NONE][0]['value'];
+    }else{
+      $material_id = "";
+    }
   } catch (Exception $e) {
     $material_id = "";
   }
@@ -482,13 +486,13 @@ function publish_module($module){
   $categories = implode(",", $arr_cats);
 
   $params = array(
-    "material_id" => $material_id,
+    // "material_id" => $material_id,
     "text" => $module->body[LANGUAGE_NONE][0]['value'],
     "title" => $module->title,
     "material_type" => 1, //$module->field_voer_material_type[LANGUAGE_NONE][0]['value'],
     "version" => "1",
     "description" => $module->field_voer_description[LANGUAGE_NONE][0]['value'],
-    "keywords" => $module->field_voer_keywords[LANGUAGE_NONE][0]['value'],
+    // "keywords" => $module->field_voer_keywords[LANGUAGE_NONE][0]['value'],
     "categories" => $categories,
     "authors" => "huyvq",
     "editor_id" => $module->uid,
@@ -498,10 +502,14 @@ function publish_module($module){
 
   try {
     if (empty($material_id)){
-      return voer_api_create_material($params);
+      // dpm($params);
+      $result = voer_api_create_material($params);
     }else{
-      return voer_api_checkin_material($params);
+      $params['material_id'] = $material_id;
+      $result = voer_api_checkin_material($params);
     }
+    // dpm($result);
+    return $result;
   } catch (Exception $e) {
     drupal_set_message("Error: " + $e->getMessage());
     return FALSE;
