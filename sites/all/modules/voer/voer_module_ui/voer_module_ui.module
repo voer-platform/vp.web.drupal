@@ -9,7 +9,7 @@ function voer_module_ui_menu(){
     'title arguments' => array(1),
     'page callback' => 'node_view',
     'page arguments' => array(1),
-    'access arguments' => array('view any module'),
+    'access arguments' => array('access content'),
   );
 
   return $items;
