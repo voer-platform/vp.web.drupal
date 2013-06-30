@@ -63,7 +63,7 @@ function voer_blocks_block_view($delta='') {
       $block['content'] = voer_modules_block_view();
       break;
     case 'voer_featured_author_block' :
-      $block['content'] = voer_modules_block_view();
+      $block['content'] = voer_featured_authors_block_view();
       break;
   }
 
@@ -122,6 +122,29 @@ function voer_modules_block_view()
   }
 }
 
+function voer_featured_authors_block_view()
+{
+  module_load_include('inc', 'voer_api');
+  $author_list = (array)voer_api_get_all_authors();
+
+  if (!isset($author_list['detail'])) {
+    $author = array();
+    $author['sub_title'] = t('featured authors');
+    $author['total_count'] = $author_list['count'];
+
+    $randomAuthor = rand(0, $author_list['count'] - 1);
+
+    foreach ($author_list['results'][$randomAuthor] as $key => $value) {
+      $author[$key] = $value;
+    }
+
+    return theme('voer_module_featured_author', $author);
+
+  } else {
+    return "";
+  }
+}
+
 /**
 * Implemtnation of hook_theme()
 */
@@ -130,6 +153,10 @@ function voer_blocks_theme($existing, $type, $theme, $path) {
     'voer_module_custom' => array(
       'arguments' => array('module' => array()),
       'template' => 'templates/block--voer-module',
+    ),
+    'voer_module_featured_author' => array(
+      'arguments' => array('author' => array()),
+      'template' => 'templates/block--voer-featured-author--view',
     ),
   );
 }
