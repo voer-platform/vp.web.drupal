@@ -141,6 +141,7 @@ function voer_content_preprocess_node(&$variables){
   if ($type == 'voer_module'){
     $variables['page'] = $variables['view_mode'] == 'full';
     $variables['node_url'] = base_path() . $variables['path'];
+    $variables['content']['links']['node']['#links']['node-readmore']['href'] = $variables['path'];
   }
 }
 
