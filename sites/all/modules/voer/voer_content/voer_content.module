@@ -122,16 +122,6 @@ function voer_content_menu() {
     'file' => 'voer_content.pages.inc',
   );
 
-  $items['node/%node/publish'] = array(
-    'title' => 'Publish',
-    'page callback' => 'voer_content_publish',
-    'page arguments' => array(1),
-    'access arguments' => array('access publish node'),
-    'type' => MENU_LOCAL_TASK,
-    'file' => 'voer_content.pages.inc',
-    'weight' => 50,
-  );
-
   return $items;
 }
 

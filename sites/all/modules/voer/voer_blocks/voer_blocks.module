@@ -76,9 +76,10 @@ function voer_categories_block_view(){
   module_load_include('inc', 'voer_api');
   try {
     $categories = voer_api_get_all_categories();
+    // dpm($categories);
     $list = array();
-    if (isset($categories) && isset($categories->results)){
-      foreach ($categories->results as $category) {
+    if (isset($categories)){
+      foreach ($categories as $category) {
         $list[$category->id] = l($category->name, 'category/' . $category->id, array('class' => 'category-link'));
       }
     }
@@ -99,7 +100,7 @@ function voer_categories_block_view(){
 function voer_modules_block_view()
 {
   //Fix module_id
-  $module_id = '57ebcd97c561ed90d7957953df39fc9c';
+  $module_id = 'b814612a05521e4bfa868539dbb0cbb6';
 
   module_load_include('inc', 'voer_api');
   try {
