@@ -8,7 +8,7 @@ require_once('voer_transformer.lib.php');
 define('VOER_API_COMMAND_MATERIAL', '' . VOER_API_VERSION . '/materials/');
 define('VOER_API_COMMAND_MATERIAL_1', '' . VOER_API_VERSION . '/materials');
 define('VOER_API_COMMAND_CATEGORY', '' . VOER_API_VERSION . '/categories/');
-define('VOER_API_COMMAND_AUTHOR', '' . VOER_API_VERSION . '/authors/');
+define('VOER_API_COMMAND_AUTHOR', '' . VOER_API_VERSION . '/persons/');
 define('VOER_API_COMMAND_EDITOR', '' . VOER_API_VERSION . '/editors/');
 define('VOER_API_RESULT_NOT_FOUND', 'Not found');
 

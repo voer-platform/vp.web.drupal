@@ -125,7 +125,7 @@ function voer_modules_block_view()
 
 function voer_featured_authors_block_view()
 {
-  return "";
+  // return "";
 
   module_load_include('inc', 'voer_api');
   $author_list = (array)voer_api_get_all_authors();
@@ -135,7 +135,7 @@ function voer_featured_authors_block_view()
     $author['sub_title'] = t('featured authors');
     $author['total_count'] = $author_list['count'];
 
-    $randomAuthor = rand(0, $author_list['count'] - 1);
+    $randomAuthor = rand(0, 9);
 
     foreach ($author_list['results'][$randomAuthor] as $key => $value) {
       $author[$key] = $value;
