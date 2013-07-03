@@ -125,6 +125,8 @@ function voer_modules_block_view()
 
 function voer_featured_authors_block_view()
 {
+  return "";
+
   module_load_include('inc', 'voer_api');
   $author_list = (array)voer_api_get_all_authors();
 
