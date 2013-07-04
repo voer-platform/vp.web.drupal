@@ -51,16 +51,16 @@ function voer_blocks_block_view($delta='') {
       $block['content'] = voer_modules_block_view();
       break;
     case 'voer_collections_block' :
-      $block['content'] = voer_modules_block_view();
+      $block['content'] = voer_collections_block_view();
       break;
     case 'voer_courses_block' :
-      $block['content'] = voer_modules_block_view();
+      $block['content'] = voer_courses_block_view();
       break;
     case 'voer_questionaire_block' :
-      $block['content'] = voer_modules_block_view();
+      $block['content'] = voer_questionaires_block_view();
       break;
     case 'voer_help_support_block' :
-      $block['content'] = voer_modules_block_view();
+      $block['content'] = voer_help_supports_block_view();
       break;
     case 'voer_featured_author_block' :
       $block['content'] = voer_featured_authors_block_view();
@@ -109,6 +109,115 @@ function voer_modules_block_view()
     $module = (array)voer_api_get_detail_material($module_id);
     $module['content_type'] = 'module';
     $module['total_count'] = $module_list->count;
+    $module['image_path'] = drupal_get_path('module', 'voer_blocks') . '/images/default_module_image.jpg';
+
+    $category = (array)voer_api_get_category($module['categories']);
+
+    if ($category) {
+      $module['category_name'] = $category['name'];
+    }
+
+    return theme('voer_module_custom', $module);
+
+  } catch (Exception $e) {
+    return "";
+  }
+}
+
+function voer_collections_block_view()
+{
+  //Fix module_id
+  $module_id = '9d64dec45b202eb941806b7173220efb';
+
+  module_load_include('inc', 'voer_api');
+  try {
+    $module_list = voer_api_get_all_materials();
+
+    $module = (array)voer_api_get_detail_material($module_id);
+    $module['content_type'] = 'collection';
+    $module['total_count'] = $module_list->count;
+    $module['image_path'] = drupal_get_path('module', 'voer_blocks') . '/images/default_collection_image.jpg';
+
+    $category = (array)voer_api_get_category($module['categories']);
+
+    if ($category) {
+      $module['category_name'] = $category['name'];
+    }
+
+    return theme('voer_module_custom', $module);
+
+  } catch (Exception $e) {
+    return "";
+  }
+}
+
+function voer_questionaires_block_view()
+{
+  //Fix module_id
+  $module_id = 'e5148e552afc6025c1dc0f6b3e82bfce';
+
+  module_load_include('inc', 'voer_api');
+  try {
+    $module_list = voer_api_get_all_materials();
+
+    $module = (array)voer_api_get_detail_material($module_id);
+    $module['content_type'] = 'collection';
+    $module['total_count'] = $module_list->count;
+    $module['image_path'] = drupal_get_path('module', 'voer_blocks') . '/images/default_questionaire_image.jpg';
+
+    $category = (array)voer_api_get_category($module['categories']);
+
+    if ($category) {
+      $module['category_name'] = $category['name'];
+    }
+
+    return theme('voer_module_custom', $module);
+
+  } catch (Exception $e) {
+    return "";
+  }
+}
+
+function voer_help_supports_block_view()
+{
+  //Fix module_id
+  $module_id = '4a58f9cda98702ec5013670ea0858331';
+
+  module_load_include('inc', 'voer_api');
+  try {
+    $module_list = voer_api_get_all_materials();
+
+    $module = (array)voer_api_get_detail_material($module_id);
+    $module['content_type'] = 'collection';
+    $module['total_count'] = $module_list->count;
+    $module['image_path'] = drupal_get_path('module', 'voer_blocks') . '/images/default_help_support_image.jpg';
+
+    $category = (array)voer_api_get_category($module['categories']);
+
+    if ($category) {
+      $module['category_name'] = $category['name'];
+    }
+
+    return theme('voer_module_custom', $module);
+
+  } catch (Exception $e) {
+    return "";
+  }
+}
+
+function voer_courses_block_view()
+{
+  //Fix module_id
+  $module_id = '474d521581f2300d984d7cec726d5476';
+
+  module_load_include('inc', 'voer_api');
+  try {
+    $module_list = voer_api_get_all_materials();
+
+    $module = (array)voer_api_get_detail_material($module_id);
+    $module['content_type'] = 'courseware';
+    $module['total_count'] = $module_list->count;
+    $module['image_path'] = drupal_get_path('module', 'voer_blocks') . '/images/default_courseware_image.jpg';
 
     $category = (array)voer_api_get_category($module['categories']);
 
@@ -125,8 +234,6 @@ function voer_modules_block_view()
 
 function voer_featured_authors_block_view()
 {
-  // return "";
-
   module_load_include('inc', 'voer_api');
   $author_list = (array)voer_api_get_all_authors();
 
@@ -135,7 +242,13 @@ function voer_featured_authors_block_view()
     $author['sub_title'] = t('featured authors');
     $author['total_count'] = $author_list['count'];
 
-    $randomAuthor = rand(0, 9);
+    $max_range = 9;
+
+    if ($author_list['count'] - 1 < 9) {
+      $max_range = $author_list['count'] - 1;
+    }
+
+    $randomAuthor = rand(0, $max_range);
 
     foreach ($author_list['results'][$randomAuthor] as $key => $value) {
       $author[$key] = $value;
