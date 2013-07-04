@@ -161,7 +161,7 @@ function voer_questionaires_block_view()
     $module_list = voer_api_get_all_materials();
 
     $module = (array)voer_api_get_detail_material($module_id);
-    $module['content_type'] = 'collection';
+    $module['content_type'] = 'questionaire';
     $module['total_count'] = $module_list->count;
     $module['image_path'] = drupal_get_path('module', 'voer_blocks') . '/images/default_questionaire_image.jpg';
 
@@ -188,7 +188,7 @@ function voer_help_supports_block_view()
     $module_list = voer_api_get_all_materials();
 
     $module = (array)voer_api_get_detail_material($module_id);
-    $module['content_type'] = 'collection';
+    $module['content_type'] = 'help & support';
     $module['total_count'] = $module_list->count;
     $module['image_path'] = drupal_get_path('module', 'voer_blocks') . '/images/default_help_support_image.jpg';
 
