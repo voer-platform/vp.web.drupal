@@ -10,6 +10,7 @@
     <?php endif; ?>
 
     <?php if ($description) : ?>
+      <?php if (strlen($description) > 130) $description = array_shift(explode('|||', wordwrap($description, 130, '|||'))) . '...'; ?>
       <p><?php print $description; ?></p>
     <?php endif; ?>
 
