@@ -6,10 +6,11 @@ require_once('voer_api.lib.php');
 require_once('voer_transformer.lib.php');
 
 define('VOER_API_COMMAND_MATERIAL', '' . VOER_API_VERSION . '/materials/');
-define('VOER_API_COMMAND_MATERIAL_1', '' . VOER_API_VERSION . '/materials');
 define('VOER_API_COMMAND_CATEGORY', '' . VOER_API_VERSION . '/categories/');
 define('VOER_API_COMMAND_AUTHOR', '' . VOER_API_VERSION . '/persons/');
 define('VOER_API_COMMAND_EDITOR', '' . VOER_API_VERSION . '/editors/');
+define('VOER_API_COMMAND_FILES', '' . VOER_API_VERSION . '/mfiles/');
+
 define('VOER_API_RESULT_NOT_FOUND', 'Not found');
 
 /*** BEGIN: MATERIAL ***/
@@ -479,4 +480,24 @@ function voer_api_delete(){
 function voer_api_import($file){
   $voer_transformer = new VoerTransformer();
   return $voer_transformer->transform_import($file);
+}
+
+function voer_api_get_images($material_id){
+  $voer = new VoerApi();
+  $result = array();
+  $imgUrl = "http://" . VOER_API_URL . ":" . VOER_API_PORT . "/" . VOER_API_VERSION . "/mfiles/";
+
+  $url = VOER_API_COMMAND_MATERIAL . $material_id . '/mfiles/';
+  $response = $voer->auth_request($url);
+  $ids = json_decode($response);
+  if (isset($ids)){
+    foreach ($ids as $imgId) {
+      $url = VOER_API_COMMAND_FILES . $imgId . "/";
+      $response = $voer->auth_request($url);
+      $imgInfo = json_decode($response);
+      $result[$imgInfo->name] = $imgUrl . $imgInfo->id . "/get";
+      // dpm($result);
+    }
+  }
+  return $result;
 }

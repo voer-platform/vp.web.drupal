@@ -66,8 +66,6 @@ function material_from_vpr($material){
   $node->comment = 0;
   $node->title = $material->title;
   $node->language = LANGUAGE_NONE;
-  $node->body[$node->language][0]['value'] = $material->text;
-  $node->body[$node->language][0]['format'] = 'full_html';
   $node->field_voer_description[$node->language][0]['value'] = $material->description;
   $node->field_voer_categories[$node->language][0]['value'] = $material->categories;
   $node->field_voer_language[$node->language][0]['value'] = $material->language;
@@ -75,6 +73,14 @@ function material_from_vpr($material){
   $node->field_voer_material_version[$node->language][0]['value'] = $material->version;
   $node->field_voer_material_type[$node->language][0]['value'] = $material->material_type;
   $node->field_voer_keywords[$node->language][0]['value'] = $material->keywords;
+  //Get images
+  $imgs = voer_api_get_images($material->material_id);
+  $body = $material->text;
+  $body = preg_replace_callback('/<img src="([^"]*)"/', function($m) use ($imgs){
+    return "<img src='" . $imgs[$m[1]] . "'";
+  }, $body);
+  $node->body[$node->language][0]['value'] = $body;
+  $node->body[$node->language][0]['format'] = 'full_html';
 
   node_save($node);
 
