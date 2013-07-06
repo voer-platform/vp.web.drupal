@@ -90,8 +90,8 @@ function voer_field_category_options_list($field, $instance, $entity_type, $enti
   module_load_include('inc', 'voer_api');
   $categories = voer_api_get_all_categories();
   $list = array();
-  if (isset($categories) && isset($categories->results)){
-    foreach ($categories->results as $category) {
+  if (isset($categories)){
+    foreach ($categories as $category) {
       $list[$category->id] = $category->name;
     }
   }
@@ -102,8 +102,8 @@ function voer_field_category_allowed_values($field, $instance, $entity_type, $en
   module_load_include('inc', 'voer_api');
   $categories = voer_api_get_all_categories();
   $list = array();
-  if (isset($categories) && isset($categories->results)){
-    foreach ($categories->results as $category) {
+  if (isset($categories)){
+    foreach ($categories as $category) {
       $list[$category->id] = $category->name;
     }
   }
