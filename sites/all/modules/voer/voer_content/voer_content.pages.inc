@@ -77,6 +77,7 @@ function show_materials_by_category($category){
         $node->material_id = $material->material_id;
         $node->nid = $key;
         $node->comment = 0;
+        $node->field_voer_description[LANGUAGE_NONE][0]['value'] = $material->description;
         $node->path = "module/" . $material->material_id;
         $nodes[] = $node;
       }
