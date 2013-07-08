@@ -457,3 +457,9 @@ ul.inline li.node-readmore {
   padding-left: 0;
   padding-right: 0;
 }
+/* Style diplay node detail */
+article.node-voer-module p{
+  text-align: justify;
+}
+article.node-voer-module table { margin: 1em 0; border-collapse: collapse; }
+article.node-voer-module td, th { padding: .3em; border: 1px #999 solid; }
