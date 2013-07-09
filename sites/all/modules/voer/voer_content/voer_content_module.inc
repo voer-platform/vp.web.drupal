@@ -435,7 +435,7 @@ function voer_module_publish_submit($form, &$form_state){
   $result = publish_module($module);
   // dpm($module);
   if ($result === FALSE){
-    drupal_set_message("The module publish was not successful!");
+    drupal_set_message("The module publish was not successful!", 'error');
   }
   $form_state['redirect'] = 'module/' . $result->material_id;
 }

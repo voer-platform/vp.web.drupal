@@ -23,7 +23,7 @@ function voer_material_load($material_id, $reload = FALSE){
       $node = material_from_vpr($m);
       return $node;
     } catch (Exception $e) {
-      drupal_set_message(t("There are network problems!. ") . $e->getMessage());
+      drupal_set_message(t("There are network problems!. ") . $e->getMessage(), 'error');
       return FALSE;
     }
 
@@ -145,7 +145,7 @@ function publish_module($module){
     }
     return $result;
   } catch (Exception $e) {
-    drupal_set_message("Error: " + $e->getMessage());
+    drupal_set_message("Error: " + $e->getMessage(), 'error');
     return FALSE;
   }
 }

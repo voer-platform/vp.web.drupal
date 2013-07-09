@@ -88,7 +88,7 @@ function show_materials_by_category($category){
       return $output;// . theme('pager');
     }
   } catch (Exception $e) {
-    drupal_set_message($e->getMessage());
+    drupal_set_message($e->getMessage(), 'error');
     return "";
   }
 }

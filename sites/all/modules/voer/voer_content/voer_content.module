@@ -180,7 +180,7 @@ function voer_content_form_push($form, &$form_state)
       $result = publish_module($node);
       // dpm($result);
       if ($result === FALSE){
-        drupal_set_message(t("The module publish was not successful!"));
+        drupal_set_message(t("The module publish was not successful!"), 'error');
       }else{
         drupal_set_message(t("The module publish was successful!"));
         $node->field_voer_material_id[LANGUAGE_NONE][0]['value'] = $result->material_id;
