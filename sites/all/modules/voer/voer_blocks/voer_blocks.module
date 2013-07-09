@@ -251,6 +251,9 @@ function voer_featured_authors_block_view()
     $randomAuthor = rand(0, $max_range);
 
     foreach ($author_list['results'][$randomAuthor] as $key => $value) {
+      if ($key == 'id') {
+        $key = 'author_id';
+      }
       $author[$key] = $value;
     }
 
