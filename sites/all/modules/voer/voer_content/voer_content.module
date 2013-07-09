@@ -318,28 +318,33 @@ function voer_content_form_alter(&$form, &$form_state, $form_id) {
 
       $form['material_content_form']['title'] = $form['title'];
       $form['material_content_form']['field_voer_description'] = $form['field_voer_description'];
-      $form['material_content_form']['field_voer_image'] = $form['field_voer_image'];
+      // $form['material_content_form']['field_voer_image'] = $form['field_voer_image'];
       $form['material_content_form']['field_voer_language'] = $form['field_voer_language'];
-      $form['material_content_form']['field_voer_file'] = $form['field_voer_file'];
+      // $form['material_content_form']['field_voer_file'] = $form['field_voer_file'];
       $form['material_content_form']['field_voer_keywords'] = $form['field_voer_keywords'];
       $form['material_content_form']['field_voer_material_id'] = $form['field_voer_material_id'];
       $form['material_content_form']['field_voer_material_version'] = $form['field_voer_material_version'];
 
+      // dpm($form['field_voer_keywords']);
+
       unset($form['title']);
       unset($form['field_voer_description']);
-      unset($form['field_voer_image']);
+      // unset($form['field_voer_image']);
       unset($form['field_voer_language']);
       unset($form['field_voer_file']);
       unset($form['field_voer_material_type']);
       unset($form['field_voer_material_id']);
       unset($form['field_voer_material_version']);
+      unset($form['field_voer_keywords']);
 
-      $form['actions']['publish'] = array(
-        '#type'=> 'submit',
-        '#value'=> 'Publish',
-        '#weight'=> 11,
-        '#submit' => array('voer_content_form_push'),
-      );
+      if (!empty($form['field_voer_material_id'])){
+        $form['actions']['publish'] = array(
+          '#type'=> 'submit',
+          '#value'=> 'Publish',
+          '#weight'=> 11,
+          '#submit' => array('voer_content_form_push'),
+        );
+      }
     }
   }
 
@@ -379,43 +384,6 @@ function voer_content_form_push($form, &$form_state)
     }
   }
 }
-
-/**
- * Implements hook_menu().
- */
-// function voer_content_menu() {
-//   $items = array();
-
-//   $items['materials'] = array(
-//     'title' => t('Material list'),
-//     'page callback' => 'voer_content_material_list',
-//     'access arguments' => array('view VOER content'),
-//   );
-
-//   $items['material/%'] = array(
-//     'title' => t('Versions of material'),
-//     'page callback' => 'voer_content_material_version_list',
-//     'page arguments' => array(1),
-//     'access arguments' => array('view VOER content'),
-//     'type' => MENU_NORMAL_ITEM,
-//   );
-
-//   $items['material/%/%'] = array(
-//     'title' => t('Material detail'),
-//     'page callback' => 'voer_content_view_material',
-//     'access arguments' => array('view VOER content'),
-//     'type' => MENU_NORMAL_ITEM,
-//   );
-
-//   $items['voer-content/archive-form'] = array(
-//     'title' => t('Upload form'),
-//     'page callback' => 'drupal_get_form',
-//     'page arguments' => array('extract_zip_form'),
-//     'access arguments' => array('access content'),
-//   );
-
-//   return $items;
-// }
 
 /**
  * [voer_content_view_material description]

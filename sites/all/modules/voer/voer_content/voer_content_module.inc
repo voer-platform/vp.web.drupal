@@ -364,8 +364,8 @@ function voer_module_import_content_validate($form, &$form_state){
       if (file_exists($unzipDir . '/index.html')){
           $importContent = file_get_contents($unzipDir . '/index.html');
           $importContent = preg_replace('/<img src="([^"]*)"/', '<img src="/sites/default/files/import-result/' . $uniqueFilename . '/$1"', $importContent);
-          //$form_state['storage']['import_content'] = $importContent;
-          // $form_state['storage']['body'][LANGUAGE_NONE][0]['#default_value'] = $importContent;
+          //clear comment tags
+          $importContent = preg_replace('/<!--(.*)-->/Uis', '', $importContent);
           $form_state['input']['body'][LANGUAGE_NONE][0]['value'] = $importContent;
       }
     }
@@ -461,7 +461,7 @@ function save_module($form, &$form_state){
     field_attach_submit('node', $entity, $form_tmp, $form_tmp_state);
   }
 
-  // $entity->status = FALSE; //unpublish
+  $entity->status = TRUE; //unpublish
 
   node_save($entity);
 
