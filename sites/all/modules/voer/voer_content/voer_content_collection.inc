@@ -318,7 +318,7 @@ function voer_collection_publish_submit($form, &$form_state){
   $module = save_module($form, $form_state);
   $result = publish_module($module);
   if ($result === FALSE){
-    drupal_set_message("The collection publish was not successful!");
+    drupal_set_message("The collection publish was not successful!", 'error');
   }
   $form_state['redirect'] = 'node/' . $module->nid;
 }
@@ -387,7 +387,7 @@ function publish_module($module){
       return voer_api_checkin_material($params);
     }
   } catch (Exception $e) {
-    drupal_set_message("Error: " + $e->getMessage());
+    drupal_set_message("Error: " + $e->getMessage(), 'error');
     return FALSE;
   }
 }
