@@ -20,7 +20,8 @@ function voer_material_load($material_id, $reload = FALSE){
     module_load_include('inc', 'voer_api');
     try{
       $m = voer_api_get_detail_material($material_id);
-      return material_from_vpr($m);
+      $node = material_from_vpr($m);
+      return $node;
     } catch (Exception $e) {
       drupal_set_message(t("There are network problems!. ") . $e->getMessage());
       return FALSE;
@@ -60,7 +61,9 @@ function voer_material_load_multiple($materials){
 function material_from_vpr($material){
   $node = new stdClass();
   $node->type = 'voer_module';
+  // dpm($material);
   node_object_prepare($node);
+  // dpm($node);
   $node->uid = 1;
   $node->promote = 0;
   $node->comment = 0;
@@ -79,9 +82,14 @@ function material_from_vpr($material){
   $body = preg_replace_callback('/<img src="([^"]*)"/', function($m) use ($imgs){
     return "<img src='" . $imgs[$m[1]] . "'";
   }, $body);
+  // dpm($body);
   $node->body[$node->language][0]['value'] = $body;
   $node->body[$node->language][0]['format'] = 'full_html';
+  // $node->pathauto_perform_alias = true;
 
+  // drupal_exit();
+  // $node = node_submit($node);
+  // dpm("SAVE");
   node_save($node);
 
   if ($node->nid){
@@ -96,7 +104,7 @@ function publish_module($module){
   // dpm($module);
   // return FALSE;
   try {
-    if (empty($module->field_voer_material_id)){
+    if (sizeof($module->field_voer_material_id)){
       $material_id = $module->field_voer_material_id[LANGUAGE_NONE][0]['value'];
     }else{
       $material_id = "";
@@ -121,7 +129,7 @@ function publish_module($module){
     "description" => $module->field_voer_description[LANGUAGE_NONE][0]['value'],
     "keywords" => $module->field_voer_keywords[LANGUAGE_NONE][0]['value'],
     "categories" => $categories,
-    "authors" => "huyvq",
+    "authors" => "1",
     "editor_id" => $module->uid,
     "license_id" => 1,
     "language" => "en",
@@ -129,6 +137,7 @@ function publish_module($module){
 
   try {
     if (empty($material_id)){
+      // dpm($params);
       $result = voer_api_create_material($params);
     }else{
       $params['material_id'] = $material_id;

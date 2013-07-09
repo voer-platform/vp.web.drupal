@@ -80,11 +80,9 @@ function show_materials_by_category($category){
         $node->nid = $key;
         $node->comment = 0;
         $node->field_voer_description[LANGUAGE_NONE][0]['value'] = $material->description;
-        $node->path = "module/" . $material->material_id;
+        // $node->path = "module/" . $material->material_id;
         $nodes[] = $node;
       }
-      // dpm($nodes);
-      // return "";
       $output = node_view_multiple($nodes);
       $output['pager'] = array('#markup' => theme('pager'));
       return $output;// . theme('pager');

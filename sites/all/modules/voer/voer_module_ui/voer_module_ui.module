@@ -5,8 +5,8 @@ function voer_module_ui_menu(){
   // is defined in basic_uri and will use load_basic to retrieve
   // the necessary entity info.
   $items['module/%voer_module'] = array(
-    'title callback' => 'voer_module_title',
-    'title arguments' => array(1),
+    // 'title callback' => 'voer_module_title',
+    // 'title arguments' => array(1),
     'page callback' => 'node_view',
     'page arguments' => array(1),
     'access arguments' => array('access content'),
@@ -50,6 +50,7 @@ function voer_module_load($id = NULL, $reset = FALSE){
   $node = voer_material_load($id);
   if ($node){
     drupal_goto("node/" . $node->nid);
+    return FALSE;
   }else{
     return FALSE;
   }
