@@ -290,7 +290,7 @@ function voer_content_form_alter(&$form, &$form_state, $form_id) {
       $form_state['step'] = 1;
       $form_state['step_infor'] = _voer_content_material_form_steps();
     }
-    dpm($form);
+    // dpm($form);
     $step = &$form_state['step'];
 
     if ($step < count($form_state['step_infor']) && empty($node->nid)) {
@@ -318,20 +318,21 @@ function voer_content_form_alter(&$form, &$form_state, $form_id) {
 
       $form['material_content_form']['title'] = $form['title'];
       $form['material_content_form']['field_voer_description'] = $form['field_voer_description'];
-      $form['material_content_form']['field_image'] = $form['field_voer_image'];
-      $form['material_content_form']['field_language'] = $form['field_voer_language'];
+      $form['material_content_form']['field_voer_image'] = $form['field_voer_image'];
+      $form['material_content_form']['field_voer_language'] = $form['field_voer_language'];
       $form['material_content_form']['field_voer_file'] = $form['field_voer_file'];
-      $form['material_content_form']['field_keyword'] = $form['field_keyword'];
-      $form['material_content_form']['field_id'] = $form['field_id'];
-      $form['material_content_form']['field_version'] = $form['field_version'];
+      $form['material_content_form']['field_voer_keywords'] = $form['field_voer_keywords'];
+      $form['material_content_form']['field_voer_material_id'] = $form['field_voer_material_id'];
+      $form['material_content_form']['field_voer_material_version'] = $form['field_voer_material_version'];
 
       unset($form['title']);
       unset($form['field_voer_description']);
       unset($form['field_voer_image']);
       unset($form['field_voer_language']);
       unset($form['field_voer_file']);
-      unset($form['field_id']);
-      unset($form['field_version']);
+      unset($form['field_voer_material_type']);
+      unset($form['field_voer_material_id']);
+      unset($form['field_voer_material_version']);
 
       $form['actions']['publish'] = array(
         '#type'=> 'submit',
@@ -353,68 +354,29 @@ function voer_content_form_alter(&$form, &$form_state, $form_id) {
  */
 function voer_content_form_push($form, &$form_state)
 {
-  global $user;
-
-  $node = new stdClass();
-
+  module_load_include('inc', 'voer_content');
   if (arg(0) == 'node') {
     $nid = arg(1);
-
     if ($nid) {
+      // dpm($form_state);
       $node = node_load($nid);
+      $node->title = $form_state['values']['title'];
+      $node->body = $form_state['values']['body'];
+      $node->field_voer_keywords = $form_state['values']['field_voer_keywords'];
+      $node->field_voer_language = $form_state['values']['field_voer_language'];
+      $node->field_voer_description = $form_state['values']['field_voer_description'];
+      // $node->field_category = $form_state['values']['field_category'];
+      $result = publish_module($node);
+      if ($result === FALSE){
+        drupal_set_message(t("The module publish was not successful!"));
+      }else{
+        drupal_set_message(t("The module publish was successful!"));
+        $node->field_voer_material_id[LANGUAGE_NONE][0]['value'] = $result->material_id;
+        $node->field_voer_material_version[LANGUAGE_NONE][0]['value'] = $material->version;
+        node_save($node);
+        drupal_goto("node/" . $node->nid);
+      }
     }
-  }
-
-  $mod_data = array();
-  $mod_data['title'] = $form_state['values']['title'];
-  $mod_data['text'] = $form_state['values']['body'][LANGUAGE_NONE][0]['value'];
-  $mod_data['language'] = $form_state['values']['field_language'][LANGUAGE_NONE][0]['value'];
-  $mod_data['description'] = $form_state['values']['field_summary'][LANGUAGE_NONE][0]['value'];
-  $mod_data['categories'] = $form_state['values']['field_category'][LANGUAGE_NONE][0]['value'];
-  $mod_data['authors'] = $user->uid;
-  $mod_data['editor_id'] = 1;
-  $mod_data['keywords'] = $form_state['values']['field_keyword'][LANGUAGE_NONE][0]['value'];
-  $mod_data['license_id'] = '3';
-  $mod_data['material_type'] = VOER_MATERIAL_TYPE_TEXT;
-  $mod_data['file'] = '';
-  $mod_data['file_type'] = '';
-  $mod_data['derived_from'] = 1;
-
-  module_load_include('inc', 'voer_api');
-
-  if (isset($node->nid) && $form_state['values']['field_id'][LANGUAGE_NONE][0]['value']) {
-    $mod_data['material_id'] = $form_state['values']['field_id'][LANGUAGE_NONE][0]['value'];
-    $result = voer_api_checkin_material($mod_data);
-    unset($node->nid);
-    unset($node->vid);
-
-  } else {
-    $result = voer_api_create_material((object)$mod_data);
-  }
-
-  if ($result && $result->material_id) {
-    $node->title = $result->title;
-    $node->uid = $mod_data['authors'];
-    $node->body = $form_state['values']['body'];
-    $node->type = 'voer_content';
-    $node->language = LANGUAGE_NONE;
-    // $node->created = $result->modified;
-    $node->status = 1;
-    $node->promote = 1;
-
-    $node->field_keyword = $form_state['values']['field_keyword'];
-    $node->field_language = $form_state['values']['field_language'];
-    $node->field_summary = $form_state['values']['field_summary'];
-    $node->field_category = $form_state['values']['field_category'];
-    $node->field_id[LANGUAGE_NONE][0]['value'] = $result->material_id;
-    $node->field_version[LANGUAGE_NONE][0]['value'] = $result->version;
-
-    node_submit($node);
-    node_save($node);
-
-    drupal_set_message('Commit data to server successfull');
-
-    drupal_goto('node/' . $node->nid);
   }
 }
 

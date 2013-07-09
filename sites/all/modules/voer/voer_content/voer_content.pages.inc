@@ -62,11 +62,13 @@ function voer_category_title($category){
 function show_materials_by_category($category){
   module_load_include('inc', 'voer_api');
   try {
-    $materials = voer_api_get_materials_by_categories(array($category->id));
+    $page = isset($_GET['page']) ? $_GET['page'] : 0;
+    $materials = voer_api_get_materials_by_categories(array($category->id), $page + 1);
     if ($materials->count == 0){
       return t("Materials not found!");
     }else{
       $nodes = array();
+      pager_default_initialize($materials->count, 10);
       // dpm($materials);
       // return "";
       foreach ($materials->results as $key => $material) {
@@ -83,7 +85,9 @@ function show_materials_by_category($category){
       }
       // dpm($nodes);
       // return "";
-      return node_view_multiple($nodes);
+      $output = node_view_multiple($nodes);
+      $output['pager'] = array('#markup' => theme('pager'));
+      return $output;// . theme('pager');
     }
   } catch (Exception $e) {
     drupal_set_message($e->getMessage());

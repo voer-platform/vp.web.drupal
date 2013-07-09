@@ -429,6 +429,8 @@ function voer_module_creation_wizard_submit($form, &$form_state) {
 }
 
 function voer_module_publish_submit($form, &$form_state){
+  module_load_include('inc', 'voer_content');
+
   $module = save_module($form, $form_state);
   $result = publish_module($module);
   if ($result === FALSE){
@@ -459,62 +461,13 @@ function save_module($form, &$form_state){
     field_attach_submit('node', $entity, $form_tmp, $form_tmp_state);
   }
 
-  $entity->status = FALSE; //unpublish
+  // $entity->status = FALSE; //unpublish
 
   node_save($entity);
 
   return $entity;
 }
 
-function publish_module($module){
-  module_load_include('inc', 'voer_api');
-  try {
-    if (isset($module->field_voer_material_id)){
-      $material_id = $module->field_voer_material_id[LANGUAGE_NONE][0]['value'];
-    }else{
-      $material_id = "";
-    }
-  } catch (Exception $e) {
-    $material_id = "";
-  }
-
-  $categories = "";
-  $arr_cats = array();
-  foreach ($module->field_voer_categories[LANGUAGE_NONE] as $val) {
-    $arr_cats[] = $val['value'];
-  }
-  $categories = implode(",", $arr_cats);
-
-  $params = array(
-    // "material_id" => $material_id,
-    "text" => $module->body[LANGUAGE_NONE][0]['value'],
-    "title" => $module->title,
-    "material_type" => 1, //$module->field_voer_material_type[LANGUAGE_NONE][0]['value'],
-    "version" => "1",
-    "description" => $module->field_voer_description[LANGUAGE_NONE][0]['value'],
-    // "keywords" => $module->field_voer_keywords[LANGUAGE_NONE][0]['value'],
-    "categories" => $categories,
-    "authors" => "huyvq",
-    "editor_id" => $module->uid,
-    "license_id" => 1,
-    "language" => "en",
-  );
-
-  try {
-    if (empty($material_id)){
-      // dpm($params);
-      $result = voer_api_create_material($params);
-    }else{
-      $params['material_id'] = $material_id;
-      $result = voer_api_checkin_material($params);
-    }
-    // dpm($result);
-    return $result;
-  } catch (Exception $e) {
-    drupal_set_message("Error: " + $e->getMessage());
-    return FALSE;
-  }
-}
 
 /**
  * Provides a wrapper on the edit form to add a new entity.
@@ -529,6 +482,8 @@ function voer_module_creation() {
   $node->language = LANGUAGE_NONE;
   $node->status = FALSE;
   // $entity = entity_get_controller('voer_content')->create('voer_module');
+  $node->field_voer_material_version[$node->language][0]['value'] = "1";
+  $node->field_voer_material_type[$node->language][0]['value'] = "1";
   return drupal_get_form('voer_module_creation_wizard', $node);
 }
 

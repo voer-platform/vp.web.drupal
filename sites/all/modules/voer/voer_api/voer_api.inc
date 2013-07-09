@@ -87,10 +87,10 @@ function voer_api_get_detail_material($material_id, $version = NULL){
  * @param  array  $cagetories contains list of ids category
  * @return [type]             [description]
  */
-function voer_api_get_materials_by_categories($cagetories = array()){
+function voer_api_get_materials_by_categories($cagetories = array(), $page = 1){
   $voer = new VoerApi();
   $url = VOER_API_COMMAND_MATERIAL; // . "?categories=" . implode(",", $cagetories);
-  $params = array('categories' => implode(',', $cagetories));
+  $params = array('categories' => implode(',', $cagetories), 'page' => $page);
   $response = $voer->auth_request($url, "GET", $params);
   return json_decode($response);
 }

@@ -90,3 +90,53 @@ function material_from_vpr($material){
     return FALSE;
   }
 }
+
+function publish_module($module){
+  module_load_include('inc', 'voer_api');
+  // dpm($module);
+  // return FALSE;
+  try {
+    if (empty($module->field_voer_material_id)){
+      $material_id = $module->field_voer_material_id[LANGUAGE_NONE][0]['value'];
+    }else{
+      $material_id = "";
+    }
+  } catch (Exception $e) {
+    $material_id = "";
+  }
+
+  $categories = "";
+  $arr_cats = array();
+  foreach ($module->field_voer_categories[LANGUAGE_NONE] as $val) {
+    $arr_cats[] = $val['value'];
+  }
+  $categories = implode(",", $arr_cats);
+
+  $params = array(
+    // "material_id" => $material_id,
+    "text" => $module->body[LANGUAGE_NONE][0]['value'],
+    "title" => $module->title,
+    "material_type" => 1, //$module->field_voer_material_type[LANGUAGE_NONE][0]['value'],
+    "version" => "1",
+    "description" => $module->field_voer_description[LANGUAGE_NONE][0]['value'],
+    "keywords" => $module->field_voer_keywords[LANGUAGE_NONE][0]['value'],
+    "categories" => $categories,
+    "authors" => "huyvq",
+    "editor_id" => $module->uid,
+    "license_id" => 1,
+    "language" => "en",
+  );
+
+  try {
+    if (empty($material_id)){
+      $result = voer_api_create_material($params);
+    }else{
+      $params['material_id'] = $material_id;
+      $result = voer_api_checkin_material($params);
+    }
+    return $result;
+  } catch (Exception $e) {
+    drupal_set_message("Error: " + $e->getMessage());
+    return FALSE;
+  }
+}
