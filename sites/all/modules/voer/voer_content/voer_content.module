@@ -316,8 +316,8 @@ function voer_content_form_alter(&$form, &$form_state, $form_id) {
         '#weight' => -10,
       );
 
-      $form['material_content_form']['title'] = $form['title'];
-      $form['material_content_form']['field_voer_description'] = $form['field_voer_description'];
+      // $form['material_content_form']['title'] = $form['title'];
+      // $form['material_content_form']['field_voer_description'] = $form['field_voer_description'];
       // $form['material_content_form']['field_voer_image'] = $form['field_voer_image'];
       $form['material_content_form']['field_voer_language'] = $form['field_voer_language'];
       // $form['material_content_form']['field_voer_file'] = $form['field_voer_file'];
@@ -327,8 +327,8 @@ function voer_content_form_alter(&$form, &$form_state, $form_id) {
 
       // dpm($form['field_voer_keywords']);
 
-      unset($form['title']);
-      unset($form['field_voer_description']);
+      // unset($form['title']);
+      // unset($form['field_voer_description']);
       // unset($form['field_voer_image']);
       unset($form['field_voer_language']);
       unset($form['field_voer_file']);
