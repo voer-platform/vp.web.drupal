@@ -80,7 +80,12 @@ function voer_categories_block_view(){
     $list = array();
     if (isset($categories)){
       foreach ($categories as $category) {
-        $list[$category->id] = l($category->name, 'category/' . $category->id, array('class' => 'category-link'));
+        //Chi lay nhung category co so bai viet > 0
+        $catinfo = voer_api_get_materials_by_categories(array($category->id));
+        $total = $catinfo->count;
+        if ($total > 0){
+          $list[$category->id] = l($category->name . " ($total)", 'category/' . $category->id, array('class' => 'category-link'));
+        }
       }
     }
 
@@ -249,10 +254,11 @@ function voer_featured_authors_block_view()
     }
 
     $randomAuthor = rand(0, $max_range);
-
     foreach ($author_list['results'][$randomAuthor] as $key => $value) {
       $author[$key] = $value;
     }
+
+    $author['person_id'] = $author['id'];
 
     return theme('voer_module_featured_author', $author);
 
@@ -272,6 +278,7 @@ function voer_blocks_theme($existing, $type, $theme, $path) {
     ),
     'voer_module_featured_author' => array(
       'arguments' => array('author' => array()),
+      'render element' => 'element',
       'template' => 'templates/block--voer-featured-author--view',
     ),
   );
