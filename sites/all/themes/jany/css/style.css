@@ -1211,7 +1211,7 @@ div.add-or-remove-shortcuts {
   border-radius: 8px;
 }
 
-#voer-module-node-form div#edit-field-voer-categories div.form-type-radio{
+div#edit-field-voer-categories-und div.form-item{
   display: inline-block;
   width: 15em;
 }
