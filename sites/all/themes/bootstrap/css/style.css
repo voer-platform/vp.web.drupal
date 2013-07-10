@@ -463,7 +463,3 @@ article.node-voer-module p{
 }
 article.node-voer-module table { margin: 1em 0; border-collapse: collapse; }
 article.node-voer-module td, th { padding: .3em; border: 1px #999 solid; }
-#voer-module-node-form div#edit-field-voer-categories div.form-type-radio{
-  display: inline-block;
-  width: 15em;
-}

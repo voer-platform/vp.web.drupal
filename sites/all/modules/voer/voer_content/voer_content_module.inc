@@ -320,9 +320,6 @@ function voer_module_import_content_validate($form, &$form_state){
   if ($file) {
     // Move the file, into the Drupal file system
     if ($file = file_move($file, 'public://')) {
-      // Save the file for use in the submit handler.
-      // $form_state['storage']['file'] = $file;
-      // drupal_set_message(t('File: <pre>@file</pre>', array('@file' => print_r($file, true))));
 
       // Gui noi dung file cho phan vp.transporter
       module_load_include('inc', 'voer_api');
@@ -330,17 +327,7 @@ function voer_module_import_content_validate($form, &$form_state){
       $zipContent = voer_api_import($realpath);
       // Luu ra thu muc import-result
       $uniqueFilename = md5($file->filename . microtime());
-      //drupal_mkdir("public://import-result/");
       $zipFile = file_unmanaged_save_data($zipContent, "public://import-result/" . $uniqueFilename . ".zip", FILE_EXISTS_RENAME);
-      // $fp = fopen('./upload/result.zip', 'w');
-      // fwrite($fp, $out);
-      // fclose($fp);
-      //Delete all file
-      // $files = glob('./upload/unzip/*'); // get all file names
-      // foreach($files as $file){ // iterate files
-      //   if(is_file($file))
-      //     unlink($file); // delete file
-      // }
 
       //Unzip it
       $realZipFile = drupal_realpath($zipFile);
@@ -356,16 +343,9 @@ function voer_module_import_content_validate($form, &$form_state){
           $zip->close();
       }
 
-      // $filename = 'image.txt';
-      // $image = file_get_contents('http://www.ibiblio.org/wm/paint/auth/gogh/gogh.white-house.jpg');
-      // $file = file_save_data($image, 'public://' . $filename, FILE_EXISTS_RENAME);
-      // $node->field_image = array(LANGUAGE_NONE => array('0' => (array)$file));
-
       if (file_exists($unzipDir . '/index.html')){
           $importContent = file_get_contents($unzipDir . '/index.html');
           $importContent = preg_replace('/<img src="([^"]*)"/', '<img src="/sites/default/files/import-result/' . $uniqueFilename . '/$1"', $importContent);
-          //clear comment tags
-          $importContent = preg_replace('/<!--(.*)-->/Uis', '', $importContent);
           $form_state['input']['body'][LANGUAGE_NONE][0]['value'] = $importContent;
       }
     }
@@ -373,9 +353,6 @@ function voer_module_import_content_validate($form, &$form_state){
       form_set_error('file', t('Failed to write the uploaded file to the site\'s file folder.'));
     }
   }
-  // else {
-  //   form_set_error('file', t('No file was uploaded.'));
-  // }
 }
 
 /**
@@ -400,6 +377,7 @@ function voer_module_content($form, &$form_state) {
     '#value' => t('Import'),
     '#validate' => array('voer_module_import_content_validate'),
   );
+
   $form['body'] = $form_state['storage']['body'];
   $form['body']['#weight'] = 10;
 
@@ -466,6 +444,11 @@ function save_module($form, &$form_state){
     $form_tmp_state['values'] = $value['stored_values'];
     field_attach_submit('node', $entity, $form_tmp, $form_tmp_state);
   }
+  //clear comment tags
+  $body = $entity->body[LANGUAGE_NONE][0]['value'];
+  $body = preg_replace('/<!--(.*)-->/is', '', $body);
+
+  $entity->body[LANGUAGE_NONE][0]['value'] = $body;
 
   $entity->status = TRUE; //unpublish
 

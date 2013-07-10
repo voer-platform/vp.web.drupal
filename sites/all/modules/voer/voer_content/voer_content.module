@@ -143,6 +143,22 @@ function voer_content_form_alter(&$form, &$form_state, $form_id) {
       $form['path']['#access'] = false;
     }
 
+    $body_weight = $form['body']['#weight'];
+    $form['title']['#weight'] = $body_weight - 4;
+    $form['field_voer_description']['#weight'] = $body_weight - 3;
+    $form['import_file'] = array(
+      '#type' => 'file',
+      '#title' => t('Document for import'),
+      '#description' => t('Upload a file, allowed extensions: doc, docx, odt'),
+      '#weight' => $body_weight - 2,
+    );
+    $form['upload_file'] = array(
+      '#type' => 'button',
+      '#weight' => $body_weight - 1,
+      '#value' => t('Import'),
+      '#validate' => array('voer_module_import_content_validate'),
+    );
+
     $form['material_content_form'] = array(
       '#type' => 'fieldset',
       '#title' => t('Metadata'),
@@ -220,5 +236,50 @@ function voer_content_form_push($form, &$form_state)
     }
   }
 }
+
+function voer_module_import_content_validate($form, &$form_state){
+  $file = file_save_upload('import_file', array(
+    // 'file_validate_is_image' => array(), // Validates file is really an image.
+    'file_validate_extensions' => array('doc docx odt'), // Validate extensions.
+  ));
+  // If the file passed validation:
+  if ($file) {
+    // Move the file, into the Drupal file system
+    if ($file = file_move($file, 'public://')) {
+
+      // Gui noi dung file cho phan vp.transporter
+      module_load_include('inc', 'voer_api');
+      $realpath = drupal_realpath($file->uri);
+      $zipContent = voer_api_import($realpath);
+      // Luu ra thu muc import-result
+      $uniqueFilename = md5($file->filename . microtime());
+      $zipFile = file_unmanaged_save_data($zipContent, "public://import-result/" . $uniqueFilename . ".zip", FILE_EXISTS_RENAME);
+
+      //Unzip it
+      $realZipFile = drupal_realpath($zipFile);
+      $parentDir = dirname($realZipFile);
+      // drupal_set_message('Zip file: '. $realZipFile);
+      // drupal_set_message('Dir path: '. $parentDir);
+      $unzipDir = $parentDir . "/" . $uniqueFilename;
+      // drupal_set_message('Dir path: '. $unzipDir);
+      $zip = new ZipArchive;
+      $res = $zip->open($realZipFile);
+      if ($res === TRUE) {
+          $zip->extractTo($unzipDir);
+          $zip->close();
+      }
+
+      if (file_exists($unzipDir . '/index.html')){
+          $importContent = file_get_contents($unzipDir . '/index.html');
+          $importContent = preg_replace('/<img src="([^"]*)"/', '<img src="/sites/default/files/import-result/' . $uniqueFilename . '/$1"', $importContent);
+          $form_state['input']['body'][LANGUAGE_NONE][0]['value'] = $importContent;
+      }
+    }
+    else {
+      form_set_error('file', t('Failed to write the uploaded file to the site\'s file folder.'));
+    }
+  }
+}
+
 
 

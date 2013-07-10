@@ -1210,3 +1210,9 @@ div.add-or-remove-shortcuts {
   -webkit-border-radius: 8px;
   border-radius: 8px;
 }
+
+#voer-module-node-form div#edit-field-voer-categories div.form-type-radio{
+  display: inline-block;
+  width: 15em;
+}
+
