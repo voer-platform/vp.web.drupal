@@ -1,0 +1,69 @@
+<?php
+
+function voer_person_menu(){
+  $items = array();
+  $items['person/%person'] = array(
+    'page callback' => 'show_person_page',
+    'page arguments' => array(1),
+    'access arguments' => array('access content'),
+  );
+  return $items;
+}
+
+function voer_person_theme(){
+  return array(
+    'voer_person_view' => array(
+      'arguments' => array('person' => array()),
+      'render element' => 'element',
+      'template' => 'templates/voer-person-view',
+    ),
+  );
+}
+
+
+function person_load($id = NULL){
+  module_load_include('inc', 'voer_api');
+  $person = voer_api_get_author($id);
+  if ($person){
+    return $person;
+  }else{
+    return FALSE;
+  }
+}
+
+function show_person_page($person){
+
+  return theme("voer_person_view", (array) $person) . drupal_render(show_materials_by_authors($person));
+}
+
+function show_materials_by_authors($person){
+  module_load_include('inc', 'voer_api');
+  try {
+    $page = isset($_GET['page']) ? $_GET['page'] : 0;
+    $materials = voer_api_get_materials_by_authors(array($person->id), $page + 1);
+    if ($materials->count == 0){
+      return t("Materials not found!");
+    }else{
+      $nodes = array();
+      pager_default_initialize($materials->count, 10);
+      foreach ($materials->results as $key => $material) {
+        $node = new stdClass();
+        $node->type = 'voer_module';
+        node_object_prepare($node);
+        $node->title = $material->title;
+        $node->material_id = $material->material_id;
+        $node->nid = $key;
+        $node->comment = 0;
+        $node->field_voer_description[LANGUAGE_NONE][0]['value'] = $material->description;
+        $nodes[] = $node;
+      }
+      $output = node_view_multiple($nodes);
+      $output['pager'] = array('#markup' => theme('pager'));
+      return $output;
+    }
+  } catch (Exception $e) {
+    drupal_set_message($e->getMessage(), 'error');
+    return "";
+  }
+}
+
