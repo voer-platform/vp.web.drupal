@@ -82,14 +82,9 @@ function material_from_vpr($material){
   $body = preg_replace_callback('/<img src="([^"]*)"/', function($m) use ($imgs){
     return "<img src='" . $imgs[$m[1]] . "'";
   }, $body);
-  // dpm($body);
   $node->body[$node->language][0]['value'] = $body;
   $node->body[$node->language][0]['format'] = 'full_html';
-  // $node->pathauto_perform_alias = true;
 
-  // drupal_exit();
-  // $node = node_submit($node);
-  // dpm("SAVE");
   node_save($node);
 
   if ($node->nid){
@@ -125,7 +120,7 @@ function publish_module($module){
     "text" => $module->body[LANGUAGE_NONE][0]['value'],
     "title" => $module->title,
     "material_type" => 1, //$module->field_voer_material_type[LANGUAGE_NONE][0]['value'],
-    "version" => "1",
+    // "version" => "1",
     "description" => $module->field_voer_description[LANGUAGE_NONE][0]['value'],
     "keywords" => $module->field_voer_keywords[LANGUAGE_NONE][0]['value'],
     "categories" => $categories,

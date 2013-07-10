@@ -4,7 +4,7 @@ function voer_module_ui_menu(){
   // The page to view our entities - needs to follow what
   // is defined in basic_uri and will use load_basic to retrieve
   // the necessary entity info.
-  $items['module/%voer_module'] = array(
+  $items['m/%voer_module'] = array(
     // 'title callback' => 'voer_module_title',
     // 'title arguments' => array(1),
     'page callback' => 'node_view',

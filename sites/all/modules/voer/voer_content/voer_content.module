@@ -31,8 +31,21 @@ function voer_content_menu_alter(&$items) {
 
   // Modify add voer module
   $items['node/add/voer-collection']['page callback'] = 'voer_collection_creation';
-  $items['node/add/voer-collection']['file'] =  'voer_content_collection.inc';
+  $items['node/add/voer-collection']['file'] =  'voer_content_collection.in1c';
   $items['node/add/voer-collection']['file path'] = drupal_get_path('module', 'voer_content');
+
+  $items['node/%node/edit']['access callback'] = 'voer_module_disable_node_edit';
+  $items['node/%node/edit']['access arguments'] = array(1);
+}
+
+function voer_module_disable_node_edit($node){
+  if ($node->type == 'voer_module' || $node->type == 'voer_collection'){
+    if (sizeof($node->field_voer_material_version) && !empty($node->field_voer_material_version[LANGUAGE_NONE][0]['value'])){
+      return false;
+    }else{
+      return true;
+    }
+  }
 }
 
 /**
@@ -50,6 +63,20 @@ function voer_content_menu() {
     'file' => 'voer_content.pages.inc',
   );
 
+  $items['node/%node/clone'] = array(
+    'access callback' => 'clone_access_cloning',
+    'access arguments' => array(1),
+    'page callback' => 'voer_content_clone',
+    'page arguments' => array(1),
+    'title' => 'Checkout',
+    'title callback' => 'clone_action_link_title',
+    'title arguments' => array(1),
+    'weight' => 5,
+    'file' => 'clone.pages.inc',
+    'type' => MENU_LOCAL_ACTION,
+    'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
+  );
+
   return $items;
 }
 
@@ -59,7 +86,7 @@ function voer_content_preprocess_node(&$variables){
   if ($type == 'voer_module'){
     $variables['page'] = $variables['view_mode'] == 'full';
     if (isset($variables['material_id'])){
-      $module_path =  "module/" . $variables['material_id'];
+      $module_path =  "m/" . $variables['material_id'];
       $variables['node_url'] = base_path() . $module_path;
       $variables['content']['links']['node']['#links']['node-readmore']['href'] = $module_path;
     }
@@ -130,9 +157,11 @@ function voer_content_form_alter(&$form, &$form_state, $form_id) {
     // $form['material_content_form']['field_voer_file'] = $form['field_voer_file'];
     $form['material_content_form']['field_voer_keywords'] = $form['field_voer_keywords'];
     $form['material_content_form']['field_voer_material_id'] = $form['field_voer_material_id'];
+    $form['material_content_form']['field_voer_material_id'][LANGUAGE_NONE][0]['#disabled'] = TRUE;
     $form['material_content_form']['field_voer_material_version'] = $form['field_voer_material_version'];
+    $form['material_content_form']['field_voer_material_version'][LANGUAGE_NONE][0]['#disabled'] = TRUE;
 
-    // dpm($form['field_voer_keywords']);
+    // dpm($form);
 
     // unset($form['title']);
     // unset($form['field_voer_description']);
@@ -144,7 +173,7 @@ function voer_content_form_alter(&$form, &$form_state, $form_id) {
     unset($form['field_voer_material_version']);
     unset($form['field_voer_keywords']);
 
-    if (empty($node->field_voer_material_id[LANGUAGE_NONE][0]['value'])){
+    if (empty($node->field_voer_material_version[LANGUAGE_NONE][0]['value'])){
       $form['actions']['publish'] = array(
         '#type'=> 'submit',
         '#value'=> 'Publish',
@@ -184,7 +213,7 @@ function voer_content_form_push($form, &$form_state)
       }else{
         drupal_set_message(t("The module publish was successful!"));
         $node->field_voer_material_id[LANGUAGE_NONE][0]['value'] = $result->material_id;
-        $node->field_voer_material_version[LANGUAGE_NONE][0]['value'] = $material->version;
+        $node->field_voer_material_version[LANGUAGE_NONE][0]['value'] = $result->version;
         node_save($node);
         drupal_goto("node/" . $node->nid);
       }

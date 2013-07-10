@@ -261,7 +261,7 @@ function voer_featured_authors_block_view()
       $author[$key] = $value;
     }
 
-    $author['person_id'] = $author['id'];
+    // $author['person_id'] = $author['id'];
 
     return theme('voer_module_featured_author', $author);
 

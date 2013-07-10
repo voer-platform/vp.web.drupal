@@ -94,3 +94,27 @@ function show_materials_by_category($category){
 }
 
 
+/**
+ *  Menu callback: prompt the user to confirm the operation
+ */
+function voer_content_clone($node) {
+
+  $method = variable_get('clone_method', 'prepopulate');
+
+  switch ($method) {
+    case 'save-edit':
+      if (variable_get('clone_nodes_without_confirm', FALSE)) {
+        $new_nid = clone_node_save($node->nid);
+        drupal_goto('node/'. $new_nid .'/edit');
+      }
+      else {
+        return drupal_get_form('clone_node_confirm', $node);
+      }
+      break;
+    case 'prepopulate':
+    default:
+      return clone_node_prepopulate($node);
+      break;
+  }
+}
+

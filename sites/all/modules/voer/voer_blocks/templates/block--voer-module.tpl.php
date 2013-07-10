@@ -1,8 +1,8 @@
 <div class="span4">
   <div class="vertical-shadow suggested-action">
-    <div class="suggested-action-image-link cls_module" style="background-image: url('<?php echo $image_path; ?>');"><a href="/module/<?php print $material_id ?>">&nbsp;</a></div>
+    <div class="suggested-action-image-link cls_module" style="background-image: url('<?php echo $image_path; ?>');"><a href="/m/<?php print $material_id ?>">&nbsp;</a></div>
     <h2 class="pulls ellipsis suggested-action-title">
-      <?php echo l($title, 'module/' . $material_id); ?>
+      <?php echo l($title, 'm/' . $material_id); ?>
     </h2>
 
     <?php if (isset($category_name)) : ?>

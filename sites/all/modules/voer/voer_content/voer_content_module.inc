@@ -431,13 +431,18 @@ function voer_module_creation_wizard_submit($form, &$form_state) {
 function voer_module_publish_submit($form, &$form_state){
   module_load_include('inc', 'voer_content');
 
-  $module = save_module($form, $form_state);
-  $result = publish_module($module);
+  $node = save_module($form, $form_state);
+  $result = publish_module($node);
   // dpm($module);
   if ($result === FALSE){
     drupal_set_message("The module publish was not successful!", 'error');
+  }else{
+    drupal_set_message(t("The module publish was successful!"));
+    $node->field_voer_material_id[LANGUAGE_NONE][0]['value'] = $result->material_id;
+    $node->field_voer_material_version[LANGUAGE_NONE][0]['value'] = $result->version;
+    node_save($node);
+    drupal_goto("node/" . $node->nid);
   }
-  $form_state['redirect'] = 'module/' . $result->material_id;
 }
 
 /**
@@ -483,7 +488,7 @@ function voer_module_creation() {
   $node->language = LANGUAGE_NONE;
   $node->status = FALSE;
   // $entity = entity_get_controller('voer_content')->create('voer_module');
-  $node->field_voer_material_version[$node->language][0]['value'] = "1";
+  // $node->field_voer_material_version[$node->language][0]['value'] = "1";
   $node->field_voer_material_type[$node->language][0]['value'] = "1";
   return drupal_get_form('voer_module_creation_wizard', $node);
 }
