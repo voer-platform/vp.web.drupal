@@ -156,7 +156,7 @@ function voer_content_form_alter(&$form, &$form_state, $form_id) {
       '#type' => 'button',
       '#weight' => $body_weight - 1,
       '#value' => t('Import'),
-      '#validate' => array('voer_module_import_content_validate'),
+      '#validate' => array('voer_module_import_validate'),
     );
 
     $form['material_content_form'] = array(
@@ -237,7 +237,7 @@ function voer_content_form_push($form, &$form_state)
   }
 }
 
-function voer_module_import_content_validate($form, &$form_state){
+function voer_module_import_validate($form, &$form_state){
   $file = file_save_upload('import_file', array(
     // 'file_validate_is_image' => array(), // Validates file is really an image.
     'file_validate_extensions' => array('doc docx odt'), // Validate extensions.
