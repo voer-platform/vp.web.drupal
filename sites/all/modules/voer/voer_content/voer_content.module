@@ -200,7 +200,7 @@ function voer_content_form_alter(&$form, &$form_state, $form_id) {
     unset($form['field_voer_material_version']);
     unset($form['field_voer_keywords']);
 
-    if (empty($node->field_voer_material_version[LANGUAGE_NONE][0]['value'])){
+    if (sizeof($node->field_voer_material_version) == 0 || empty($node->field_voer_material_version[LANGUAGE_NONE][0]['value'])){
       $form['actions']['publish'] = array(
         '#type'=> 'submit',
         '#value'=> 'Publish',
