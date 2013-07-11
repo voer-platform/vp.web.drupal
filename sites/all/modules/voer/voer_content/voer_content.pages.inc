@@ -97,24 +97,27 @@ function show_materials_by_category($category){
 /**
  *  Menu callback: prompt the user to confirm the operation
  */
-function voer_content_clone($node) {
+function voer_content_clone($original_node) {
+  // module_load_include('inc', 'node', 'node.pages');
+  global $user;
+  // dpm($node);
+  $node = clone $original_node;
 
-  $method = variable_get('clone_method', 'prepopulate');
+  $node->nid = NULL;
+  $node->vid = NULL;
+  $node->tnid = NULL;
+  $node->name = isset($user->name) ? $user->name : NULL;
+  $node->uid = $user->uid;
+  $node->created = NULL;
+  $node->path = NULL;
+  $node->files = array();
+  $node->title = t('Clone of !title', array('!title' => $node->title));
 
-  switch ($method) {
-    case 'save-edit':
-      if (variable_get('clone_nodes_without_confirm', FALSE)) {
-        $new_nid = clone_node_save($node->nid);
-        drupal_goto('node/'. $new_nid .'/edit');
-      }
-      else {
-        return drupal_get_form('clone_node_confirm', $node);
-      }
-      break;
-    case 'prepopulate':
-    default:
-      return clone_node_prepopulate($node);
-      break;
-  }
+  $form_state = array();
+  $form_state['build_info']['args'] = array($node);
+  form_load_include($form_state, 'inc', 'node', 'node.pages');
+
+  $node->field_voer_material_version[LANGUAGE_NONE][0]['value'] = "";
+  return drupal_get_form($node->type . '_node_form', $node, $form_state);
 }
 
