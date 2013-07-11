@@ -99,7 +99,7 @@ function publish_module($module){
   // dpm($module);
   // return FALSE;
   try {
-    if (sizeof($module->field_voer_material_id)){
+    if (isset($module->field_voer_material_id) && sizeof($module->field_voer_material_id)){
       $material_id = $module->field_voer_material_id[LANGUAGE_NONE][0]['value'];
     }else{
       $material_id = "";
@@ -116,8 +116,10 @@ function publish_module($module){
   $categories = implode(",", $arr_cats);
 
   $arr_authors = array();
-  foreach ($module->field_voer_authors[LANGUAGE_NONE] as $val) {
-    $arr_authors[] = $val['value'];
+  if (isset($module->field_voer_authors)){
+    foreach ($module->field_voer_authors[LANGUAGE_NONE] as $val) {
+      $arr_authors[] = $val['value'];
+    }
   }
   $authors = implode(',', $arr_authors);
 
@@ -128,9 +130,9 @@ function publish_module($module){
     "material_type" => 1, //$module->field_voer_material_type[LANGUAGE_NONE][0]['value'],
     // "version" => "1",
     "description" => $module->field_voer_description[LANGUAGE_NONE][0]['value'],
-    "keywords" => $module->field_voer_keywords[LANGUAGE_NONE][0]['value'],
+    "keywords" => "",//$module->field_voer_keywords[LANGUAGE_NONE][0]['value'],
     "categories" => $categories,
-    "authors" => $authors,
+    "authors" => $module->uid,
     "editor_id" => $module->uid,
     "license_id" => 1,
     "language" => "en",
