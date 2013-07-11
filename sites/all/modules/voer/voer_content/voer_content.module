@@ -82,8 +82,11 @@ function voer_content_menu() {
 
 function voer_content_clone_access($node){
   // dpm($node);
+  global $user;
   if (sizeof($node->field_voer_material_version) > 0 || !empty($node->field_voer_material_version[LANGUAGE_NONE][0]['value'])){
-    return true;
+    if ($user->uid > 0){
+      return true;
+    }
   }else{
     return false;
   }
@@ -129,18 +132,10 @@ function voer_content_title($content){
  * Implements hook_form_alter().
  */
 function voer_content_form_alter(&$form, &$form_state, $form_id) {
-  $node = new stdClass();
-
-  if (arg(0) == 'node') {
-    $nid = arg(1);
-
-    if ($nid) {
-      $node = node_load($nid);
-    }
-  }
 
   if ($form_id == 'voer_module_node_form') {
     global $user;
+    $node = $form['#node'];
 
     //hide if user has not roles
     if (!in_array('administrator', $user->roles)) {
@@ -176,6 +171,7 @@ function voer_content_form_alter(&$form, &$form_state, $form_id) {
       '#group' => 'additional_settings',
       '#weight' => 4,
     );
+
     // dpm($form);
 
     // $form['material_content_form']['title'] = $form['title'];

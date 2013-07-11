@@ -112,12 +112,12 @@ function voer_content_clone($original_node) {
   $node->path = NULL;
   $node->files = array();
   $node->title = t('Clone of !title', array('!title' => $node->title));
-
+  $node->field_voer_material_version[LANGUAGE_NONE][0]['value'] = "";
+  // dpm($node);
   $form_state = array();
   $form_state['build_info']['args'] = array($node);
   form_load_include($form_state, 'inc', 'node', 'node.pages');
 
-  $node->field_voer_material_version[LANGUAGE_NONE][0]['value'] = "";
   return drupal_get_form($node->type . '_node_form', $node, $form_state);
 }
 
