@@ -14,8 +14,7 @@ define('VOER_MATERIAL_CONTENT_FORM', 'material_content_form');
  */
 function voer_content_admin_paths(){
   $paths = array(
-    'voer_content/*/add' => TRUE,
-    'node/*/publish' => TRUE,
+    'node/*/clone' => TRUE,
   );
   return $paths;
 }
@@ -64,20 +63,30 @@ function voer_content_menu() {
   );
 
   $items['node/%node/clone'] = array(
-    'access callback' => 'clone_access_cloning',
+    'access callback' => 'voer_content_clone_access',
     'access arguments' => array(1),
+    // 'access arguments' => array('access content'),
     'page callback' => 'voer_content_clone',
     'page arguments' => array(1),
     'title' => 'Checkout',
-    'title callback' => 'clone_action_link_title',
-    'title arguments' => array(1),
+    // 'title callback' => 'clone_action_link_title',
+    // 'title arguments' => array(1),
     'weight' => 5,
-    'file' => 'clone.pages.inc',
-    'type' => MENU_LOCAL_ACTION,
+    'file' => 'voer_content.pages.inc',
+    'type' => MENU_LOCAL_TASK,
     'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
   );
 
   return $items;
+}
+
+function voer_content_clone_access($node){
+  // dpm($node);
+  if (sizeof($node->field_voer_material_version) > 0 || !empty($node->field_voer_material_version[LANGUAGE_NONE][0]['value'])){
+    return true;
+  }else{
+    return false;
+  }
 }
 
 function voer_content_preprocess_node(&$variables){
@@ -144,17 +153,19 @@ function voer_content_form_alter(&$form, &$form_state, $form_id) {
     }
 
     $body_weight = $form['body']['#weight'];
-    $form['title']['#weight'] = $body_weight - 4;
-    $form['field_voer_description']['#weight'] = $body_weight - 3;
+
+    $form['title']['#weight'] = 0;
+    $form['field_voer_description']['#weight'] = -1;
+
     $form['import_file'] = array(
       '#type' => 'file',
       '#title' => t('Document for import'),
       '#description' => t('Upload a file, allowed extensions: doc, docx, odt'),
-      '#weight' => $body_weight - 2,
+      '#weight' => 2,
     );
     $form['upload_file'] = array(
       '#type' => 'button',
-      '#weight' => $body_weight - 1,
+      '#weight' => 3,
       '#value' => t('Import'),
       '#validate' => array('voer_module_import_validate'),
     );
@@ -163,8 +174,9 @@ function voer_content_form_alter(&$form, &$form_state, $form_id) {
       '#type' => 'fieldset',
       '#title' => t('Metadata'),
       '#group' => 'additional_settings',
-      '#weight' => -10,
+      '#weight' => 4,
     );
+    // dpm($form);
 
     // $form['material_content_form']['title'] = $form['title'];
     // $form['material_content_form']['field_voer_description'] = $form['field_voer_description'];
@@ -177,7 +189,6 @@ function voer_content_form_alter(&$form, &$form_state, $form_id) {
     $form['material_content_form']['field_voer_material_version'] = $form['field_voer_material_version'];
     $form['material_content_form']['field_voer_material_version'][LANGUAGE_NONE][0]['#disabled'] = TRUE;
 
-    // dpm($form);
 
     // unset($form['title']);
     // unset($form['field_voer_description']);

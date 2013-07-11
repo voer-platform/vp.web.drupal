@@ -2,11 +2,11 @@
   <div class="navbar-inner">
     <div class="container">
       <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
-      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+      <button class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse" type="button">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
-      </a>
+      </button>
 
       <?php if (!empty($logo)): ?>
         <a class="logo pull-left" href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>">
@@ -55,9 +55,9 @@
       <aside class="span3" role="complementary">
         <?php print render($page['sidebar_first']); ?>
       </aside>  <!-- /#sidebar-first -->
-    <?php endif; ?>  
+    <?php endif; ?>
 
-    <section class="<?php print _bootstrap_content_span($columns); ?>">  
+    <section class="<?php print _bootstrap_content_span($columns); ?>">
       <?php if (!empty($page['highlighted'])): ?>
         <div class="highlighted hero-unit"><?php print render($page['highlighted']); ?></div>
       <?php endif; ?>
