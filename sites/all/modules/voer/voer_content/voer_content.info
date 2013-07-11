@@ -4,6 +4,7 @@ core = 7.x
 package = VOER
 dependencies[] = voer_api
 dependencies[] = voer_field_category
+dependencies[] = voer_field_author
 ;dependencies[] = panels
 files[] = voer_content.module
 ;configure = admin/config/services/voer
