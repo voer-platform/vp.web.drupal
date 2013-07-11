@@ -228,7 +228,8 @@ function voer_content_form_push($form, &$form_state)
       $node->field_voer_keywords = $form_state['values']['field_voer_keywords'];
       $node->field_voer_language = $form_state['values']['field_voer_language'];
       $node->field_voer_description = $form_state['values']['field_voer_description'];
-      // $node->field_category = $form_state['values']['field_category'];
+      $node->field_voer_categories = $form_state['values']['field_voer_categories'];
+      $node->field_voer_authors = $form_state['values']['field_voer_authors'];
       $result = publish_module($node);
       // dpm($result);
       if ($result === FALSE){

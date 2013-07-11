@@ -115,6 +115,12 @@ function publish_module($module){
   }
   $categories = implode(",", $arr_cats);
 
+  $arr_authors = array();
+  foreach ($module->field_voer_authors[LANGUAGE_NONE] as $val) {
+    $arr_authors[] = $val['value'];
+  }
+  $authors = implode(',', $arr_authors);
+
   $params = array(
     // "material_id" => $material_id,
     "text" => $module->body[LANGUAGE_NONE][0]['value'],
@@ -124,7 +130,7 @@ function publish_module($module){
     "description" => $module->field_voer_description[LANGUAGE_NONE][0]['value'],
     "keywords" => $module->field_voer_keywords[LANGUAGE_NONE][0]['value'],
     "categories" => $categories,
-    "authors" => "1",
+    "authors" => $authors,
     "editor_id" => $module->uid,
     "license_id" => 1,
     "language" => "en",

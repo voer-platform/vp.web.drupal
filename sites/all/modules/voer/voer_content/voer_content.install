@@ -148,6 +148,16 @@ function _voer_content_create_fields(){
     );
     field_create_field($field_voer_categories);
   }
+
+  // AUTHOR
+  if (!field_info_field('field_voer_authors')) {
+    $field_voer_authors = array(
+        'field_name' => 'field_voer_authors',
+        'type' => 'field_voer_authors',
+        'entity_types' => array('node'),
+    );
+    field_create_field($field_voer_authors);
+  }
 }
 
 function _voer_module_create_instance_fields(){
@@ -158,6 +168,15 @@ function _voer_module_create_instance_fields(){
       'bundle' => 'voer_module',
       // If you don't set the "required" property then the field wont be required by default.
       'required' => TRUE,
+  );
+  field_create_instance($instance);
+
+  $instance = array(
+    'field_name' => 'field_voer_authors',
+    'entity_type' => 'node',
+    'label' => st('Authors'),
+    'bundle' => 'voer_module',
+    'required' => TRUE,
   );
   field_create_instance($instance);
 
