@@ -52,7 +52,7 @@ function voer_field_author_allowed_values($field, $instance, $entity_type, $enti
   $list = array();
   if (isset($authors)){
     foreach ($authors as $author) {
-      $list[$author->id] = $author->name;
+      $list[$author->id] = $author->fullname;
     }
   }
   return $list;

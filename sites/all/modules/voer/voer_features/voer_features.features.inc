@@ -13,3 +13,10 @@ function voer_features_ctools_plugin_api() {
     return array("version" => "3");
   }
 }
+
+/**
+ * Implements hook_views_api().
+ */
+function voer_features_views_api() {
+  return array("api" => "3.0");
+}

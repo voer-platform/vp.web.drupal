@@ -150,7 +150,6 @@ function voer_content_form_alter(&$form, &$form_state, $form_id) {
     $body_weight = $form['body']['#weight'];
 
     $form['title']['#weight'] = 0;
-    $form['field_voer_description']['#weight'] = -1;
 
     $form['import_file'] = array(
       '#type' => 'file',
@@ -165,30 +164,58 @@ function voer_content_form_alter(&$form, &$form_state, $form_id) {
       '#validate' => array('voer_module_import_validate'),
     );
 
-    $form['material_content_form'] = array(
+    $form['language'] = array(
       '#type' => 'fieldset',
-      '#title' => t('Metadata'),
+      '#title' => t('Language'),
       '#group' => 'additional_settings',
-      '#weight' => 4,
+      '#weight' => -110,
+      'field_voer_language' => $form['field_voer_language'],
     );
 
-    // dpm($form);
-
-    // $form['material_content_form']['title'] = $form['title'];
-    // $form['material_content_form']['field_voer_description'] = $form['field_voer_description'];
-    // $form['material_content_form']['field_voer_image'] = $form['field_voer_image'];
-    $form['material_content_form']['field_voer_language'] = $form['field_voer_language'];
-    // $form['material_content_form']['field_voer_file'] = $form['field_voer_file'];
-    $form['material_content_form']['field_voer_keywords'] = $form['field_voer_keywords'];
-    $form['material_content_form']['field_voer_material_id'] = $form['field_voer_material_id'];
-    $form['material_content_form']['field_voer_material_id'][LANGUAGE_NONE][0]['#disabled'] = TRUE;
-    $form['material_content_form']['field_voer_material_version'] = $form['field_voer_material_version'];
-    $form['material_content_form']['field_voer_material_version'][LANGUAGE_NONE][0]['#disabled'] = TRUE;
+    $form['description'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Description'),
+      '#group' => 'additional_settings',
+      '#weight' => -100,
+      'field_voer_description' => $form['field_voer_description'],
+    );
+    $form['categories'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Categories'),
+      '#group' => 'additional_settings',
+      '#weight' => -95,
+      'field_voer_categories' => $form['field_voer_categories'],
+    );
+    $form['authors'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Authors'),
+      '#group' => 'additional_settings',
+      '#weight' => -92,
+      'field_voer_authors' => $form['field_voer_authors'],
+    );
+    $form['keywords'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Keywords'),
+      '#group' => 'additional_settings',
+      '#weight' => -90,
+      'field_voer_keywords' => $form['field_voer_keywords'],
+    );
+    $form['version'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Version'),
+      '#group' => 'additional_settings',
+      '#weight' => -85,
+    );
+    $form['version']['field_voer_material_id'] = $form['field_voer_material_id'];
+    $form['version']['field_voer_material_id'][LANGUAGE_NONE][0]['#disabled'] = TRUE;
+    $form['version']['field_voer_material_version'] = $form['field_voer_material_version'];
+    $form['version']['field_voer_material_version'][LANGUAGE_NONE][0]['#disabled'] = TRUE;
 
 
     // unset($form['title']);
-    // unset($form['field_voer_description']);
-    // unset($form['field_voer_image']);
+    unset($form['field_voer_description']);
+    unset($form['field_voer_authors']);
+    unset($form['field_voer_categories']);
     unset($form['field_voer_language']);
     unset($form['field_voer_file']);
     unset($form['field_voer_material_type']);

@@ -103,7 +103,7 @@ function _voer_content_create_fields(){
   if (!field_info_field('field_voer_keywords')) {
     $field_voer_keywords = array(
         'field_name' => 'field_voer_keywords',
-        'type' => 'text',
+        'type' => 'text_long',
         'entity_types' => array('node'),
     );
     field_create_field($field_voer_keywords);
@@ -197,7 +197,7 @@ function _voer_module_create_instance_fields(){
       'label' => st('Image'),
       'bundle' => 'voer_module',
       // If you don't set the "required" property then the field wont be required by default.
-      'required' => TRUE,
+      'required' => FALSE,
   );
   field_create_instance($instance);
 
@@ -292,7 +292,7 @@ function _voer_collection_create_instance_fields(){
       'label' => st('Image'),
       'bundle' => 'voer_collection',
       // If you don't set the "required" property then the field wont be required by default.
-      'required' => TRUE,
+      'required' => FALSE,
   );
   field_create_instance($instance);
 
@@ -369,5 +369,6 @@ function voer_content_uninstall(){
   field_delete_field('field_voer_material_type');
   field_delete_field('field_voer_material_version');
   field_delete_field('field_voer_categories');
+  field_delete_field('field_voer_authors');
   // field_purge_batch(10); // delete immediately!
 }

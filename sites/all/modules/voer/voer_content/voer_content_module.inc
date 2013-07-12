@@ -49,9 +49,6 @@ function _voer_module_creation_steps() {
       2 => array(
         'form' => 'voer_module_metadata_info',
       ),
-      // 3 => array(
-      //   'form' => 'voer_module_import_content',
-      // ),
       3 => array(
         'form' => 'voer_module_content',
       ),
@@ -446,7 +443,7 @@ function save_module($form, &$form_state){
   }
   //clear comment tags
   $body = $entity->body[LANGUAGE_NONE][0]['value'];
-  $body = preg_replace('/<!--(.*)-->/is', '', $body);
+  $body = preg_replace('/<!--(.*?)-->/is', '', $body);
 
   $entity->body[LANGUAGE_NONE][0]['value'] = $body;
 
