@@ -223,16 +223,9 @@ function voer_module_license_info($form, &$form_state, $entity) {
     '#type' => 'value',
     '#value' => $entity
   );
+
   $form['license_text'] = array(
-    '#type' => 'textarea',
-    '#value' => t('I recently played the role of Information Architect on a site remodel. We were charged with the task of doing a brand new build to replace an existing Flash site. One of the priorities of the client was to retain the elaborate Request for Quote form. There were many, many form fields that comprised this web form so I began to ponder if we should break the form up into a multiple step form, to improve the overall user experience. After careful consideration, I decided that we should definitely split the form up (for more on this matter check out Pagination in Web Forms | Evaluating the Effectiveness of Web Forms on UXmatter.com). Since there was no logic needed in the progression of the form, I felt that Javascript would be an acceptable solution, over using an actual server-side wizard. Thanks to Janko and his Turn any webform into a powerful wizard with jQuery blog, I found his JQuery plugin very easy to implement. This tutorial assumes that you have some basic working knowledge of the Webform module and how to create a custom module of your own.'),
-    '#weight' => 0,
-    '#rows' => 10,
-    '#disabled' => TRUE,
-    '#resizable' => FALSE,
-    '#attributes' => array(
-      'class' => array('license_text'),
-    )
+    '#markup' => variable_get('voer_api_license_text', ''),
   );
 
   $form['accept_license'] = array(
