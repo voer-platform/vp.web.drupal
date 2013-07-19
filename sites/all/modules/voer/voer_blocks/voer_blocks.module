@@ -105,7 +105,7 @@ function voer_categories_block_view(){
 function voer_modules_block_view()
 {
   //Fix module_id
-  $module_id = 'b814612a05521e4bfa868539dbb0cbb6';
+  $module_id = 'c8095bba9ac9e9a5c317e978a6bbf83b';
 
   module_load_include('inc', 'voer_api');
   try {
@@ -132,7 +132,7 @@ function voer_modules_block_view()
 function voer_collections_block_view()
 {
   //Fix module_id
-  $module_id = '9d64dec45b202eb941806b7173220efb';
+  $module_id = '4d8788745d285b27e59b74abdc95c16c';
 
   module_load_include('inc', 'voer_api');
   try {
@@ -159,7 +159,7 @@ function voer_collections_block_view()
 function voer_questionaires_block_view()
 {
   //Fix module_id
-  $module_id = 'e5148e552afc6025c1dc0f6b3e82bfce';
+  $module_id = 'e01b8a3751d7bd0a35e0a49acae2c553';
 
   module_load_include('inc', 'voer_api');
   try {
@@ -186,7 +186,7 @@ function voer_questionaires_block_view()
 function voer_help_supports_block_view()
 {
   //Fix module_id
-  $module_id = '4a58f9cda98702ec5013670ea0858331';
+  $module_id = '69438c8cacae020980771950fd845977';
 
   module_load_include('inc', 'voer_api');
   try {
@@ -213,7 +213,7 @@ function voer_help_supports_block_view()
 function voer_courses_block_view()
 {
   //Fix module_id
-  $module_id = '474d521581f2300d984d7cec726d5476';
+  $module_id = '0129752be25c3bb959674c321829464a';
 
   module_load_include('inc', 'voer_api');
   try {

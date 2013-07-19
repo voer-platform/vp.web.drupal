@@ -90,7 +90,7 @@ function voer_api_get_detail_material($material_id, $version = NULL){
 function voer_api_get_materials_by_categories($cagetories = array(), $page = 1){
   $voer = new VoerApi();
   $url = VOER_API_COMMAND_MATERIAL; // . "?categories=" . implode(",", $cagetories);
-  $params = array('categories' => implode(',', $cagetories), 'page' => $page);
+  $params = array('categories' => implode(',', $cagetories), 'page' => $page, 'sort_on' => '-modified');
   $response = $voer->auth_request($url, "GET", $params);
   return json_decode($response);
 }
