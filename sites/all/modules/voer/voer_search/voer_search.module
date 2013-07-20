@@ -1,0 +1,97 @@
+<?php
+
+function voer_search_menu(){
+  $items = array();
+  $items['s/%menu_tail'] = array(
+    'load arguments' => array('%map', '%index'),
+    'page callback' => 'search_voer_page',
+    'page arguments' => array(1),
+    'access arguments' => array('access content'),
+  );
+  return $items;
+}
+
+function voer_search_block_info(){
+  $blocks['voer_search_block'] = array(
+    'info' => t('VOER - Search'),
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function voer_search_block_view($delta='') {
+  $block = array();
+
+  switch($delta) {
+    case 'voer_search_block' :
+      $block['content'] = drupal_get_form("voer_search_form");
+      break;
+  }
+
+  return $block;
+}
+
+function voer_search_form(){
+  $form = array();
+  $form['keyword'] = array(
+    '#type' => 'textfield',
+    '#weight' => 0,
+  );
+  $form['search'] = array(
+    '#type' => 'submit',
+    '#weight' => 10,
+    '#value' => t('Search'),
+  );
+  return $form;
+}
+
+function voer_search_form_validate($form, &$form_state){
+  if (!$form_state['values']['keyword']){
+    form_set_error('keyword', t('You must enter a keyword for go ahead!'));
+  }
+}
+
+function voer_search_form_submit($form, &$form_state){
+  $keyword = trim($form_state['values']['keyword']);
+  drupal_goto("s/" . $keyword);
+}
+
+function search_voer_page($keyword){
+  $keyword = trim($keyword);
+  return show_materials_result($keyword);
+}
+
+function show_materials_result($keyword){
+  module_load_include('inc', 'voer_api');
+  try {
+    $page = isset($_GET['page']) ? $_GET['page'] : 0;
+    $materials = voer_api_search_on_material($keyword, $page + 1);
+    if ($materials == null || $materials->count == 0){
+      return t("Materials not found!");
+    }else{
+      $nodes = array();
+      pager_default_initialize($materials->count, 10);
+      foreach ($materials->results as $key => $material) {
+        $node = new stdClass();
+        $node->type = 'voer_module';
+        node_object_prepare($node);
+        $node->title = $material->title;
+        $node->material_id = $material->material_id;
+        $node->nid = $key;
+        $node->comment = 0;
+        $node->field_voer_description[LANGUAGE_NONE][0]['value'] = isset($material->description) ? $material->description : "";
+        $nodes[] = $node;
+      }
+      $output = node_view_multiple($nodes);
+      $output['pager'] = array('#markup' => theme('pager'));
+      return $output;
+    }
+  } catch (Exception $e) {
+    drupal_set_message($e->getMessage(), 'error');
+    return "";
+  }
+}
+

@@ -1,0 +1,6 @@
+name = VOER Search
+description = Search all content in VPR.
+core = 7.x
+package = VOER
+dependencies[] = voer_api
+files[] = voer_search.module

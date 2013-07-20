@@ -10,6 +10,7 @@ define('VOER_API_COMMAND_CATEGORY', '' . VOER_API_VERSION . '/categories/');
 define('VOER_API_COMMAND_AUTHOR', '' . VOER_API_VERSION . '/persons/');
 define('VOER_API_COMMAND_EDITOR', '' . VOER_API_VERSION . '/editors/');
 define('VOER_API_COMMAND_FILES', '' . VOER_API_VERSION . '/mfiles/');
+define('VOER_API_COMMAND_SEARCH', '' . VOER_API_VERSION . '/search/');
 
 define('VOER_API_RESULT_NOT_FOUND', 'Not found');
 
@@ -182,11 +183,13 @@ function voer_api_get_materials_by_types($types = array()){
  * @param  array  $params [description]
  * @return [type]         [description]
  */
-// function voer_api_search($params = array()){
-//   $client = voer_api_client();
-//   $response = $client->doGet(VOER_API_COMMAND_MATERIAL, $params);
-//   return json_decode($response);
-// }
+function voer_api_search_on_material($keyword = NULL, $page = 1){
+  $voer = new VoerApi();
+  $url = VOER_API_COMMAND_SEARCH;
+  $params = array('kw' => $keyword, 'on' => 'm', 'page' => $page);
+  $response = $voer->auth_request($url, "GET", $params);
+  return json_decode($response);
+}
 
 /*** BEGIN::CATEGORY ***/
 /**
