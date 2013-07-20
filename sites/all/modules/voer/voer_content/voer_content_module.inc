@@ -224,8 +224,10 @@ function voer_module_license_info($form, &$form_state, $entity) {
     '#value' => $entity
   );
 
+  $license = variable_get('voer_api_license_text', array('value' => '', 'format' => NULL));
+
   $form['license_text'] = array(
-    '#markup' => variable_get('voer_api_license_text', ''),
+    '#markup' => check_markup($license['value'], $license['format']),
   );
 
   $form['accept_license'] = array(

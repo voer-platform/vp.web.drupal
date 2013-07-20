@@ -71,11 +71,14 @@ function voer_admin_settings($form, &$form_state) {
   // @@@ Convert to element level validation.
   //$form['#validate'][] = 'voer_admin_settings_validate';
 
+  $license = variable_get('voer_api_license_text', array('value' => '', 'format' => NULL));
+
   $form['initialization']['voer_api_license_text'] = array(
     '#title' => t('Accept license text'),
-    '#type' => 'textarea',
-    '#default_value' => variable_get('voer_api_license_text', ''),
+    '#type' => 'text_format',
+    '#default_value' => $license['value'],
     '#rows' => 8,
+    '#format' => $license['format'],
   );
 
   return system_settings_form($form);
