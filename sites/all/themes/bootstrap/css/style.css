@@ -463,3 +463,14 @@ article.node-voer-module p{
 }
 article.node-voer-module table { margin: 1em 0; border-collapse: collapse; }
 article.node-voer-module td, th { padding: .3em; border: 1px #999 solid; }
+
+
+/* SEARCH BOX */
+#voer-search-form{
+  text-align:center;
+}
+#voer-search-form div.control-group{
+  display: inline-block;
+}
+#voer-search-form #edit-search{
+  margin-top: -10px;
