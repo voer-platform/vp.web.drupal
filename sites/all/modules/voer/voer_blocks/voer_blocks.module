@@ -81,8 +81,8 @@ function voer_categories_block_view(){
     if (isset($categories)){
       foreach ($categories as $category) {
         //Chi lay nhung category co so bai viet > 0
-        $catinfo = voer_api_get_materials_by_categories(array($category->id));
-        $total = $catinfo->count;
+        $catinfo = voer_api_get_category($category->id, TRUE);
+        $total = $catinfo->material; //Lay so luong material
         if ($total > 0){
           $list[$category->id] = l($category->name . " ($total)", 'category/' . $category->id, array('class' => 'category-link'));
         }

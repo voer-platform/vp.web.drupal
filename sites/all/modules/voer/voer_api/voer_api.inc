@@ -235,10 +235,14 @@ function voer_api_create_category($category){
  * @param  Number $id [description]
  * @return Object     [description]
  */
-function voer_api_get_category($id){
+function voer_api_get_category($id, $isCount = FALSE){
   $voer = new VoerApi();
   $url = VOER_API_COMMAND_CATEGORY . $id . "/";
-  $response = $voer->auth_request($url);
+  if ($isCount){
+    $response = $voer->auth_request($url, "GET", array('count' => 1));
+  }else{
+    $response = $voer->auth_request($url);
+  }
   // $client = voer_api_client();
   // $response = $client->doGet(VOER_API_COMMAND_CATEGORY . $id . "/");
 
