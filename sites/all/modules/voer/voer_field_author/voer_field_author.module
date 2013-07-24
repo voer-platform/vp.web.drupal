@@ -9,53 +9,181 @@ function voer_field_author_field_info() {
     // We name our field as the associative name of the array.
     'field_voer_authors' => array(
       'label' => t('VOER Authors'),
-      'description' => t('VOER Authors.'),
-      'allowed_values_function' => 'voer_field_author_allowed_values',
-      'default_widget' => 'options_buttons',
-      'default_formatter' => 'list_default',
+      'description' => t('This field stores VOER author in the database.'),
+      'settings' => array('max_length' => 255),
+      'default_widget' => 'voer_field_author_text',
+      'default_formatter' => 'voer_field_author_simple_text',
     ),
   );
 }
 
 /**
- * Implements hook_widget_info_alter().
- *
+ * Implements hook_field_widget_info().
  */
-function voer_field_author_field_widget_info_alter(&$info) {
-  $widgets = array(
-    'options_select' => array('field_voer_authors'),
+function voer_field_author_field_widget_info() {
+  return array(
+    'voer_field_author_text' => array(
+      'label' => t('VOER author text field'),
+      'field types' => array('field_voer_authors'),
+    ),
   );
-  foreach ($widgets as $widget => $field_types) {
-    $info[$widget]['field types'] = array_merge($info[$widget]['field types'], $field_types);
-  }
 }
 
 /**
- * Implements hook_options_list()
- *
+ * Implements hook_field_formatter_info().
  */
-function voer_field_author_options_list($field, $instance, $entity_type, $entity) {
-  module_load_include('inc', 'voer_api');
-  $authors = voer_api_get_all_authors();
-  $list = array();
-  if ($authors->count > 0){
-    foreach ($authors->results as $author) {
-      $list[$author->id] = $author->fullname;
-    }
-  }
-  return $list;
+function voer_field_author_field_formatter_info() {
+  return array(
+    // This formatter just displays the hex value in the color indicated.
+    'voer_field_author_simple_text' => array(
+      'label' => t('VOER author simple formatter'),
+      'field types' => array('field_voer_authors'),
+    ),
+  );
 }
 
-function voer_field_author_allowed_values($field, $instance, $entity_type, $entity, $cacheable = TRUE){
+/**
+ * Implements hook_field_formatter_view().
+ */
+function voer_field_author_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
   module_load_include('inc', 'voer_api');
-  $authors = voer_api_get_all_authors();
-  $list = array();
-  if (isset($authors)){
-    foreach ($authors as $author) {
-      $list[$author->id] = $author->fullname;
-    }
+
+  $element = array();
+
+  switch ($display['type']) {
+    // This formatter simply outputs the field as text and with a color.
+    case 'voer_field_author_simple_text':
+      foreach ($items as $delta => $item) {
+        $author_list = array();
+        $author_array = array();
+
+        if ($item['value']) {
+          $author_list = explode(',', $item['value']);
+        }
+
+        foreach ($author_list as $author_id) {
+          $person = voer_api_get_author($author_id);
+
+          if (!isset($person->detail)) {
+            $author_array[] = l($person->fullname, 'person/'.$person->id);
+          }
+        }
+
+        $element[$delta] = array(
+          '#type' => 'html_tag',
+          '#tag' => 'p',
+          '#attributes' => array(
+            'class' => 'voer_field_author_content',
+          ),
+          '#value' => implode(', ', $author_array),
+        );
+      }
+      break;
   }
-  return $list;
+
+  return $element;
+}
+
+/**
+ * Implements hook_field_widget_form().
+ */
+function voer_field_author_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
+  module_load_include('inc', 'voer_api');
+
+  $value = isset($items[$delta]['value']) ? $items[$delta]['value'] : '';
+
+  $widget = $element;
+  $widget['#delta'] = $delta;
+
+  switch ($instance['widget']['type']) {
+    case 'voer_field_author_text':
+      $widget += array(
+        '#type' => 'fieldset',
+        '#element_validate' => array('voer_field_author_text_validate'),
+        '#attributes' => array('class' => array('edit-voer-field-author')),
+        '#attached' => array(
+          'js' => array(drupal_get_path('module', 'voer_field_author') . '/js/voer_field_author.js'),
+          'css' => array(drupal_get_path('module', 'voer_field_author') . '/css/voer_field_author.css'),
+        ),
+      );
+
+      $author_picker = '';
+
+      if ($value) {
+        $author_list = explode(',', $value);
+
+        foreach ($author_list as $author_id) {
+          $person = voer_api_get_author($author_id);
+
+          if (!isset($person->detail)) {
+            $author_picker .= sprintf('<li class="voer-author-picker-%s">%s<span class="voer-author-delete" title="Delete author" rel="%s"></span></li>', $person->id, $person->fullname, $person->id);
+          }
+        }
+      }
+
+      if ($author_picker) {
+        $widget['voer_field_author_picker'] = array(
+          '#prefix' => '<div class="voer-field-author-picker">Author selected:</div>',
+          '#type' => 'html_tag',
+          '#tag' => 'ul',
+          '#attributes' => array(
+            'class' => array('voer-field-author-picker-list'),
+          ),
+          '#value' => $author_picker,
+        );
+
+      } else {
+        $widget['voer_field_author_picker'] = array(
+          '#prefix' => '<div class="voer-field-author-picker display_none">Author selected:</div>',
+          '#type' => 'html_tag',
+          '#tag' => 'ul',
+          '#attributes' => array(
+            'class' => array('voer-field-author-picker-list', 'display_none'),
+          ),
+          '#value' => $author_picker,
+        );
+      }
+
+      $widget['voer_field_author_search_text'] = array(
+        '#type' => 'textfield',
+        '#description' => t('Select people to serve as authors.'),
+        '#attributes' => array(
+          'placeholder' => t('Please enter keyword'),
+          'class' => array('voer-field-author-search-text'),
+        ),
+      );
+
+      $widget['voer_field_author_search_btn'] = array(
+        '#type' => 'button',
+        '#value' => t('Search'),
+        '#attributes' => array(
+          'class' => array('voer-field-author-search-btn'),
+        ),
+      );
+
+      $widget['voer_field_author_selected_text'] = array(
+        '#type' => 'hidden',
+        '#default_value' => $value,
+        '#attributes' => array(
+          'class' => array('voer-field-author-selected-text'),
+        ),
+      );
+  }
+
+  $element['value'] = $widget;
+
+  return $element;
+}
+
+function voer_field_author_text_validate($element, &$form_state) {
+  $delta = $element['#delta'];
+  $field = $form_state['field'][$element['#field_name']][$element['#language']]['field'];
+  $field_name = $field['field_name'];
+
+  if (isset($form_state['values'][$field_name][$element['#language']][$delta]['value'])) {
+    $value = $form_state['values'][$field_name][$element['#language']][$delta]['value']['voer_field_author_selected_text'];
+    form_set_value($element, $value, $form_state);
+  }
 }
 
 /**

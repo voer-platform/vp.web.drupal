@@ -7,6 +7,13 @@ function voer_person_menu(){
     'page arguments' => array(1),
     'access arguments' => array('access content'),
   );
+
+  $items['person/search'] = array(
+    'page callback' => 'search_person_by_keyword',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+
   return $items;
 }
 
@@ -67,3 +74,66 @@ function show_materials_by_authors($person){
   }
 }
 
+function search_person_by_keyword()
+{
+  $keyword = $_POST['keyword'];
+  $page = isset($_POST['page']) ? $_POST['page'] : 1;
+  $author_selected_list = isset($_POST['author_list']) ? $_POST['author_list'] : 1;
+
+  $author_selected_array = explode(',', $author_selected_list);
+
+  module_load_include('inc', 'voer_api');
+  $authors = voer_api_search_on_person($keyword, $page);
+
+  $result = array();
+  $author_list = array();
+
+  if ($authors->count > 0) {
+    foreach ($authors->results as $author) {
+      $author_list[$author->id] = $author->fullname;
+    }
+
+    $result = array(
+      '#type' => 'checkboxes',
+      '#options' => $author_list,
+      '#default_value' => $author_selected_array,
+      '#attributes' => array(
+        'class' => array('input-checkbox-item'),
+      ),
+    );
+
+    $next_button = array();
+    $prev_button = array();
+
+    if ($authors->next) {
+      $next_button = array(
+        '#type' => 'button',
+        '#value' => 'Next',
+        '#attributes' => array(
+          'class' => array('author_next_btn'),
+          'page' => $page + 1,
+          'keyword' => check_plain($keyword),
+          'onclick' => 'loadAuthorSearchPage(this)',
+        ),
+      );
+    }
+
+    if ($authors->previous) {
+      $prev_button = array(
+        '#type' => 'button',
+        '#value' => 'Prev',
+        '#attributes' => array(
+          'class' => array('author_prev_btn'),
+          'page' => $page - 1,
+          'keyword' => check_plain($keyword),
+          'onclick' => 'loadAuthorSearchPage(this)',
+        ),
+      );
+    }
+
+    echo drupal_render(form_process_checkboxes($result)) . drupal_render($prev_button) . drupal_render($next_button);
+
+  } else {
+    $result = t('No result');
+  }
+}

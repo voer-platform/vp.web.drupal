@@ -175,8 +175,7 @@ function _voer_module_create_instance_fields(){
     'field_name' => 'field_voer_authors',
     'entity_type' => 'node',
     'label' => st('Authors'),
-    'bundle' => 'voer_module',
-    'required' => TRUE,
+    'bundle' => 'voer_module'
   );
   field_create_instance($instance);
 

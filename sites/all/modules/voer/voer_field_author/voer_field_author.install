@@ -23,7 +23,7 @@
  */
 function voer_field_author_field_schema($field) {
   $columns = array(
-    'value' => array('type' => 'int', 'not null' => FALSE),
+    'value' => array('type' => 'varchar', 'length' => 255, 'not null' => FALSE),
   );
   $indexes = array(
     'value' => array('value'),

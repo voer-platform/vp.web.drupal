@@ -1,0 +1,31 @@
+.loading {
+  font-size: 12px;
+  font-weight: bold;
+  background: #FFF none repeat scroll;
+  opacity: 0.8;
+  filter: alpha(opacity = 80);
+  text-align: center;
+}
+
+.loading img {
+  vertical-align: middle;
+  margin-right: 10px;
+}
+
+#voer_person_search_result input.form-checkbox {
+  opacity: 1;
+  filter: alpha(opacity = 100);
+}
+
+.display_none {
+  display: none;
+}
+
+.voer-field-author-picker-list .voer-author-delete {
+  background: url("../images/bin_empty_recycle.png") no-repeat scroll 0 0 transparent;
+  cursor: pointer;
+  display: inline-block;
+  height: 16px;
+  margin-left: 5px;
+  width: 16px;
+}
