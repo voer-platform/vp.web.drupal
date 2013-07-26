@@ -33,3 +33,16 @@ function voer_field_author_field_schema($field) {
     'indexes' => $indexes,
   );
 }
+
+/**
+ * Change field type from int -> varchar
+ */
+function voer_field_author_update_1()
+{
+  db_change_field('field_data_field_voer_authors', 'field_voer_authors_value', 'field_voer_authors_value', array(
+    'type' => 'varchar',
+    'length' => 255,
+    'not null' => FALSE,
+  ));
+}
+
