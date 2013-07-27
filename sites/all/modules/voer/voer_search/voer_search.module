@@ -8,6 +8,11 @@ function voer_search_menu(){
     'page arguments' => array(1),
     'access arguments' => array('access content'),
   );
+  $items['ajax/s/m'] = array(
+    'page callback' => 'ajax_search_module_page',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
   return $items;
 }
 
@@ -59,6 +64,65 @@ function voer_search_form_submit($form, &$form_state){
   drupal_goto("s/" . $keyword);
 }
 
+function ajax_search_module_page(){
+  $keyword = $_POST['keyword'];
+  $page = isset($_POST['page']) ? $_POST['page'] : 1;
+
+  module_load_include('inc', 'voer_api');
+  $materials = voer_api_search_on_material($keyword, $page);
+
+  $result = array();
+  $material_list = array();
+
+  if ($materials->count > 0) {
+    foreach ($materials->results as $material) {
+      $material_list[$material->material_id . "|" . $material->version] = $material->title;
+    }
+
+    $result = array(
+      '#type' => 'checkboxes',
+      '#options' => $material_list,
+      '#attributes' => array(
+        'class' => array('input-checkbox-item'),
+      ),
+    );
+
+    $next_button = array();
+    $prev_button = array();
+
+    if ($authors->next) {
+      $next_button = array(
+        '#type' => 'button',
+        '#value' => 'Next',
+        '#attributes' => array(
+          'class' => array('author_next_btn'),
+          'page' => $page + 1,
+          'keyword' => check_plain($keyword),
+          'onclick' => 'loadModuleSearchPage(this)',
+        ),
+      );
+    }
+
+    if ($authors->previous) {
+      $prev_button = array(
+        '#type' => 'button',
+        '#value' => 'Prev',
+        '#attributes' => array(
+          'class' => array('author_prev_btn'),
+          'page' => $page - 1,
+          'keyword' => check_plain($keyword),
+          'onclick' => 'loadModuleSearchPage(this)',
+        ),
+      );
+    }
+
+    echo drupal_render(form_process_checkboxes($result)) . drupal_render($prev_button) . drupal_render($next_button);
+
+  } else {
+    $result = t('No result');
+  }
+}
+
 function search_voer_page($keyword){
   $keyword = trim($keyword);
   return show_materials_result($keyword);
@@ -83,6 +147,8 @@ function show_materials_result($keyword){
         $node->nid = $key;
         $node->comment = 0;
         $node->field_voer_description[LANGUAGE_NONE][0]['value'] = isset($material->description) ? $material->description : "";
+        $node->field_voer_categories[LANGUAGE_NONE][0]['value'] = $material->categories;
+        $node->field_voer_authors[LANGUAGE_NONE][0]['value'] = $material->author;
         $nodes[] = $node;
       }
       $output = node_view_multiple($nodes);

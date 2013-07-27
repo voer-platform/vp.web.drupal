@@ -1,0 +1,12 @@
+name = VOER Content Collection Field
+description = An implementation of a field to edit content of collection
+package = VOER
+core = 7.x
+dependencies[] = voer_api
+
+; Information added by drupal.org packaging script on 2013-04-04
+version = "7.x-1.0"
+core = "7.x"
+project = "voer"
+datestamp = "1365037010"
+

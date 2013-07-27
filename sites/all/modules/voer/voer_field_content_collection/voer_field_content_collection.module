@@ -4,6 +4,18 @@
  * An example field using the Field Types API.
  */
 
+
+/**
+ * Implementation of hook_init().
+ */
+function voer_field_content_collection_init() {
+  drupal_add_js(array(
+    'voer_field_content_collection' => array(
+      'path' =>  drupal_get_path('module', 'voer_field_content_collection')
+    )
+  ), 'setting');
+}
+
 /**
  * @defgroup field_example Example: Field Types API
  * @ingroup examples
@@ -54,17 +66,15 @@
  *
  * Provides the description of the field.
  */
-function voer_field_category_field_info() {
+function voer_field_content_collection_field_info() {
   return array(
     // We name our field as the associative name of the array.
-    'field_voer_categories' => array(
-      'label' => t('VOER Categories'),
-      'description' => t('VOER Categories.'),
-      'allowed_values_function' => 'voer_field_category_allowed_values',
-      // 'default_widget' => 'field_select_categories',
-      // 'default_formatter' => 'field_display_names',
-      'default_widget' => 'options_buttons',
-      'default_formatter' => 'voer_field_category_list_view',
+    'field_voer_content_collection' => array(
+      'label' => t('Collection Outline'),
+      'description' => t('Collection Outline'),
+      'allowed_values_function' => 'voer_field_content_collection_allowed_values',
+      'default_widget' => 'field_voer_content_outline',
+      'default_formatter' => 'list_default',
     ),
   );
 }
@@ -73,7 +83,7 @@ function voer_field_category_field_info() {
  * Implements hook_widget_info_alter().
  *
  */
-function voer_field_category_field_widget_info_alter(&$info) {
+function voer_field_content_collection_field_widget_info_alter(&$info) {
   $widgets = array(
     'options_select' => array('field_voer_categories'),
   );
@@ -86,24 +96,24 @@ function voer_field_category_field_widget_info_alter(&$info) {
  * Implements hook_options_list()
  *
  */
-function voer_field_category_options_list($field, $instance, $entity_type, $entity) {
+function voer_field_content_collection_options_list($field, $instance, $entity_type, $entity) {
   module_load_include('inc', 'voer_api');
   $categories = voer_api_get_all_categories();
   $list = array();
-  if (isset($categories)){
-    foreach ($categories as $category) {
+  if (isset($categories) && isset($categories->results)){
+    foreach ($categories->results as $category) {
       $list[$category->id] = $category->name;
     }
   }
   return $list;
 }
 
-function voer_field_category_allowed_values($field, $instance, $entity_type, $entity, $cacheable = TRUE){
+function voer_field_content_collection_allowed_values($field, $instance, $entity_type, $entity, $cacheable = TRUE){
   module_load_include('inc', 'voer_api');
   $categories = voer_api_get_all_categories();
   $list = array();
-  if (isset($categories)){
-    foreach ($categories as $category) {
+  if (isset($categories) && isset($categories->results)){
+    foreach ($categories->results as $category) {
       $list[$category->id] = $category->name;
     }
   }
@@ -122,7 +132,7 @@ function voer_field_category_allowed_values($field, $instance, $entity_type, $en
  *
  * @see field_example_field_widget_error()
  */
-// function voer_field_category_field_validate($entity_type, $entity, $field, $instance, $langcode, $items, &$errors) {
+// function voer_field_content_collection_field_validate($entity_type, $entity, $field, $instance, $langcode, $items, &$errors) {
 //   foreach ($items as $delta => $item) {
 //     if (!empty($item['value'])) {
 //       if (! preg_match('@^#[0-9a-f]{6}$@', $item['value'])) {
@@ -143,7 +153,7 @@ function voer_field_category_allowed_values($field, $instance, $entity_type, $en
  * Return TRUE if it does not contain data, FALSE if it does. This lets
  * the form API flag an error when required fields are empty.
  */
-function voer_field_category_field_is_empty($item, $field) {
+function voer_field_content_collection_field_is_empty($item, $field) {
   return empty($item['value']);
 }
 
@@ -156,15 +166,15 @@ function voer_field_category_field_is_empty($item, $field) {
  *
  * @see field_example_field_formatter_view()
  */
-function voer_field_category_field_formatter_info() {
-  return array(
-    // This formatter just displays the hex value in the color indicated.
-    'voer_field_category_list_view' => array(
-      'label' => t('Display categories name'),
-      'field types' => array('field_voer_categories'),
-    ),
-  );
-}
+// function voer_field_content_collection_field_formatter_info() {
+//   return array(
+//     // This formatter just displays the hex value in the color indicated.
+//     'field_display_names' => array(
+//       'label' => t('Display categories name'),
+//       'field types' => array('field_voer_categories'),
+//     ),
+//   );
+// }
 
 /**
  * Implements hook_field_formatter_view().
@@ -177,42 +187,30 @@ function voer_field_category_field_formatter_info() {
  *
  * @see field_example_field_formatter_info()
  */
-function voer_field_category_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
-  $element = array();
+// function voer_field_content_collection_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+//   $element = array();
 
-  switch ($display['type']) {
-    // This formatter simply outputs the field as text and with a color.
-    case 'voer_field_category_list_view':
-      foreach ($items as $delta => $item) {
-        $cat_list = array();
-        $cat_array = array();
+//   switch ($display['type']) {
+//     // This formatter simply outputs the field as text and with a color.
+//     case 'field_display_names':
+//       foreach ($items as $delta => $item) {
+//         $element[$delta] = array(
+//           // We create a render array to produce the desired markup,
+//           // "<p style="color: #hexcolor">The color code ... #hexcolor</p>".
+//           // See theme_html_tag().
+//           '#type' => 'html_tag',
+//           '#tag' => 'p',
+//           '#attributes' => array(
+//             'style' => 'color: ' . $item['value'],
+//           ),
+//           '#value' => t('The color code in this field is @code', array('@code' => $item['value'])),
+//         );
+//       }
+//       break;
+//   }
 
-        if ($item['value']) {
-          $cat_list = explode(',', $item['value']);
-        }
-
-        foreach ($cat_list as $category_id) {
-          $category = voer_api_get_category($category_id);
-
-          if (!isset($category->detail)) {
-            $cat_array[] = l($category->name, 'category/'.$category->id);
-          }
-        }
-
-        $element[$delta] = array(
-          '#type' => 'html_tag',
-          '#tag' => 'span',
-          '#attributes' => array(
-            'class' => 'voer_field_author_content',
-          ),
-          '#value' => implode(', ', $cat_array),
-        );
-      }
-      break;
-  }
-
-  return $element;
-}
+//   return $element;
+// }
 
 /**
  * Implements hook_field_widget_info().
@@ -228,14 +226,14 @@ function voer_field_category_field_formatter_view($entity_type, $entity, $field,
  *
  * @see field_example_field_widget_form()
  */
-// function voer_field_category_field_widget_info() {
-//   return array(
-//     'field_select_categories' => array(
-//       'label' => t('Select categories'),
-//       'field types' => array('field_voer_categories'),
-//     ),
-//   );
-// }
+function voer_field_content_collection_field_widget_info() {
+  return array(
+    'field_voer_content_outline' => array(
+      'label' => t('Outline'),
+      'field types' => array('field_voer_content_collection'),
+    ),
+  );
+}
 
 /**
  * Implements hook_field_widget_form().
@@ -256,50 +254,89 @@ function voer_field_category_field_formatter_view($entity_type, $entity, $field,
  * handler that converts our r, g, and b fields into a simulated single
  * 'rgb' form element.
  */
-// function voer_field_category_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
-//   $value = isset($items[$delta]['value']) ? $items[$delta]['value'] : '';
-//   $multiple = $field['cardinality'] > 1 || $field['cardinality'] == FIELD_CARDINALITY_UNLIMITED;
-//   $required = $element['#required'];
+function voer_field_content_collection_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
+  // $value = isset($items[$delta]['value']) ? $items[$delta]['value'] : '';
+  // $multiple = $field['cardinality'] > 1 || $field['cardinality'] == FIELD_CARDINALITY_UNLIMITED;
+  // $required = $element['#required'];
 
-//   $widget = $element;
-//   $widget['#delta'] = $delta;
+  $widget = $element;
+  $widget['#delta'] = $delta;
 
-//   // Prepare the list of options.
-//   $options = _options_get_options($field, $instance, $properties, $entity_type, $entity);
+  switch ($instance['widget']['type']) {
 
-//   // Put current field values in shape.
-//   $default_value = _options_storage_to_form($items, $options, $value_key, $properties);
+    case 'field_voer_content_outline':
 
-//   switch ($instance['widget']['type']) {
+      $widget += array(
+        '#type' => 'container',
+        '#attached' => array(
+          // 'css' => array(drupal_get_path('module', 'voer_field_content_collection') . '/themes/default/style.css'),
+          'js' => array(
+                    drupal_get_path('module', 'voer_field_content_collection') . '/js/jquery.jstree.js',
+                    drupal_get_path('module', 'voer_field_content_collection') . '/js/jquery.cookie.js',
+                    drupal_get_path('module', 'voer_field_content_collection') . '/js/jquery.hotkeys.js',
+                    drupal_get_path('module', 'voer_field_content_collection') . '/js/main.js'
+                  ),
+        ),
+      );
 
-//     case 'field_select_categories':
-//       // If required and there is one single option, preselect it.
-//       if ($required && count($options) == 1) {
-//         reset($options);
-//         $default_value = array(key($options));
-//       }
+      $widget['actions'] = array('#type' => 'actions', '#weight' => 0, '#attributes' => array('id' => 'outline-actions'));
+      $widget['actions']['add_folder'] = array(
+        '#type' => 'button',
+        '#attributes' => array('id' => 'add_folder'),
+        '#value' => t('Add folder'),
+      );
+      $widget['actions']['add_module'] = array(
+        '#type' => 'button',
+        '#attributes' => array('id' => 'add_default'),
+        '#value' => t('Add module'),
+      );
+      $widget['actions']['rename'] = array(
+        '#type' => 'button',
+        '#attributes' => array('id' => 'rename'),
+        '#value' => t('Rename'),
+      );
+      $widget['actions']['remove'] = array(
+        '#type' => 'button',
+        '#attributes' => array('id' => 'remove'),
+        '#value' => t('Remove'),
+      );
+      $widget['actions']['info'] = array(
+        '#type' => 'button',
+        '#attributes' => array('id' => 'info'),
+        '#value' => t('Info'),
+      );
 
-//       // If this is a single-value field, take the first default value, or
-//       // default to NULL so that the form element is properly recognized as
-//       // not having a default value.
-//       if (!$multiple) {
-//         $default_value = $default_value ? reset($default_value) : NULL;
-//       }
+      $widget['outline'] = array(
+        '#type' => 'markup',
+        '#prefix' => '<div id="collection-outline" class="demo" style="height:300px;"></div>',
+        '#weight' => -1,
+      );
 
-//       $element += array(
-//         '#type' => $multiple ? 'checkboxes' : 'radios',
+      $widget['module_keyword'] = array(
+        '#type' => 'textfield',
+        '#description' => t('Select people to serve as authors.'),
+        '#attributes' => array(
+          'placeholder' => t('Please enter keyword'),
+          'class' => array('voer-module-search-text'),
+        ),
+      );
 
-//         // Radio buttons need a scalar value.
-//         '#default_value' => $default_value,
-//         '#options' => $options,
-//       );
-//       break;
+      $widget['module_search_btn'] = array(
+        '#type' => 'button',
+        '#value' => t('Search'),
+        '#attributes' => array(
+          'class' => array('voer-module-search-btn'),
+        ),
+      );
 
-//   }
+      break;
 
-//   // $element['value'] = $widget;
-//   return $element;
-// }
+  }
+
+  $element['value'] = $widget;
+
+  return $element;
+}
 
 /**
  * Implements hook_menu().
