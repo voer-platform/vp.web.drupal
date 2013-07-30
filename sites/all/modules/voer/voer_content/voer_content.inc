@@ -76,6 +76,7 @@ function material_from_vpr($material){
   $node->field_voer_material_version[$node->language][0]['value'] = $material->version;
   $node->field_voer_material_type[$node->language][0]['value'] = $material->material_type;
   $node->field_voer_keywords[$node->language][0]['value'] = $material->keywords;
+  $node->field_voer_authors[$node->language][0]['value'] = isset($material->author) ? $material->author : "";
   //Get images
   $imgs = voer_api_get_images($material->material_id);
   $body = $material->text;
@@ -96,8 +97,6 @@ function material_from_vpr($material){
 
 function publish_module($module){
   module_load_include('inc', 'voer_api');
-  // dpm($module);
-  // return FALSE;
   try {
     if (isset($module->field_voer_material_id) && sizeof($module->field_voer_material_id)){
       $material_id = $module->field_voer_material_id[LANGUAGE_NONE][0]['value'];
@@ -128,6 +127,63 @@ function publish_module($module){
     "text" => $module->body[LANGUAGE_NONE][0]['value'],
     "title" => $module->title,
     "material_type" => 1, //$module->field_voer_material_type[LANGUAGE_NONE][0]['value'],
+    // "version" => "1",
+    "description" => $module->field_voer_description[LANGUAGE_NONE][0]['value'],
+    "keywords" => "",//$module->field_voer_keywords[LANGUAGE_NONE][0]['value'],
+    "categories" => $categories,
+    "authors" => $module->uid,
+    "editor_id" => $module->uid,
+    "license_id" => 1,
+    "language" => "en",
+  );
+
+  try {
+    if (empty($material_id)){
+      // dpm($params);
+      $result = voer_api_create_material($params);
+    }else{
+      $params['material_id'] = $material_id;
+      $result = voer_api_checkin_material($params);
+    }
+    return $result;
+  } catch (Exception $e) {
+    drupal_set_message("Error: " + $e->getMessage(), 'error');
+    return FALSE;
+  }
+}
+
+function publish_collection($collection){
+  module_load_include('inc', 'voer_api');
+  try {
+    if (isset($module->field_voer_material_id) && sizeof($module->field_voer_material_id)){
+      $material_id = $module->field_voer_material_id[LANGUAGE_NONE][0]['value'];
+    }else{
+      $material_id = "";
+    }
+  } catch (Exception $e) {
+    $material_id = "";
+  }
+
+  $categories = "";
+  $arr_cats = array();
+  foreach ($module->field_voer_categories[LANGUAGE_NONE] as $val) {
+    $arr_cats[] = $val['value'];
+  }
+  $categories = implode(",", $arr_cats);
+
+  $arr_authors = array();
+  if (isset($module->field_voer_authors)){
+    foreach ($module->field_voer_authors[LANGUAGE_NONE] as $val) {
+      $arr_authors[] = $val['value'];
+    }
+  }
+  $authors = implode(',', $arr_authors);
+
+  $params = array(
+    // "material_id" => $material_id,
+    "text" => $module->field_voer_outline[LANGUAGE_NONE][0]['value'],
+    "title" => $module->title,
+    "material_type" => 2, //collection
     // "version" => "1",
     "description" => $module->field_voer_description[LANGUAGE_NONE][0]['value'],
     "keywords" => "",//$module->field_voer_keywords[LANGUAGE_NONE][0]['value'],
