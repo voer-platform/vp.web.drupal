@@ -82,15 +82,15 @@ function ajax_search_module_page(){
     $result = array(
       '#type' => 'checkboxes',
       '#options' => $material_list,
-      '#attributes' => array(
-        'class' => array('input-checkbox-item'),
-      ),
+      // '#attributes' => array(
+      //   'class' => array('input-checkbox-item'),
+      // ),
     );
 
     $next_button = array();
     $prev_button = array();
 
-    if ($authors->next) {
+    if ($materials->next) {
       $next_button = array(
         '#type' => 'button',
         '#value' => 'Next',
@@ -103,7 +103,7 @@ function ajax_search_module_page(){
       );
     }
 
-    if ($authors->previous) {
+    if ($materials->previous) {
       $prev_button = array(
         '#type' => 'button',
         '#value' => 'Prev',

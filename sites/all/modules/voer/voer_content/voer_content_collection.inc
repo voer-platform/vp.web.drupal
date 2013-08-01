@@ -204,16 +204,11 @@ function voer_collection_license_info($form, &$form_state, $entity) {
     '#type' => 'value',
     '#value' => $entity
   );
+
+  $license = variable_get('voer_api_license_text', array('value' => '', 'format' => NULL));
+
   $form['license_text'] = array(
-    '#type' => 'textarea',
-    '#value' => t('I recently played the role of Information Architect on a site remodel. We were charged with the task of doing a brand new build to replace an existing Flash site. One of the priorities of the client was to retain the elaborate Request for Quote form. There were many, many form fields that comprised this web form so I began to ponder if we should break the form up into a multiple step form, to improve the overall user experience. After careful consideration, I decided that we should definitely split the form up (for more on this matter check out Pagination in Web Forms | Evaluating the Effectiveness of Web Forms on UXmatter.com). Since there was no logic needed in the progression of the form, I felt that Javascript would be an acceptable solution, over using an actual server-side wizard. Thanks to Janko and his Turn any webform into a powerful wizard with jQuery blog, I found his JQuery plugin very easy to implement. This tutorial assumes that you have some basic working knowledge of the Webform module and how to create a custom module of your own.'),
-    '#weight' => 0,
-    '#rows' => 10,
-    '#disabled' => TRUE,
-    '#resizable' => FALSE,
-    '#attributes' => array(
-      'class' => array('license_text'),
-    )
+    '#markup' => check_markup($license['value'], $license['format']),
   );
 
   $form['accept_license'] = array(
@@ -248,8 +243,9 @@ function voer_collection_metadata_info($form, &$form_state, $entity) {
   );
 
   field_attach_form('node', $entity, $form, $form_state);
+  dpm($form);
 
-  $form_state['storage']['body'] = $form['body'];
+  $form_state['storage']['field_voer_outline'] = $form['field_voer_outline'];
 
   hiden_fields($form);
 
@@ -257,7 +253,7 @@ function voer_collection_metadata_info($form, &$form_state, $entity) {
 }
 
 function hiden_fields(&$form){
-  $fields = array('body', 'field_voer_file', 'field_voer_material_id', 'field_voer_material_type', 'field_voer_material_version');
+  $fields = array('field_voer_outline', 'body', 'field_voer_file', 'field_voer_material_id', 'field_voer_material_type', 'field_voer_material_version');
   foreach ($fields as $value) {
     unset($form[$value]);
   }
@@ -284,10 +280,11 @@ function voer_collection_metadata_info_validate($form, &$form_state) {
  * @ingroup form_example
  */
 function voer_collection_content($form, &$form_state) {
+  dpm($form_state);
   $form = array();
 
-  $form['body'] = $form_state['storage']['body'];
-  $form['body']['#weight'] = 10;
+  $form['field_voer_outline'] = $form_state['storage']['field_voer_outline'];
+  $form['field_voer_outline']['#weight'] = 10;
 
   return $form;
 }
@@ -308,19 +305,26 @@ function voer_collection_content($form, &$form_state) {
  * @ingroup form_example
  */
 function voer_collection_creation_wizard_submit($form, &$form_state) {
-  $module = save_module($form, $form_state);
+  $module = save_collection($form, $form_state);
 
   $form_state['redirect'] = 'node/' . $module->nid;
 
 }
 
 function voer_collection_publish_submit($form, &$form_state){
-  $module = save_module($form, $form_state);
-  $result = publish_module($module);
+  module_load_include('inc', 'voer_content');
+  $node = save_collection($form, $form_state);
+  $result = publish_collection($node);
   if ($result === FALSE){
     drupal_set_message("The collection publish was not successful!", 'error');
+  }else{
+    drupal_set_message(t("The collection publish was successful!"));
+    $node->field_voer_material_id[LANGUAGE_NONE][0]['value'] = $result->material_id;
+    $node->field_voer_material_version[LANGUAGE_NONE][0]['value'] = $result->version;
+    node_save($node);
+    drupal_goto("node/" . $node->nid);
+
   }
-  $form_state['redirect'] = 'node/' . $module->nid;
 }
 
 /**
@@ -329,7 +333,7 @@ function voer_collection_publish_submit($form, &$form_state){
  * @param  [type] $form_state [description]
  * @return [type]             [description]
  */
-function save_module($form, &$form_state){
+function save_collection($form, &$form_state){
   $current_step = &$form_state['step'];
   $form_state['step_information'][$current_step]['stored_values'] = $form_state['values'];
 
@@ -348,48 +352,6 @@ function save_module($form, &$form_state){
   node_save($entity);
 
   return $entity;
-}
-
-function publish_module($module){
-  module_load_include('inc', 'voer_api');
-  try {
-    $material_id = $module->field_voer_material_id[LANGUAGE_NONE][0]['value'];
-  } catch (Exception $e) {
-    $material_id = "";
-  }
-
-  $categories = "";
-  $arr_cats = array();
-  foreach ($module->field_voer_categories[LANGUAGE_NONE] as $val) {
-    $arr_cats[] = $val['value'];
-  }
-  $categories = implode(",", $arr_cats);
-
-  $params = array(
-    "material_id" => $material_id,
-    "text" => $module->body[LANGUAGE_NONE][0]['value'],
-    "title" => $module->title,
-    "material_type" => 1, //$module->field_voer_material_type[LANGUAGE_NONE][0]['value'],
-    "version" => "1",
-    "description" => $module->field_voer_description[LANGUAGE_NONE][0]['value'],
-    "keywords" => $module->field_voer_keywords[LANGUAGE_NONE][0]['value'],
-    "categories" => $categories,
-    "authors" => "huyvq",
-    "editor_id" => $module->uid,
-    "license_id" => 1,
-    "language" => "en",
-  );
-
-  try {
-    if (empty($material_id)){
-      return voer_api_create_material($params);
-    }else{
-      return voer_api_checkin_material($params);
-    }
-  } catch (Exception $e) {
-    drupal_set_message("Error: " + $e->getMessage(), 'error');
-    return FALSE;
-  }
 }
 
 /**

@@ -1,0 +1,19 @@
+/**
+ * @file
+ * CSS for Field Example.
+ */
+#voer_module_search_result input.form-checkbox{
+    opacity: 100;
+    margin-right: 5px;
+}
+
+#voer_module_search_result label.checkbox{
+    font-weight: normal;
+}
+
+.jstree-default li[rel=module] a ins {
+    background-image:url("images/file.png");
+    background-repeat:no-repeat;
+    background-color:transparent;
+    background-position: 0;
+}

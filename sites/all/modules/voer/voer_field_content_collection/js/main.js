@@ -14,13 +14,13 @@ Drupal.behaviors.voer_field_content_collection = {
                 // Those two checks may slow jstree a lot, so use only when needed
                 "max_depth" : -2,
                 "max_children" : -2,
-                "valid_children" : [ "folder", "default" ],
+                "valid_children" : [ "bundle", "module" ],
                 "types": {
-                    "default" : {
+                    "module" : {
                         "valid_children" : "none"
                     },
-                    "folder" : {
-                        "valid_children" : [ "default", "folder" ]
+                    "bundle" : {
+                        "valid_children" : [ "module", "bundle" ]
                     }
                 }
             }
@@ -29,9 +29,22 @@ Drupal.behaviors.voer_field_content_collection = {
         $("div#outline-actions input").click(function () {
             switch(this.id) {
                 case "add_default":
-
+                    $("#voer_module_search_result input[type=checkbox]:checked").map(function(){
+                        var id = $(this).val();
+                        var title = $(this).parent().text().trim();
+                        var parentNode = -1;
+                        if ($("#collection-outline").jstree("get_selected")){
+                            parentNode = null;
+                        }
+                        $("#collection-outline").jstree("create", parentNode, "last", { "data": title, "attr" : { "id": id, "rel" : "module" } });
+                    });
+                    break;
                 case "add_folder":
-                    $("#collection-outline").jstree("create", -1, "last", { "data": "Chapter", "attr" : { "rel" : this.id.toString().replace("add_", "") } });
+                    var parentNode = -1;
+                    if ($("#collection-outline").jstree("get_selected")){
+                        parentNode = null;
+                    }
+                    $("#collection-outline").jstree("create", parentNode, "last", { "data": "Chapter", "attr" : { "rel" : "bundle" } });
                     break;
                 case "search":
                     $("#collection-outline").jstree("search", document.getElementById("text").value);
@@ -45,6 +58,11 @@ Drupal.behaviors.voer_field_content_collection = {
                     $("#collection-outline").jstree(this.id);
                     break;
             }
+
+            var jsonData = $("#collection-outline").jstree('get_json', -1);
+            var jsonStr =  JSON.stringify(jsonData);
+            $('#voer-outline-wrapper .voer-outline-text').val(jsonStr);
+
             return false;
         });
 
@@ -63,7 +81,7 @@ function searchModuleByKeyword(keyword, page) {
   }
 
   if (jQuery('#voer_module_search_result').length == 0) {
-    jQuery('<div id="voer_module_search_result"></div>').appendTo('.edit-voer-field-author .fieldset-wrapper');
+    jQuery('<div id="voer_module_search_result"></div>').appendTo('#voer-outline-wrapper');
   }
 
   //showLoadingState('#edit-field-voer-authors');
@@ -72,5 +90,12 @@ function searchModuleByKeyword(keyword, page) {
     // removeLoadingState('#edit-field-voer-authors');
     jQuery('#voer_module_search_result').html(data);
   })
+}
+
+function loadModuleSearchPage(ele) {
+  var keyword = jQuery(ele).attr('keyword');
+  var page = jQuery(ele).attr('page');
+  searchModuleByKeyword(keyword, page);
+  return false;
 }
 

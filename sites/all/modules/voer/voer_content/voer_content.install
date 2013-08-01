@@ -380,3 +380,38 @@ function voer_content_update_1(){
     field_update_field($categories_field);
   }
 }
+
+function voer_content_update_2(){
+  $instance = array(
+    'field_name' => 'field_voer_authors',
+    'entity_type' => 'node',
+    'label' => st('Authors'),
+    'bundle' => 'voer_collection'
+  );
+
+  if (!field_info_instance("node", "field_voer_authors", "voer_collection")){
+    field_create_instance($instance);
+
+  }
+
+  // OUTLINE
+  if (!field_info_field('field_voer_outline')) {
+    $field_voer_outline = array(
+        'field_name' => 'field_voer_outline',
+        'type' => 'field_voer_content_collection',
+        'entity_types' => array('node'),
+    );
+    field_create_field($field_voer_outline);
+  }
+
+  $instance = array(
+    'field_name' => 'field_voer_outline',
+    'entity_type' => 'node',
+    'label' => st('Outline'),
+    'bundle' => 'voer_collection'
+  );
+
+  if (!field_info_instance("node", "field_voer_outline", "voer_collection")){
+    field_create_instance($instance);
+  }
+}

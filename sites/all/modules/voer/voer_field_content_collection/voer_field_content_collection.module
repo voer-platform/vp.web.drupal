@@ -16,47 +16,6 @@ function voer_field_content_collection_init() {
   ), 'setting');
 }
 
-/**
- * @defgroup field_example Example: Field Types API
- * @ingroup examples
- * @{
- * Examples using Field Types API.
- *
- * This is updated from Barry Jaspan's presentation at Drupalcon Paris,
- * @link http://acquia.com/community/resources/acquia-tv/intro-field-api-module-developers Video Presentation @endlink
- *
- * Providing a field requires:
- * - Defining a field:
- *   - hook_field_info()
- *   - hook_field_schema()
- *   - hook_field_validate()
- *   - hook_field_is_empty()
- *
- * - Defining a formatter for the field (the portion that outputs the field for
- *   display):
- *   - hook_field_formatter_info()
- *   - hook_field_formatter_view()
- *
- * - Defining a widget for the edit form:
- *   - hook_field_widget_info()
- *   - hook_field_widget_form()
- *
- * Our module defines the field in field_example_field_info(),
- * field_example_field_validate() and field_example_field_is_empty().
- * field_example_field_schema() is implemented in field_example.install.
- *
- * Our module sets up a formatter in field_example_field_formatter_info() and
- * field_example_field_formatter_view(). These are the API hooks that present
- * formatted and themed output to the user.
- * And finally, our module defines the widet in
- * field_example_field_widget_info() and field_example_field_widget_form().
- * The widget is the form element used to receive input from the user
- * when the field is being populated.
- *
- * @see field_types
- * @see field
- */
-
 /***************************************************************
  * Field Type API hooks
  ***************************************************************/
@@ -158,61 +117,6 @@ function voer_field_content_collection_field_is_empty($item, $field) {
 }
 
 /**
- * Implements hook_field_formatter_info().
- *
- * We need to tell Drupal that we have two different types of formatters
- * for this field. One will change the text color, and the other will
- * change the background color.
- *
- * @see field_example_field_formatter_view()
- */
-// function voer_field_content_collection_field_formatter_info() {
-//   return array(
-//     // This formatter just displays the hex value in the color indicated.
-//     'field_display_names' => array(
-//       'label' => t('Display categories name'),
-//       'field types' => array('field_voer_categories'),
-//     ),
-//   );
-// }
-
-/**
- * Implements hook_field_formatter_view().
- *
- * Two formatters are implemented.
- * - field_example_simple_text just outputs markup indicating the color that
- *   was entered and uses an inline style to set the text color to that value.
- * - field_example_color_background does the same but also changes the
- *   background color of div.region-content.
- *
- * @see field_example_field_formatter_info()
- */
-// function voer_field_content_collection_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
-//   $element = array();
-
-//   switch ($display['type']) {
-//     // This formatter simply outputs the field as text and with a color.
-//     case 'field_display_names':
-//       foreach ($items as $delta => $item) {
-//         $element[$delta] = array(
-//           // We create a render array to produce the desired markup,
-//           // "<p style="color: #hexcolor">The color code ... #hexcolor</p>".
-//           // See theme_html_tag().
-//           '#type' => 'html_tag',
-//           '#tag' => 'p',
-//           '#attributes' => array(
-//             'style' => 'color: ' . $item['value'],
-//           ),
-//           '#value' => t('The color code in this field is @code', array('@code' => $item['value'])),
-//         );
-//       }
-//       break;
-//   }
-
-//   return $element;
-// }
-
-/**
  * Implements hook_field_widget_info().
  *
  * Three widgets are provided.
@@ -258,6 +162,7 @@ function voer_field_content_collection_field_widget_form(&$form, &$form_state, $
   // $value = isset($items[$delta]['value']) ? $items[$delta]['value'] : '';
   // $multiple = $field['cardinality'] > 1 || $field['cardinality'] == FIELD_CARDINALITY_UNLIMITED;
   // $required = $element['#required'];
+  $value = isset($items[$delta]['value']) ? $items[$delta]['value'] : '';
 
   $widget = $element;
   $widget['#delta'] = $delta;
@@ -268,8 +173,9 @@ function voer_field_content_collection_field_widget_form(&$form, &$form_state, $
 
       $widget += array(
         '#type' => 'container',
+        '#attributes' => array("id" => "voer-outline-wrapper"),
         '#attached' => array(
-          // 'css' => array(drupal_get_path('module', 'voer_field_content_collection') . '/themes/default/style.css'),
+          'css' => array(drupal_get_path('module', 'voer_field_content_collection') . '/voer_field_content_collection.css'),
           'js' => array(
                     drupal_get_path('module', 'voer_field_content_collection') . '/js/jquery.jstree.js',
                     drupal_get_path('module', 'voer_field_content_collection') . '/js/jquery.cookie.js',
@@ -312,6 +218,14 @@ function voer_field_content_collection_field_widget_form(&$form, &$form_state, $
         '#weight' => -1,
       );
 
+      $widget['outline_text'] = array(
+        '#type' => 'hidden',
+        '#default_value' => $value,
+        '#attributes' => array(
+          'class' => array('voer-outline-text'),
+        ),
+      );
+
       $widget['module_keyword'] = array(
         '#type' => 'textfield',
         '#description' => t('Select people to serve as authors.'),
@@ -338,19 +252,16 @@ function voer_field_content_collection_field_widget_form(&$form, &$form_state, $
   return $element;
 }
 
-/**
- * Implements hook_menu().
- *
- * Provides a simple user interface that tells the developer where to go.
- */
-// function field_example_menu() {
-//   $items['examples/field_example'] = array(
-//     'title' => 'Field Example',
-//     'page callback' => '_field_example_page',
-//     'access callback' => TRUE,
-//   );
-//   return $items;
-// }
+function field_voer_content_outline_validate($element, &$form_state) {
+  $delta = $element['#delta'];
+  $field = $form_state['field'][$element['#field_name']][$element['#language']]['field'];
+  $field_name = $field['field_name'];
+
+  if (isset($form_state['values'][$field_name][$element['#language']][$delta]['value'])) {
+    $value = $form_state['values'][$field_name][$element['#language']][$delta]['value']['outline_text'];
+    form_set_value($element, $value, $form_state);
+  }
+}
 
 /**
  * @} End of "defgroup field_example".

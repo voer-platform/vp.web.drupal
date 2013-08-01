@@ -15,6 +15,7 @@ define('VOER_MATERIAL_CONTENT_FORM', 'material_content_form');
 function voer_content_admin_paths(){
   $paths = array(
     'node/*/clone' => TRUE,
+    'node/add/voer-collection' => TRUE,
   );
   return $paths;
 }
@@ -30,7 +31,7 @@ function voer_content_menu_alter(&$items) {
 
   // Modify add voer module
   $items['node/add/voer-collection']['page callback'] = 'voer_collection_creation';
-  $items['node/add/voer-collection']['file'] =  'voer_content_collection.in1c';
+  $items['node/add/voer-collection']['file'] =  'voer_content_collection.inc';
   $items['node/add/voer-collection']['file path'] = drupal_get_path('module', 'voer_content');
 
   $items['node/%node/edit']['access callback'] = 'voer_module_disable_node_edit';
