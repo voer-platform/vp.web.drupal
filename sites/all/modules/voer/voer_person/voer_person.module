@@ -14,6 +14,12 @@ function voer_person_menu(){
     'type' => MENU_CALLBACK,
   );
 
+  $items['person/info'] = array(
+    'page callback' => 'load_person_info',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+
   return $items;
 }
 
@@ -26,7 +32,6 @@ function voer_person_theme(){
     ),
   );
 }
-
 
 function person_load($id = NULL){
   module_load_include('inc', 'voer_api');
@@ -85,7 +90,6 @@ function search_person_by_keyword()
   module_load_include('inc', 'voer_api');
   $authors = voer_api_search_on_person($keyword, $page);
 
-  $result = array();
   $author_list = array();
 
   if ($authors->count > 0) {
@@ -93,14 +97,41 @@ function search_person_by_keyword()
       $author_list[$author->id] = $author->fullname;
     }
 
-    $result = array(
-      '#type' => 'checkboxes',
-      '#options' => $author_list,
-      '#default_value' => $author_selected_array,
-      '#attributes' => array(
-        'class' => array('input-checkbox-item'),
-      ),
-    );
+    $row_data = array();
+    foreach ($author_list as $id => $fullname) {
+      $row_data_tmp = array();
+      $row_data_tmp[] = array(
+        'data' => theme('html_tag', array('element' => array(
+          '#type' => 'html_tag',
+          '#tag' => 'span',
+          '#value' => $fullname,
+        ))),
+      );
+
+      if (in_array($id, $author_selected_array)) {
+        $class_name = 'display_none';
+      } else {
+        $class_name = '';
+      }
+
+      $row_data_tmp[] = array(
+        'data' => theme('html_tag', array('element' => array(
+          '#type' => 'html_tag',
+          '#tag' => 'div',
+          '#attributes' => array(
+            'class' => array($class_name),
+          ),
+          '#value' => '<span class="voer-add-authors" rel="'.$id.'"></span>'
+        ))),
+        'class' => 'voer-add-authors-'.$id,
+      );
+
+      $row_data[] = $row_data_tmp;
+    }
+
+    $header = array(t('Name'), t('Add'));
+    $table_attributes = array('id' => 'voer-author-table-list', 'align' => 'center');
+    $author_table_list = theme('table', array('header' => $header, 'rows' => $row_data, 'attributes' => $table_attributes, 'sticky' => FALSE, 'empty' => t('No data.')));
 
     $next_button = array();
     $prev_button = array();
@@ -131,9 +162,20 @@ function search_person_by_keyword()
       );
     }
 
-    echo drupal_render(form_process_checkboxes($result)) . drupal_render($prev_button) . drupal_render($next_button);
+    echo $author_table_list . drupal_render($prev_button) . drupal_render($next_button);
 
   } else {
-    $result = t('No result');
+    echo t('No result');
   }
+}
+
+function load_person_info()
+{
+  $author_id = $_GET['author_id'];
+  module_load_include('inc', 'voer_api');
+  $author = (array)voer_api_get_author($author_id);
+  if (!isset($author['detail'])) {
+    echo drupal_json_encode($author);
+  }
+  echo '';
 }

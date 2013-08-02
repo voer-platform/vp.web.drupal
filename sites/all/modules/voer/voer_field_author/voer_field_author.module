@@ -8,7 +8,7 @@ function voer_field_author_field_info() {
   return array(
     // We name our field as the associative name of the array.
     'field_voer_authors' => array(
-      'label' => t('VOER Authors'),
+      'label' => t('VOER roles'),
       'description' => t('This field stores VOER author in the database.'),
       'settings' => array('max_length' => 255),
       'default_widget' => 'voer_field_author_text',
@@ -49,6 +49,7 @@ function voer_field_author_field_formatter_view($entity_type, $entity, $field, $
   module_load_include('inc', 'voer_api');
 
   $element = array();
+  $voer_field_author_roles = _voer_field_author_roles();
 
   switch ($display['type']) {
     // This formatter simply outputs the field as text and with a color.
@@ -57,26 +58,48 @@ function voer_field_author_field_formatter_view($entity_type, $entity, $field, $
         $author_list = array();
         $author_array = array();
 
-        if ($item['value']) {
-          $author_list = explode(',', $item['value']);
-        }
+        $author = isset($item['author']) ? $item['author'] : '';
+        $editor = isset($item['editor']) ? $item['editor'] : '';
+        $licensor = isset($item['licensor']) ? $item['licensor'] : '';
+        $maintainer = isset($item['maintainer']) ? $item['maintainer'] : '';
+        $translator = isset($item['translator']) ? $item['translator'] : '';
+        $contributor = isset($item['contributor']) ? $item['contributor'] : '';
 
-        foreach ($author_list as $author_id) {
-          $person = voer_api_get_author($author_id);
+        $persons = drupal_json_decode($item['author']);
 
-          if (!isset($person->detail)) {
-            $author_array[] = l($person->fullname, 'person/'.$person->id);
+        foreach ($voer_field_author_roles as $role_name) {
+          if ($$role_name) {
+            $author_list = explode(',', $$role_name);
+
+            foreach ($author_list as $author_id) {
+              $author = voer_api_get_author($author_id);
+
+              if (!isset($author->detail)) {
+                $author_array[$role_name][] = l($author->fullname, 'person/'.$author->id);
+              }
+            }
+
+            $element[$delta][$role_name] = array(
+              '#prefix' => sprintf('<div class="voer-field-author-roles"><div class="field-label">%s: </div>', $role_name),
+              '#suffix' => '</div>',
+              '#type' => 'html_tag',
+              '#tag' => 'div',
+              '#attributes' => array(
+                'class' => 'voer_field_author_content',
+              ),
+              '#value' => implode(', ', $author_array[$role_name]),
+            );
           }
         }
 
-        $element[$delta] = array(
-          '#type' => 'html_tag',
-          '#tag' => 'p',
-          '#attributes' => array(
-            'class' => 'voer_field_author_content',
-          ),
-          '#value' => implode(', ', $author_array),
-        );
+//        $element[$delta] = array(
+//          '#type' => 'html_tag',
+//          '#tag' => 'div',
+//          '#attributes' => array(
+//            'class' => 'voer_field_author_content',
+//          ),
+//          '#value' => implode(', ', $author_array),
+//        );
       }
       break;
   }
@@ -90,7 +113,16 @@ function voer_field_author_field_formatter_view($entity_type, $entity, $field, $
 function voer_field_author_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
   module_load_include('inc', 'voer_api');
 
-  $value = isset($items[$delta]['value']) ? $items[$delta]['value'] : '';
+  $field_name = $field['field_name'];
+
+  $author = isset($items[$delta]['author']) ? $items[$delta]['author'] : '';
+  $editor = isset($items[$delta]['editor']) ? $items[$delta]['editor'] : '';
+  $licensor = isset($items[$delta]['licensor']) ? $items[$delta]['licensor'] : '';
+  $maintainer = isset($items[$delta]['maintainer']) ? $items[$delta]['maintainer'] : '';
+  $translator = isset($items[$delta]['translator']) ? $items[$delta]['translator'] : '';
+  $contributor = isset($items[$delta]['contributor']) ? $items[$delta]['contributor'] : '';
+
+  $voer_field_author_roles = _voer_field_author_roles();
 
   $widget = $element;
   $widget['#delta'] = $delta;
@@ -107,25 +139,81 @@ function voer_field_author_field_widget_form(&$form, &$form_state, $field, $inst
         ),
       );
 
-      $author_picker = '';
+      $header = array(
+        array('data' => t('Name')),
+        array('data' => t('User id')),
+        array(
+          'data' => t('Author'),
+        ),
+        array(
+          'data' => t('Editor'),
+        ),
+        array(
+          'data' => t('Licensor'),
+        ),
+        array(
+          'data' => t('Maintainer'),
+        ),
+        array(
+          'data' => t('Translator'),
+        ),
+        array(
+          'data' => t('Contributor'),
+        ),
+        array('data' => t('Remove User'))
+      );
+      $table_attributes = array('id' => 'voer-node-table', 'align' => 'center');
 
-      if ($value) {
-        $author_list = explode(',', $value);
+      $row_data = array();
+      $author_roles = array();
 
-        foreach ($author_list as $author_id) {
-          $person = voer_api_get_author($author_id);
+      foreach ($voer_field_author_roles as $role_name) {
+        if ($$role_name) {
+          $author_list = explode(',', $$role_name);
 
-          if (!isset($person->detail)) {
-            $author_picker .= sprintf('<li class="voer-author-picker-%s">%s<span class="voer-author-delete" title="Delete author" rel="%s"></span></li>', $person->id, $person->fullname, $person->id);
+          foreach ($author_list as $author_id) {
+            $person = voer_api_get_author(trim($author_id));
+
+            if (!isset($person->detail)) {
+              $author_roles[$person->id]['fullname'] = $person->fullname;
+              $author_roles[$person->id]['user_id'] = $person->user_id;
+              $author_roles[$person->id][$role_name] = TRUE;
+            }
           }
         }
       }
 
-      if ($author_picker) {
+      foreach ($author_roles as $author_id => $author_role) {
+        $row_data_tmp = array(
+          l($author_role['fullname'], 'person/'.$author_id, array('attributes' => array('target' => '_blank'))),
+          l($author_role['user_id'], 'person/'.$author_id, array('attributes' => array('target' => '_blank'))),
+        );
+
+        foreach ($voer_field_author_roles as $role_name) {
+          $row_data_tmp[] = array(
+            'data' => theme('checkbox', array('element' => array(
+              '#checked' => isset($author_role[$role_name]) ? $author_role[$role_name] : FALSE,
+              '#attributes' => array(
+                'class' => array('member-roles', 'roles-'.$role_name.'-'.$author_id),
+                'value' => $author_id,
+                'role' => $role_name,
+                )
+              )
+            )),
+            'class' => 'member-role-'.$role_name,
+          );
+        }
+
+        $row_data_tmp[] = sprintf('<span class="voer-author-delete" title="Delete author" rel="%s"></span>', $author_id);
+        $row_data[] = $row_data_tmp;
+      }
+
+      $author_picker = theme('table', array('header' => $header, 'rows' => $row_data, 'attributes' => $table_attributes, 'sticky' => FALSE, 'empty' => t('No data.')));
+
+      if ($row_data) {
         $widget['voer_field_author_picker'] = array(
-          '#prefix' => '<div class="voer-field-author-picker">Author selected:</div>',
           '#type' => 'html_tag',
-          '#tag' => 'ul',
+          '#tag' => 'div',
           '#attributes' => array(
             'class' => array('voer-field-author-picker-list'),
           ),
@@ -134,9 +222,8 @@ function voer_field_author_field_widget_form(&$form, &$form_state, $field, $inst
 
       } else {
         $widget['voer_field_author_picker'] = array(
-          '#prefix' => '<div class="voer-field-author-picker display_none">Author selected:</div>',
           '#type' => 'html_tag',
-          '#tag' => 'ul',
+          '#tag' => 'div',
           '#attributes' => array(
             'class' => array('voer-field-author-picker-list', 'display_none'),
           ),
@@ -161,16 +248,31 @@ function voer_field_author_field_widget_form(&$form, &$form_state, $field, $inst
         ),
       );
 
-      $widget['voer_field_author_selected_text'] = array(
-        '#type' => 'hidden',
-        '#default_value' => $value,
-        '#attributes' => array(
-          'class' => array('voer-field-author-selected-text'),
-        ),
-      );
+//      foreach ($voer_field_author_roles as $role_name) {
+//        $widget[$role_name] = array(
+//          '#type' => 'hidden',
+//          '#default_value' => isset($$role_name) ? $$role_name : '',
+//          '#attributes' => array(
+//            'class' => array('voer-field-author-selected-'.$role_name),
+//          ),
+//        );
+//      }
+
+      break;
   }
 
-  $element['value'] = $widget;
+  $element['author_extra'] = $widget;
+  foreach ($voer_field_author_roles as $role_name) {
+    $widget = array(
+      '#type' => 'hidden',
+      '#default_value' => isset($$role_name) ? $$role_name : '',
+      '#attributes' => array(
+        'class' => array('voer-field-author-selected-'.$role_name),
+      ),
+    );
+
+    $element[$role_name] = $widget;
+  }
 
   return $element;
 }
@@ -179,10 +281,13 @@ function voer_field_author_text_validate($element, &$form_state) {
   $delta = $element['#delta'];
   $field = $form_state['field'][$element['#field_name']][$element['#language']]['field'];
   $field_name = $field['field_name'];
+  $voer_field_author_roles = _voer_field_author_roles();
 
-  if (isset($form_state['values'][$field_name][$element['#language']][$delta]['value'])) {
-    $value = $form_state['values'][$field_name][$element['#language']][$delta]['value']['voer_field_author_selected_text'];
-    form_set_value($element, $value, $form_state);
+  foreach ($voer_field_author_roles as $role_name) {
+    if (isset($form_state['values'][$field_name][$element['#language']][$delta][$role_name])) {
+      $value = $form_state['values'][$field_name][$element['#language']][$delta][$role_name];
+      form_set_value($element, $value, $form_state);
+    }
   }
 }
 
@@ -194,5 +299,10 @@ function voer_field_author_text_validate($element, &$form_state) {
  * the form API flag an error when required fields are empty.
  */
 function voer_field_author_field_is_empty($item, $field) {
-  return empty($item['value']);
+  return empty($item['author']);
+}
+
+function _voer_field_author_roles()
+{
+  return array('author', 'editor', 'licensor', 'maintainer', 'translator', 'contributor');
 }

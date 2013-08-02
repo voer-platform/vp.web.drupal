@@ -29,3 +29,11 @@
   margin-left: 5px;
   width: 16px;
 }
+.voer-add-authors {
+  background: url("../images/add_more_author.png") no-repeat scroll 0 0 transparent;
+  cursor: pointer;
+  display: block;
+  height: 16px;
+  margin-left: 5px;
+  width: 16px;
+}

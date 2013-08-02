@@ -23,10 +23,15 @@
  */
 function voer_field_author_field_schema($field) {
   $columns = array(
-    'value' => array('type' => 'varchar', 'length' => 255, 'not null' => FALSE),
+    'author' => array('type' => 'varchar', 'length' => 1000, 'not null' => FALSE),
+    'editor' => array('type' => 'varchar', 'length' => 1000, 'not null' => FALSE),
+    'licensor' => array('type' => 'varchar', 'length' => 1000, 'not null' => FALSE),
+    'maintainer' => array('type' => 'varchar', 'length' => 1000, 'not null' => FALSE),
+    'translator' => array('type' => 'varchar', 'length' => 1000, 'not null' => FALSE),
+    'contributor' => array('type' => 'varchar', 'length' => 1000, 'not null' => FALSE),
   );
   $indexes = array(
-    'value' => array('value'),
+    'author' => array('author'),
   );
   return array(
     'columns' => $columns,
@@ -46,3 +51,74 @@ function voer_field_author_update_1()
   ));
 }
 
+/**
+ * Change field name from value -> author & add some fields
+ */
+function voer_field_author_update_3()
+{
+  db_change_field('field_data_field_voer_authors', 'field_voer_authors_value', 'field_voer_authors_author', array(
+    'type' => 'varchar',
+    'length' => 1000,
+    'not null' => FALSE,
+  ));
+  db_change_field('field_revision_field_voer_authors', 'field_voer_authors_value', 'field_voer_authors_author', array(
+    'type' => 'varchar',
+    'length' => 1000,
+    'not null' => FALSE,
+  ));
+
+  db_add_field('field_data_field_voer_authors', 'field_voer_authors_editor', array(
+    'type' => 'varchar',
+    'length' => 1000,
+    'not null' => FALSE,
+  ));
+  db_add_field('field_revision_field_voer_authors', 'field_voer_authors_editor', array(
+    'type' => 'varchar',
+    'length' => 1000,
+    'not null' => FALSE,
+  ));
+
+  db_add_field('field_data_field_voer_authors', 'field_voer_authors_licensor', array(
+    'type' => 'varchar',
+    'length' => 1000,
+    'not null' => FALSE,
+  ));
+  db_add_field('field_revision_field_voer_authors', 'field_voer_authors_licensor', array(
+    'type' => 'varchar',
+    'length' => 1000,
+    'not null' => FALSE,
+  ));
+
+  db_add_field('field_data_field_voer_authors', 'field_voer_authors_maintainer', array(
+    'type' => 'varchar',
+    'length' => 1000,
+    'not null' => FALSE,
+  ));
+  db_add_field('field_revision_field_voer_authors', 'field_voer_authors_maintainer', array(
+    'type' => 'varchar',
+    'length' => 1000,
+    'not null' => FALSE,
+  ));
+
+  db_add_field('field_data_field_voer_authors', 'field_voer_authors_translator', array(
+    'type' => 'varchar',
+    'length' => 1000,
+    'not null' => FALSE,
+  ));
+  db_add_field('field_revision_field_voer_authors', 'field_voer_authors_translator', array(
+    'type' => 'varchar',
+    'length' => 1000,
+    'not null' => FALSE,
+  ));
+
+  db_add_field('field_data_field_voer_authors', 'field_voer_authors_contributor', array(
+    'type' => 'varchar',
+    'length' => 1000,
+    'not null' => FALSE,
+  ));
+  db_add_field('field_revision_field_voer_authors', 'field_voer_authors_contributor', array(
+    'type' => 'varchar',
+    'length' => 1000,
+    'not null' => FALSE,
+  ));
+}

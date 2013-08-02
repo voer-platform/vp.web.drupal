@@ -1,14 +1,14 @@
 (function ($) {
-  var author_array = new Array();
+  var author_roles = new Array();
+  author_roles[0] = 'author';
+  author_roles[1] = 'editor';
+  author_roles[2] = 'licensor';
+  author_roles[3] = 'maintainer';
+  author_roles[4] = 'translator';
+  author_roles[5] = 'contributor';
 
   Drupal.behaviors.voer_content = {
     attach: function (context, settings) {
-      var author_selected = jQuery('.voer-field-author-selected-text').val();
-
-      if (author_selected) {
-        author_array = author_selected.split(','); 
-      }
-
       initAuthorDeleteBtn();
 
       $('.voer-field-author-search-btn', context).click(function () {
@@ -17,45 +17,87 @@
         return false;
       });
 
-      $('#voer_person_search_result input.input-checkbox-item', context).live('click', function(){
-        var author_id = $(this).val();
+      $('#voer-author-table-list span.voer-add-authors', context).live('click', function(){
+        var spanAddEle = $(this);
+        var author_id = spanAddEle.attr('rel');
 
-        if ($(this).is(':checked')) {
-          if (author_array.indexOf(author_id) < 0) {
-            $('.voer-field-author-picker').show();
+        showLoadingState('#voer_person_search_result');
+        $.getJSON('/person/info', {author_id: author_id}, function(data){
+          if (data) {
+            removeLoadingState('#voer_person_search_result');
+            spanAddEle.parent().fadeOut();
+
+            var rowEle = '<td><a target="_blank" href="/person/'+data.id+'">'+data.fullname+'</a></td>';
+            rowEle += '<td><a target="_blank" href="/person/'+data.id+'">'+data.user_id+'</a></td>';
+
+            for (var i=0;i<author_roles.length;i++) {
+              rowEle += '<td class="member-role-'+author_roles[i]+'"><input type="checkbox" class="member-roles roles-'+author_roles[i]+'-'+data.id+'" value="'+data.id+'" role="'+author_roles[i]+'"></td>';
+            }
+            rowEle += '<td><span class="voer-author-delete" title="Delete author" rel="'+data.id+'"></span></td>';
+
+            if ($('#voer-node-table tbody tr > td').hasClass('empty')) {
+              $('#voer-node-table tbody').empty();
+            }
+
+            $('#voer-node-table tbody').append('<tr>'+rowEle+'</tr>');
             $('.voer-field-author-picker-list').show();
-            var author_name = $(this).parent().text();
-            author_array.push(author_id);
-            $('<li class="voer-author-picker-'+author_id+'">'+author_name+'<span class="voer-author-delete" title="Delete author" rel="'+author_id+'"></span></li>').appendTo('.voer-field-author-picker-list');
-            initAuthorDeleteBtn();
-          }
-        } else {
-          $('.voer-field-author-picker-list').find('.voer-author-picker-' + author_id).remove();
-          if ($('.voer-field-author-picker-list > li').length == 0) {
-            $('.voer-field-author-picker').hide();
-            $('.voer-field-author-picker-list').hide();
-          }
-          var index = author_array.indexOf(author_id);
-          author_array.splice(index, 1);
-        }
 
-        $('.voer-field-author-selected-text', context).val(author_array.join(','));
+            resetTableAuthorPicker();
+            initAuthorDeleteBtn();
+          } else {
+            alert('Author is not exists.');
+          }
+        });
       });
 
       function initAuthorDeleteBtn() {
-        $('.voer-field-author-picker-list span.voer-author-delete').die('click');
-        $('.voer-field-author-picker-list span.voer-author-delete').click(function(){
+        $('#voer-node-table td span.voer-author-delete').die('click');
+        $('#voer-node-table td span.voer-author-delete').click(function(){
           var author_id = $(this).attr('rel');
-          $(this).parent().remove();
-          $('#voer_person_search_result').find('input[value="'+author_id+'"]').attr('checked', false);
-          if ($('.voer-field-author-picker-list > li').length == 0) {
-            $('.voer-field-author-picker').hide();
+          $(this).parents('tr').remove();
+          $('#voer-author-table-list').find('span[rel="'+author_id+'"]').parent().removeClass('display_none').css('display', '');
+          if ($('#voer-node-table tbody > tr').length == 0) {
             $('.voer-field-author-picker-list').hide();
           }
-          var index = author_array.indexOf(author_id);
-          author_array.splice(index, 1);
 
-          $('.voer-field-author-selected-text').val(author_array.join(','));
+          for (var i=0;i<author_roles.length;i++) {
+            var author_selected_tmp = $('.voer-field-author-selected-'+author_roles[i]).val();
+            var author_selected_array = new Array();
+
+            if (author_selected_tmp) {
+              author_selected_array = author_selected_tmp.split(',');
+            }
+
+            var index = author_selected_array.indexOf(author_id);
+            author_selected_array.splice(index, 1);
+
+            $('.voer-field-author-selected-'+author_roles[i]).val(author_selected_array.join(','));
+          }
+
+          resetTableAuthorPicker();
+        });
+
+        $('input[class^="member-roles"]').die('click');
+        $('input[class^="member-roles"]').click(function(){
+          var role_name = jQuery(this).attr('role');
+          var author_id = jQuery(this).val();
+          var author_selected_tmp = $('.voer-field-author-selected-'+role_name).val();
+          var author_selected_array = new Array();
+
+          if (author_selected_tmp) {
+            author_selected_array = author_selected_tmp.split(',');
+          }
+
+          if ($(this).is(':checked')) {
+            if (author_selected_array.indexOf(author_id) < 0) {
+              author_selected_array.push(author_id);
+            }
+          } else {
+            var index = author_selected_array.indexOf(author_id);
+            author_selected_array.splice(index, 1);
+          }
+
+          $('.voer-field-author-selected-'+role_name).val(author_selected_array.join(','));
         });
       }
     }
@@ -117,7 +159,10 @@ function removeLoadingState(element) {
 }
 
 function searchAuthorByKeyword(keyword, page) {
-  var author_list = jQuery('.voer-field-author-selected-text').val();
+  var author_array = new Array();
+  jQuery('input[role="author"]').each(function(){
+    author_array.push(jQuery(this).val());
+  });
 
   if (page === undefined) {
     page = 1;
@@ -128,8 +173,7 @@ function searchAuthorByKeyword(keyword, page) {
   }
 
   showLoadingState('#edit-field-voer-authors');
-
-  jQuery.post('/person/search', {keyword: keyword, page: page, author_list: author_list}, function(data){
+  jQuery.post('/person/search', {keyword: keyword, page: page, author_list: author_array.join(',')}, function(data){
     removeLoadingState('#edit-field-voer-authors');
     jQuery('#voer_person_search_result').html(data);
   })
@@ -140,4 +184,13 @@ function loadAuthorSearchPage(ele) {
   var page = jQuery(ele).attr('page');
   searchAuthorByKeyword(keyword, page);
   return false;
+}
+
+function resetTableAuthorPicker() {
+  jQuery('#voer-node-table tbody tr').each(function(index){
+    jQuery(this).removeAttr('class');
+  });
+
+  jQuery('#voer-node-table tbody tr:odd').addClass('even');
+  jQuery('#voer-node-table tbody tr:even').addClass('odd');
 }
