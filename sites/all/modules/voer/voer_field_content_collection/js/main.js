@@ -24,6 +24,26 @@ Drupal.behaviors.voer_field_content_collection = {
                     }
                 }
             }
+        })
+        .bind("create.jstree", function (e, data) {
+            var jsonData = $("#collection-outline").jstree('get_json', -1);
+            var jsonStr =  JSON.stringify(jsonData);
+            $('#voer-outline-wrapper .voer-outline-text').val(jsonStr);
+        })
+        .bind("remove.jstree", function (e, data) {
+            var jsonData = $("#collection-outline").jstree('get_json', -1);
+            var jsonStr =  JSON.stringify(jsonData);
+            $('#voer-outline-wrapper .voer-outline-text').val(jsonStr);
+        })
+        .bind("rename.jstree", function (e, data) {
+            var jsonData = $("#collection-outline").jstree('get_json', -1);
+            var jsonStr =  JSON.stringify(jsonData);
+            $('#voer-outline-wrapper .voer-outline-text').val(jsonStr);
+        })
+        .bind("move_node.jstree", function (e, data) {
+            var jsonData = $("#collection-outline").jstree('get_json', -1);
+            var jsonStr =  JSON.stringify(jsonData);
+            $('#voer-outline-wrapper .voer-outline-text').val(jsonStr);
         });
 
         $("div#outline-actions input").click(function () {
