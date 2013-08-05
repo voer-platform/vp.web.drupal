@@ -183,6 +183,7 @@ function voer_field_category_field_formatter_view($entity_type, $entity, $field,
   switch ($display['type']) {
     // This formatter simply outputs the field as text and with a color.
     case 'voer_field_category_list_view':
+      module_load_include('inc', 'voer_api');
       foreach ($items as $delta => $item) {
         $cat_list = array();
         $cat_array = array();
