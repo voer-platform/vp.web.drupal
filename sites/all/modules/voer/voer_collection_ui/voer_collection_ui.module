@@ -26,4 +26,67 @@ function voer_collection_ui_theme(&$existing) {
   return $themes;
 }
 
+function voer_collection_ui_block_info(){
+  $blocks['voer_collection_outline_block'] = array(
+    'info' => t('VOER Collection Outline'),
+  );
+  return $blocks;
+}
+
+function voer_collection_ui_block_view($delta=''){
+  $block = array();
+
+  switch($delta) {
+    case 'voer_collection_outline_block' :
+      $block['content'] = voer_collection_outline_block_view();
+      break;
+  }
+
+  return $block;
+}
+
+function voer_collection_outline_block_view(){
+  $current_path = isset($_GET['q']) ? $_GET['q'] : "";
+  $params = explode("/", $current_path);
+  if ($params[0] == "node" || $params[0] == "collection"){
+    if (isset($params[1])){
+      $node = node_load($params[1]);
+      if ($node->type == "voer_collection"){
+        $outline = $node->field_voer_outline[$node->language][0]['value'];
+        $outline = json_decode($outline);
+        if ($outline){
+          $items = _walk_through($outline, $node->nid);
+          return theme('item_list', array("items" => $items, 'attributes' => array('class' => 'nav nav-list')));
+        }
+      }
+    }
+  }
+  return "";
+}
+
+function _walk_through($arrItems, $nid = 0){
+  $result = array();
+  foreach ($arrItems as $item){
+    $item = (array) $item;
+    $a = array();
+    if (array_key_exists("children", $item)){
+      $a['children'] = _walk_through($item['children'], $nid);
+    }
+    if ($item['attr']->rel == 'module'){
+      $id = $item['attr']->id;
+      $pies = explode("|", $id);
+      $module_id = $pies[0];
+
+      $a['data'] = l($item['data'], 'collection/' . $nid . "/" .$module_id);
+    }else{
+      if (array_key_exists("children", $a)){
+        $a['data'] = l($item['data'], 'm/#');
+      }else{
+        $a['data'] = l($item['data'], '#');
+      }
+    }
+    $result[] = $a;
+  }
+  return $result;
+}
 

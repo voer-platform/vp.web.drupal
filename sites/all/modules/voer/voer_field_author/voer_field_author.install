@@ -35,7 +35,7 @@ function voer_field_author_field_schema($field) {
   );
   return array(
     'columns' => $columns,
-    'indexes' => $indexes,
+    // 'indexes' => $indexes,
   );
 }
 

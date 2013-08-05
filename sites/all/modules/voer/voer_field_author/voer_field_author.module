@@ -64,7 +64,6 @@ function voer_field_author_field_formatter_view($entity_type, $entity, $field, $
         $maintainer = isset($item['maintainer']) ? $item['maintainer'] : '';
         $translator = isset($item['translator']) ? $item['translator'] : '';
         $contributor = isset($item['contributor']) ? $item['contributor'] : '';
-
         $persons = drupal_json_decode($item['author']);
 
         foreach ($voer_field_author_roles as $role_name) {

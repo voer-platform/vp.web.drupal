@@ -5,7 +5,6 @@ function voer_material_load($material_id, $reload = FALSE){
   // Kiem tra tren db web da co hay chua
   $query = new EntityFieldQuery();
   $entities = $query->entityCondition('entity_type', 'node')
-                    ->entityCondition('bundle', 'voer_module')
                     ->propertyCondition('status', 1)
                     ->fieldCondition('field_voer_material_id', 'value', $material_id, '=')
                     ->execute();
@@ -14,7 +13,7 @@ function voer_material_load($material_id, $reload = FALSE){
     // Hien thi node trong web
     $nids = array_keys($entities['node']);
     foreach ($entities['node'] as $node){
-      return $node;
+      return node_load($node->nid);
     }
   }else{
     module_load_include('inc', 'voer_api');
@@ -40,7 +39,6 @@ function voer_material_load_multiple($materials){
     $material_id = $material->material_id;
     $query = new EntityFieldQuery();
     $entities = $query->entityCondition('entity_type', 'node')
-                      ->entityCondition('bundle', 'voer_module')
                       ->propertyCondition('status', 1)
                       ->fieldCondition('field_voer_material_id', 'value', $material_id, '=')
                       ->execute();
@@ -60,17 +58,21 @@ function voer_material_load_multiple($materials){
  */
 function material_from_vpr($material){
   $node = new stdClass();
-  $node->type = 'voer_module';
-  // dpm($material);
+  if ($material->material_type == 1){
+    $node->type = 'voer_module';
+  }else{
+    $node->type = 'voer_collection';
+  }
   node_object_prepare($node);
-  // dpm($node);
   $node->uid = 1;
   $node->promote = 0;
   $node->comment = 0;
   $node->title = $material->title;
   $node->language = LANGUAGE_NONE;
   $node->field_voer_description[$node->language][0]['value'] = $material->description;
-  $node->field_voer_categories[$node->language][0]['value'] = $material->categories;
+  if (is_numeric($material->categories)){
+    $node->field_voer_categories[$node->language][0]['value'] = $material->categories;
+  }
   $node->field_voer_language[$node->language][0]['value'] = $material->language;
   $node->field_voer_material_id[$node->language][0]['value'] = $material->material_id;
   $node->field_voer_material_version[$node->language][0]['value'] = $material->version;
@@ -79,12 +81,16 @@ function material_from_vpr($material){
   $node->field_voer_authors[$node->language][0]['value'] = isset($material->author) ? $material->author : "";
   //Get images
   $imgs = voer_api_get_images($material->material_id);
-  $body = $material->text;
-  $body = preg_replace_callback('/<img src="([^"]*)"/', function($m) use ($imgs){
-    return "<img src='" . $imgs[$m[1]] . "'";
-  }, $body);
-  $node->body[$node->language][0]['value'] = $body;
-  $node->body[$node->language][0]['format'] = 'full_html';
+  if ($node->type == "voer_module"){
+    $body = $material->text;
+    $body = preg_replace_callback('/<img src="([^"]*)"/', function($m) use ($imgs){
+      return "<img src='" . $imgs[$m[1]] . "'";
+    }, $body);
+    $node->body[$node->language][0]['value'] = $body;
+    $node->body[$node->language][0]['format'] = 'full_html';
+  }else{
+    $node->field_voer_outline[$node->language][0]['value'] = $material->text;
+  }
 
   node_save($node);
 
@@ -139,7 +145,6 @@ function publish_module($module){
 
   try {
     if (empty($material_id)){
-      // dpm($params);
       $result = voer_api_create_material($params);
     }else{
       $params['material_id'] = $material_id;
@@ -196,7 +201,6 @@ function publish_collection($collection){
 
   try {
     if (empty($material_id)){
-      // dpm($params);
       $result = voer_api_create_material($params);
     }else{
       $params['material_id'] = $material_id;

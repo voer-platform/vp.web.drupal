@@ -243,7 +243,7 @@ function voer_collection_metadata_info($form, &$form_state, $entity) {
   );
 
   field_attach_form('node', $entity, $form, $form_state);
-  dpm($form);
+  // dpm($form);
 
   $form_state['storage']['field_voer_outline'] = $form['field_voer_outline'];
 
@@ -280,7 +280,7 @@ function voer_collection_metadata_info_validate($form, &$form_state) {
  * @ingroup form_example
  */
 function voer_collection_content($form, &$form_state) {
-  dpm($form_state);
+  // dpm($form_state);
   $form = array();
 
   $form['field_voer_outline'] = $form_state['storage']['field_voer_outline'];
@@ -307,7 +307,7 @@ function voer_collection_content($form, &$form_state) {
 function voer_collection_creation_wizard_submit($form, &$form_state) {
   $module = save_collection($form, $form_state);
 
-  $form_state['redirect'] = 'node/' . $module->nid;
+  $form_state['redirect'] = 'collection/' . $module->nid;
 
 }
 
@@ -339,7 +339,6 @@ function save_collection($form, &$form_state){
 
   $entity = $form_state['step_information'][1]['stored_values']['voer_content_entity'];
   $entity->title = $form_state['step_information'][2]['stored_values']['title'];
-
   foreach ($form_state['step_information'] as $index => $value){
     $form_tmp_state = array();
     $form_tmp_state['values'] = array();

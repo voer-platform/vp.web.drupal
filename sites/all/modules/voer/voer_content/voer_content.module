@@ -8,14 +8,24 @@ define('VOER_MATERIAL_CONTENT_FORM', 'material_content_form');
 
 
 
+function voer_content_entity_info_alter(&$entity_info) {
+  $entity_info['node']['uri callback'] = 'voer_content_uri';
+}
+
+function voer_content_uri($node){
+  if ($node->type == "voer_collection"){
+    return array("path" => "collection/" . $node->nid);
+  }else{
+    return array("path" => "node/". $node->nid);
+  }
+}
 /**
  * Implements hook_admin_paths
  * @return [type] [description]
  */
 function voer_content_admin_paths(){
   $paths = array(
-    'node/*/clone' => TRUE,
-    'node/add/voer-collection' => TRUE,
+    'node/*/clone' => TRUE
   );
   return $paths;
 }
@@ -54,6 +64,24 @@ function voer_module_disable_node_edit($node){
 function voer_content_menu() {
   $items = array();
 
+  $items['collection/%node'] = array(
+    'title callback' => 'voer_collection_title',
+    'title arguments' => array(1),
+    'page callback' => 'show_collection',
+    'page arguments' => array(1),
+    'access arguments' => array('access content'),
+    'file' => 'voer_content.pages.inc',
+  );
+
+  // $items['collection/%node/%'] = array(
+  //   'title callback' => 'voer_collection_title',
+  //   'title arguments' => array(1),
+  //   'page callback' => 'show_collection',
+  //   'page arguments' => array(1),
+  //   'access arguments' => array('access content'),
+  //   'file' => 'voer_content.pages.inc',
+  // );
+
   $items['category/%voer_category'] = array(
     'title callback' => 'voer_category_title',
     'title arguments' => array(1),
@@ -82,7 +110,6 @@ function voer_content_menu() {
 }
 
 function voer_content_clone_access($node){
-  // dpm($node);
   global $user;
   if (sizeof($node->field_voer_material_version) > 0 || !empty($node->field_voer_material_version[LANGUAGE_NONE][0]['value'])){
     if ($user->uid > 0){
@@ -94,7 +121,6 @@ function voer_content_clone_access($node){
 }
 
 function voer_content_preprocess_node(&$variables){
-  // dpm($variables);
   $type = $variables['type'];
   if ($type == 'voer_module'){
     $variables['page'] = $variables['view_mode'] == 'full';
@@ -125,6 +151,9 @@ function voer_content_title($content){
   return $content->title;
 }
 
+function voer_collection_title($node){
+  return $node->title;
+}
 
 
 // HUY.VQ --------------------------------
@@ -249,7 +278,6 @@ function voer_content_form_push($form, &$form_state)
   if (arg(0) == 'node') {
     $nid = arg(1);
     if ($nid) {
-      // dpm($form_state);
       $node = node_load($nid);
       $node->title = $form_state['values']['title'];
       $node->body = $form_state['values']['body'];
@@ -259,7 +287,6 @@ function voer_content_form_push($form, &$form_state)
       $node->field_voer_categories = $form_state['values']['field_voer_categories'];
       $node->field_voer_authors = $form_state['values']['field_voer_authors'];
       $result = publish_module($node);
-      // dpm($result);
       if ($result === FALSE){
         drupal_set_message(t("The module publish was not successful!"), 'error');
       }else{
@@ -315,6 +342,39 @@ function voer_module_import_validate($form, &$form_state){
       form_set_error('file', t('Failed to write the uploaded file to the site\'s file folder.'));
     }
   }
+}
+
+function show_collection($node){
+  module_load_include('inc', 'voer_content');
+  $current_path = isset($_GET['q']) ? $_GET['q'] : "";
+  $params = explode("/", $current_path);
+  if (isset($params[2])){
+    $n = voer_material_load($params[2]);
+  }else{
+    $outline =$node->field_voer_outline['und'][0]['value'];
+    $outline = json_decode($outline);
+    $result = find_first_module($outline);
+    $pies = explode("|", $result['attr']->id);
+    $n = voer_material_load($pies[0]);
+  }
+  return node_view($n);
+}
+
+function find_first_module($items){
+  foreach ($items as $item) {
+    $item = (array) $item;
+    if (array_key_exists("children", $item)){
+      $result = find_first_module($item['children']);
+      if ($result != NULL){
+        return $result;
+      }
+    }else{
+      if ($item['attr']->rel == "module"){
+        return $item;
+      }
+    }
+  }
+  return NULL;
 }
 
 

@@ -38,72 +38,6 @@ function voer_field_content_collection_field_info() {
   );
 }
 
-/**
- * Implements hook_widget_info_alter().
- *
- */
-function voer_field_content_collection_field_widget_info_alter(&$info) {
-  $widgets = array(
-    'options_select' => array('field_voer_categories'),
-  );
-  foreach ($widgets as $widget => $field_types) {
-    $info[$widget]['field types'] = array_merge($info[$widget]['field types'], $field_types);
-  }
-}
-
-/**
- * Implements hook_options_list()
- *
- */
-function voer_field_content_collection_options_list($field, $instance, $entity_type, $entity) {
-  module_load_include('inc', 'voer_api');
-  $categories = voer_api_get_all_categories();
-  $list = array();
-  if (isset($categories) && isset($categories->results)){
-    foreach ($categories->results as $category) {
-      $list[$category->id] = $category->name;
-    }
-  }
-  return $list;
-}
-
-function voer_field_content_collection_allowed_values($field, $instance, $entity_type, $entity, $cacheable = TRUE){
-  module_load_include('inc', 'voer_api');
-  $categories = voer_api_get_all_categories();
-  $list = array();
-  if (isset($categories) && isset($categories->results)){
-    foreach ($categories->results as $category) {
-      $list[$category->id] = $category->name;
-    }
-  }
-  return $list;
-}
-
-/**
- * Implements hook_field_validate().
- *
- * This hook gives us a chance to validate content that's in our
- * field. We're really only interested in the $items parameter, since
- * it holds arrays representing content in the field we've defined.
- * We want to verify that the items only contain RGB hex values like
- * this: #RRGGBB. If the item validates, we do nothing. If it doesn't
- * validate, we add our own error notification to the $errors parameter.
- *
- * @see field_example_field_widget_error()
- */
-// function voer_field_content_collection_field_validate($entity_type, $entity, $field, $instance, $langcode, $items, &$errors) {
-//   foreach ($items as $delta => $item) {
-//     if (!empty($item['value'])) {
-//       if (! preg_match('@^#[0-9a-f]{6}$@', $item['value'])) {
-//         $errors[$field['field_name']][$langcode][$delta][] = array(
-//           'error' => 'field_example_invalid',
-//           'message' => t('Color must be in the HTML format #abcdef.'),
-//         );
-//       }
-//     }
-//   }
-// }
-
 
 /**
  * Implements hook_field_is_empty().
@@ -173,6 +107,7 @@ function voer_field_content_collection_field_widget_form(&$form, &$form_state, $
 
       $widget += array(
         '#type' => 'container',
+        '#element_validate' => array('field_voer_content_outline_validate'),
         '#attributes' => array("id" => "voer-outline-wrapper"),
         '#attached' => array(
           'css' => array(drupal_get_path('module', 'voer_field_content_collection') . '/voer_field_content_collection.css'),
