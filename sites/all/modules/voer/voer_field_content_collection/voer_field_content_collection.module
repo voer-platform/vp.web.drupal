@@ -124,7 +124,7 @@ function voer_field_content_collection_field_widget_form(&$form, &$form_state, $
       $widget['actions']['add_folder'] = array(
         '#type' => 'button',
         '#attributes' => array('id' => 'add_folder'),
-        '#value' => t('Add folder'),
+        '#value' => t('Create section'),
       );
       $widget['actions']['add_module'] = array(
         '#type' => 'button',
@@ -141,11 +141,11 @@ function voer_field_content_collection_field_widget_form(&$form, &$form_state, $
         '#attributes' => array('id' => 'remove'),
         '#value' => t('Remove'),
       );
-      $widget['actions']['info'] = array(
-        '#type' => 'button',
-        '#attributes' => array('id' => 'info'),
-        '#value' => t('Info'),
-      );
+      // $widget['actions']['info'] = array(
+      //   '#type' => 'button',
+      //   '#attributes' => array('id' => 'info'),
+      //   '#value' => t('Info'),
+      // );
 
       $widget['outline'] = array(
         '#type' => 'markup',

@@ -78,7 +78,14 @@ function material_from_vpr($material){
   $node->field_voer_material_version[$node->language][0]['value'] = $material->version;
   $node->field_voer_material_type[$node->language][0]['value'] = $material->material_type;
   $node->field_voer_keywords[$node->language][0]['value'] = $material->keywords;
-  $node->field_voer_authors[$node->language][0]['value'] = isset($material->author) ? $material->author : "";
+  //author
+  if (isset($material->author) && !empty($material->author)){
+    $node->field_voer_authors[$node->language][0]['author'] = $material->author;
+  }
+  //editor
+  if (isset($material->editor) && !empty($material->editor)){
+    $node->field_voer_authors[$node->language][0]['editor'] = $material->editor;
+  }
   //Get images
   $imgs = voer_api_get_images($material->material_id);
   if ($node->type == "voer_module"){

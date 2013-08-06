@@ -164,106 +164,202 @@ function voer_collection_title($node){
 function voer_content_form_alter(&$form, &$form_state, $form_id) {
 
   if ($form_id == 'voer_module_node_form') {
-    global $user;
-    $node = $form['#node'];
-
-    //hide if user has not roles
-    if (!in_array('administrator', $user->roles)) {
-      $form['menu']['#access'] = FALSE;
-      $form['revision_information']['#access'] = false;
-      $form['options']['#access'] = false;
-      $form['comment_settings']['#access'] = false;
-      $form['author']['#access'] = false;
-      $form['path']['#access'] = false;
-    }
-
-    $body_weight = $form['body']['#weight'];
-
-    $form['title']['#weight'] = 0;
-
-    $form['import_file'] = array(
-      '#type' => 'file',
-      '#title' => t('Document for import'),
-      '#description' => t('Upload a file, allowed extensions: doc, docx, odt'),
-      '#weight' => 2,
-    );
-    $form['upload_file'] = array(
-      '#type' => 'button',
-      '#weight' => 3,
-      '#value' => t('Import'),
-      '#validate' => array('voer_module_import_validate'),
-    );
-
-    $form['language'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('Language'),
-      '#group' => 'additional_settings',
-      '#weight' => -110,
-      'field_voer_language' => $form['field_voer_language'],
-    );
-
-    $form['description'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('Description'),
-      '#group' => 'additional_settings',
-      '#weight' => -100,
-      'field_voer_description' => $form['field_voer_description'],
-    );
-    $form['categories'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('Categories'),
-      '#group' => 'additional_settings',
-      '#weight' => -95,
-      'field_voer_categories' => $form['field_voer_categories'],
-    );
-    $form['authors'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('Authors'),
-      '#group' => 'additional_settings',
-      '#weight' => -92,
-      'field_voer_authors' => $form['field_voer_authors'],
-    );
-    $form['keywords'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('Keywords'),
-      '#group' => 'additional_settings',
-      '#weight' => -90,
-      'field_voer_keywords' => $form['field_voer_keywords'],
-    );
-    $form['version'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('Version'),
-      '#group' => 'additional_settings',
-      '#weight' => -85,
-    );
-    $form['version']['field_voer_material_id'] = $form['field_voer_material_id'];
-    $form['version']['field_voer_material_id'][LANGUAGE_NONE][0]['#disabled'] = TRUE;
-    $form['version']['field_voer_material_version'] = $form['field_voer_material_version'];
-    $form['version']['field_voer_material_version'][LANGUAGE_NONE][0]['#disabled'] = TRUE;
-
-
-    // unset($form['title']);
-    unset($form['field_voer_description']);
-    unset($form['field_voer_authors']);
-    unset($form['field_voer_categories']);
-    unset($form['field_voer_language']);
-    unset($form['field_voer_file']);
-    unset($form['field_voer_material_type']);
-    unset($form['field_voer_material_id']);
-    unset($form['field_voer_material_version']);
-    unset($form['field_voer_keywords']);
-
-    if (sizeof($node->field_voer_material_version) == 0 || empty($node->field_voer_material_version[LANGUAGE_NONE][0]['value'])){
-      $form['actions']['publish'] = array(
-        '#type'=> 'submit',
-        '#value'=> 'Publish',
-        '#weight'=> 11,
-        '#submit' => array('voer_content_form_push'),
-      );
-    }
+    voer_content_module_form_alter($form, $form_state, $form_id);
+  }else if ($form_id == 'voer_collection_node_form'){
+    // dpm($form_id);
+    voer_content_collection_form_alter($form, $form_state, $form_id);
   }
 
   return $form;
+}
+
+function voer_content_module_form_alter(&$form, &$form_state, $form_id){
+  global $user;
+  $node = $form['#node'];
+
+  //hide if user has not roles
+  if (!in_array('administrator', $user->roles)) {
+    $form['menu']['#access'] = FALSE;
+    $form['revision_information']['#access'] = false;
+    $form['options']['#access'] = false;
+    $form['comment_settings']['#access'] = false;
+    $form['author']['#access'] = false;
+    $form['path']['#access'] = false;
+  }
+
+  $body_weight = $form['body']['#weight'];
+
+  $form['title']['#weight'] = 0;
+
+  $form['import_file'] = array(
+    '#type' => 'file',
+    '#title' => t('Document for import'),
+    '#description' => t('Upload a file, allowed extensions: doc, docx, odt'),
+    '#weight' => 2,
+  );
+  $form['upload_file'] = array(
+    '#type' => 'button',
+    '#weight' => 3,
+    '#value' => t('Import'),
+    '#validate' => array('voer_module_import_validate'),
+  );
+
+  $form['language'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Language'),
+    '#group' => 'additional_settings',
+    '#weight' => -110,
+    'field_voer_language' => $form['field_voer_language'],
+  );
+
+  $form['description'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Description'),
+    '#group' => 'additional_settings',
+    '#weight' => -100,
+    'field_voer_description' => $form['field_voer_description'],
+  );
+  $form['categories'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Categories'),
+    '#group' => 'additional_settings',
+    '#weight' => -95,
+    'field_voer_categories' => $form['field_voer_categories'],
+  );
+  $form['authors'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Authors'),
+    '#group' => 'additional_settings',
+    '#weight' => -92,
+    'field_voer_authors' => $form['field_voer_authors'],
+  );
+  $form['keywords'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Keywords'),
+    '#group' => 'additional_settings',
+    '#weight' => -90,
+    'field_voer_keywords' => $form['field_voer_keywords'],
+  );
+  $form['version'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Version'),
+    '#group' => 'additional_settings',
+    '#weight' => -85,
+  );
+  $form['version']['field_voer_material_id'] = $form['field_voer_material_id'];
+  $form['version']['field_voer_material_id'][LANGUAGE_NONE][0]['#disabled'] = TRUE;
+  $form['version']['field_voer_material_version'] = $form['field_voer_material_version'];
+  $form['version']['field_voer_material_version'][LANGUAGE_NONE][0]['#disabled'] = TRUE;
+
+
+  // unset($form['title']);
+  unset($form['field_voer_description']);
+  unset($form['field_voer_authors']);
+  unset($form['field_voer_categories']);
+  unset($form['field_voer_language']);
+  unset($form['field_voer_file']);
+  unset($form['field_voer_material_type']);
+  unset($form['field_voer_material_id']);
+  unset($form['field_voer_material_version']);
+  unset($form['field_voer_keywords']);
+
+  if (sizeof($node->field_voer_material_version) == 0 || empty($node->field_voer_material_version[LANGUAGE_NONE][0]['value'])){
+    $form['actions']['publish'] = array(
+      '#type'=> 'submit',
+      '#value'=> 'Publish',
+      '#weight'=> 11,
+      '#submit' => array('voer_content_form_push'),
+    );
+  }
+}
+
+function voer_content_collection_form_alter(&$form, &$form_state, $form_id){
+  global $user;
+  $node = $form['#node'];
+
+  //hide if user has not roles
+  if (!in_array('administrator', $user->roles)) {
+    $form['menu']['#access'] = FALSE;
+    $form['revision_information']['#access'] = false;
+    $form['options']['#access'] = false;
+    $form['comment_settings']['#access'] = false;
+    $form['author']['#access'] = false;
+    $form['path']['#access'] = false;
+  }
+
+  $body_weight = $form['body']['#weight'];
+
+  $form['title']['#weight'] = 0;
+
+  $form['language'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Language'),
+    '#group' => 'additional_settings',
+    '#weight' => -110,
+    'field_voer_language' => $form['field_voer_language'],
+  );
+
+  $form['description'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Description'),
+    '#group' => 'additional_settings',
+    '#weight' => -100,
+    'field_voer_description' => $form['field_voer_description'],
+  );
+  $form['categories'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Categories'),
+    '#group' => 'additional_settings',
+    '#weight' => -95,
+    'field_voer_categories' => $form['field_voer_categories'],
+  );
+  $form['authors'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Authors'),
+    '#group' => 'additional_settings',
+    '#weight' => -92,
+    'field_voer_authors' => $form['field_voer_authors'],
+  );
+  $form['keywords'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Keywords'),
+    '#group' => 'additional_settings',
+    '#weight' => -90,
+    'field_voer_keywords' => $form['field_voer_keywords'],
+  );
+  $form['version'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Version'),
+    '#group' => 'additional_settings',
+    '#weight' => -85,
+  );
+  $form['version']['field_voer_material_id'] = $form['field_voer_material_id'];
+  $form['version']['field_voer_material_id'][LANGUAGE_NONE][0]['#disabled'] = TRUE;
+  $form['version']['field_voer_material_version'] = $form['field_voer_material_version'];
+  $form['version']['field_voer_material_version'][LANGUAGE_NONE][0]['#disabled'] = TRUE;
+
+
+  // unset($form['title']);
+  unset($form['field_voer_description']);
+  unset($form['field_voer_authors']);
+  unset($form['field_voer_categories']);
+  unset($form['field_voer_language']);
+  unset($form['field_voer_file']);
+  unset($form['field_voer_material_type']);
+  unset($form['field_voer_material_id']);
+  unset($form['field_voer_material_version']);
+  unset($form['field_voer_keywords']);
+  unset($form['body']);
+
+  if (sizeof($node->field_voer_material_version) == 0 || empty($node->field_voer_material_version[LANGUAGE_NONE][0]['value'])){
+    $form['actions']['publish'] = array(
+      '#type'=> 'submit',
+      '#value'=> 'Publish',
+      '#weight'=> 11,
+      '#submit' => array('voer_content_form_push'),
+    );
+  }
+
 }
 
 /**
