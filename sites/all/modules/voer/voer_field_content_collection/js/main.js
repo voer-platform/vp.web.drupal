@@ -6,8 +6,7 @@ Drupal.behaviors.voer_field_content_collection = {
                 "themes","json_data","ui","crrm","cookies","dnd","search","types","hotkeys","contextmenu"
             ],
             "json_data" : {
-                "data" : [
-                ]
+                "data" : eval($('#voer-outline-wrapper .voer-outline-text').val())
             },
             "types" : {
                 // I set both options to -2, as I do not need depth and children count checking
