@@ -3,10 +3,10 @@ Drupal.behaviors.voer_field_content_collection = {
     attach: function(context, settings) {
         $("#collection-outline").jstree({
             "plugins" : [
-                "themes","json_data","ui","crrm","cookies","dnd","search","types","hotkeys","contextmenu"
+                "themes","json_data","ui","crrm","cookies","dnd","search","types","hotkeys"//"contextmenu"
             ],
             "json_data" : {
-                "data" : eval($('#voer-outline-wrapper .voer-outline-text').val())
+                "data" : $('#voer-outline-wrapper .voer-outline-text').val() ? jQuery.parseJSON($('#voer-outline-wrapper .voer-outline-text').val()) : []
             },
             "types" : {
                 // I set both options to -2, as I do not need depth and children count checking
@@ -52,7 +52,7 @@ Drupal.behaviors.voer_field_content_collection = {
                         var id = $(this).val();
                         var title = $(this).parent().text().trim();
                         var parentNode = -1;
-                        if ($("#collection-outline").jstree("get_selected")){
+                        if ($("#collection-outline").jstree("get_selected") && $("#collection-outline").jstree("get_selected").length > 0){
                             parentNode = null;
                         }
                         $("#collection-outline").jstree("create", parentNode, "last", { "data": title, "attr" : { "id": id, "rel" : "module" } });
@@ -60,7 +60,7 @@ Drupal.behaviors.voer_field_content_collection = {
                     break;
                 case "add_folder":
                     var parentNode = -1;
-                    if ($("#collection-outline").jstree("get_selected")){
+                    if ($("#collection-outline").jstree("get_selected") && $("#collection-outline").jstree("get_selected").length > 0){
                         parentNode = null;
                     }
                     $("#collection-outline").jstree("create", parentNode, "last", { "data": "Chapter", "attr" : { "rel" : "bundle" } });

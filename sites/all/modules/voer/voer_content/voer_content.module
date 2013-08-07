@@ -73,14 +73,6 @@ function voer_content_menu() {
     'file' => 'voer_content.pages.inc',
   );
 
-  // $items['collection/%node/%'] = array(
-  //   'title callback' => 'voer_collection_title',
-  //   'title arguments' => array(1),
-  //   'page callback' => 'show_collection',
-  //   'page arguments' => array(1),
-  //   'access arguments' => array('access content'),
-  //   'file' => 'voer_content.pages.inc',
-  // );
 
   $items['category/%voer_category'] = array(
     'title callback' => 'voer_category_title',
@@ -446,14 +438,19 @@ function show_collection($node){
   $params = explode("/", $current_path);
   if (isset($params[2])){
     $n = voer_material_load($params[2]);
+    return node_view($n);
   }else{
     $outline =$node->field_voer_outline['und'][0]['value'];
     $outline = json_decode($outline);
     $result = find_first_module($outline);
-    $pies = explode("|", $result['attr']->id);
-    $n = voer_material_load($pies[0]);
+    if ($result){
+      $pies = explode("|", $result['attr']->id);
+      $n = voer_material_load($pies[0]);
+      return node_view($n);
+    }else{
+      return "";
+    }
   }
-  return node_view($n);
 }
 
 function find_first_module($items){
