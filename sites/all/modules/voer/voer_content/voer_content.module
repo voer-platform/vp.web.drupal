@@ -363,27 +363,42 @@ function voer_content_collection_form_alter(&$form, &$form_state, $form_id){
 function voer_content_form_push($form, &$form_state)
 {
   module_load_include('inc', 'voer_content');
-  if (arg(0) == 'node') {
-    $nid = arg(1);
-    if ($nid) {
-      $node = node_load($nid);
-      $node->title = $form_state['values']['title'];
-      $node->body = $form_state['values']['body'];
-      $node->field_voer_keywords = $form_state['values']['field_voer_keywords'];
-      $node->field_voer_language = $form_state['values']['field_voer_language'];
-      $node->field_voer_description = $form_state['values']['field_voer_description'];
-      $node->field_voer_categories = $form_state['values']['field_voer_categories'];
-      $node->field_voer_authors = $form_state['values']['field_voer_authors'];
-      $result = publish_module($node);
-      if ($result === FALSE){
-        drupal_set_message(t("The module publish was not successful!"), 'error');
-      }else{
-        drupal_set_message(t("The module publish was successful!"));
-        $node->field_voer_material_id[LANGUAGE_NONE][0]['value'] = $result->material_id;
-        $node->field_voer_material_version[LANGUAGE_NONE][0]['value'] = $result->version;
-        node_save($node);
-        drupal_goto("node/" . $node->nid);
-      }
+  $node = $form_state['node'];
+  if ($node->type == 'voer_module'){
+    $node->title = $form_state['values']['title'];
+    $node->body = $form_state['values']['body'];
+    $node->field_voer_keywords = $form_state['values']['field_voer_keywords'];
+    $node->field_voer_language = $form_state['values']['field_voer_language'];
+    $node->field_voer_description = $form_state['values']['field_voer_description'];
+    $node->field_voer_categories = $form_state['values']['field_voer_categories'];
+    $node->field_voer_authors = $form_state['values']['field_voer_authors'];
+    $result = publish_module($node);
+    if ($result === FALSE){
+      drupal_set_message(t("The module publish was not successful!"), 'error');
+    }else{
+      drupal_set_message(t("The module publish was successful!"));
+      $node->field_voer_material_id[LANGUAGE_NONE][0]['value'] = $result->material_id;
+      $node->field_voer_material_version[LANGUAGE_NONE][0]['value'] = $result->version;
+      node_save($node);
+      drupal_goto("node/" . $node->nid);
+    }
+  }else if ($node->type == 'voer_collection'){
+    $node->title = $form_state['values']['title'];
+    $node->field_voer_outline = $form_state['values']['field_voer_outline'];
+    $node->field_voer_keywords = $form_state['values']['field_voer_keywords'];
+    $node->field_voer_language = $form_state['values']['field_voer_language'];
+    $node->field_voer_description = $form_state['values']['field_voer_description'];
+    $node->field_voer_categories = $form_state['values']['field_voer_categories'];
+    $node->field_voer_authors = $form_state['values']['field_voer_authors'];
+    $result = publish_collection($node);
+    if ($result === FALSE){
+      drupal_set_message(t("The collection publish was not successful!"), 'error');
+    }else{
+      drupal_set_message(t("The collection publish was successful!"));
+      $node->field_voer_material_id[LANGUAGE_NONE][0]['value'] = $result->material_id;
+      $node->field_voer_material_version[LANGUAGE_NONE][0]['value'] = $result->version;
+      node_save($node);
+      drupal_goto("collection/" . $node->nid);
     }
   }
 }

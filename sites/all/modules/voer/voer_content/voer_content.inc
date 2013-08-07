@@ -25,9 +25,7 @@ function voer_material_load($material_id, $reload = FALSE){
       drupal_set_message(t("There are network problems!. ") . $e->getMessage(), 'error');
       return FALSE;
     }
-
   }
-
 }
 
 
@@ -165,6 +163,7 @@ function publish_module($module){
 }
 
 function publish_collection($collection){
+  $module = $collection;
   module_load_include('inc', 'voer_api');
   try {
     if (isset($module->field_voer_material_id) && sizeof($module->field_voer_material_id)){
@@ -186,7 +185,7 @@ function publish_collection($collection){
   $arr_authors = array();
   if (isset($module->field_voer_authors)){
     foreach ($module->field_voer_authors[LANGUAGE_NONE] as $val) {
-      $arr_authors[] = $val['value'];
+      $arr_authors[] = $val['author'];
     }
   }
   $authors = implode(',', $arr_authors);
@@ -200,7 +199,7 @@ function publish_collection($collection){
     "description" => $module->field_voer_description[LANGUAGE_NONE][0]['value'],
     "keywords" => "",//$module->field_voer_keywords[LANGUAGE_NONE][0]['value'],
     "categories" => $categories,
-    "authors" => $module->uid,
+    "authors" => $arr_authors,
     "editor_id" => $module->uid,
     "license_id" => 1,
     "language" => "en",
