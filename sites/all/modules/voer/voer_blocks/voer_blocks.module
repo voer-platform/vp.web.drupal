@@ -265,9 +265,12 @@ function voer_featured_authors_block_view()
     if ($author_id) {
       $materials = voer_api_get_materials_by_authors(array(50));
       $author['material_count'] = $materials->count;
-    }
 
-    // $author['person_id'] = $author['id'];
+      //fixed
+      $result = voer_api_get_author(50);
+      $author['fullname'] = $result->fullname;
+      $author['author_id'] = $result->id;
+    }
 
     return theme('voer_module_featured_author', $author);
 
