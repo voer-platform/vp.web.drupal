@@ -105,7 +105,7 @@ function voer_categories_block_view(){
 function voer_modules_block_view()
 {
   //Fix module_id
-  $module_id = 'c8095bba9ac9e9a5c317e978a6bbf83b';
+  $module_id = 'efee186d';
 
   module_load_include('inc', 'voer_api');
   try {
@@ -159,7 +159,7 @@ function voer_collections_block_view()
 function voer_questionaires_block_view()
 {
   //Fix module_id
-  $module_id = 'e01b8a3751d7bd0a35e0a49acae2c553';
+  $module_id = 'c651b437';
 
   module_load_include('inc', 'voer_api');
   try {
@@ -176,7 +176,7 @@ function voer_questionaires_block_view()
       $module['category_name'] = $category['name'];
     }
 
-    return theme('voer_module_custom', $module);
+    return theme('voer_questionaires_custom', $module);
 
   } catch (Exception $e) {
     return "";
@@ -186,7 +186,7 @@ function voer_questionaires_block_view()
 function voer_help_supports_block_view()
 {
   //Fix module_id
-  $module_id = '69438c8cacae020980771950fd845977';
+  $module_id = '8385225b';
 
   module_load_include('inc', 'voer_api');
   try {
@@ -213,7 +213,7 @@ function voer_help_supports_block_view()
 function voer_courses_block_view()
 {
   //Fix module_id
-  $module_id = '0129752be25c3bb959674c321829464a';
+  $module_id = 'ca163929';
 
   module_load_include('inc', 'voer_api');
   try {
@@ -230,7 +230,7 @@ function voer_courses_block_view()
       $module['category_name'] = $category['name'];
     }
 
-    return theme('voer_module_custom', $module);
+    return theme('voer_course_custom', $module);
 
   } catch (Exception $e) {
     return "";
@@ -257,8 +257,14 @@ function voer_featured_authors_block_view()
     foreach ($author_list['results'][$randomAuthor] as $key => $value) {
       if ($key == 'id') {
         $key = 'author_id';
+        $author_id = $value;
       }
       $author[$key] = $value;
+    }
+
+    if ($author_id) {
+      $materials = voer_api_get_materials_by_authors(array(50));
+      $author['material_count'] = $materials->count;
     }
 
     // $author['person_id'] = $author['id'];
@@ -278,6 +284,14 @@ function voer_blocks_theme($existing, $type, $theme, $path) {
     'voer_module_custom' => array(
       'arguments' => array('module' => array()),
       'template' => 'templates/block--voer-module',
+    ),
+    'voer_course_custom' => array(
+      'arguments' => array('module' => array()),
+      'template' => 'templates/block--voer-courses--view',
+    ),
+    'voer_questionaires_custom' => array(
+      'arguments' => array('module' => array()),
+      'template' => 'templates/block--voer-questionaires--view',
     ),
     'voer_module_featured_author' => array(
       'arguments' => array('author' => array()),

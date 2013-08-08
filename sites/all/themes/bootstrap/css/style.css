@@ -488,3 +488,18 @@ article.node-voer-module td, th { padding: .3em; border: 1px #999 solid; }
   float: left;
   margin-left: 5px;
 }
+
+/* wrapper temp, will remove soon */
+.row-fluid .span4_wrapper_tmp {
+  background-color: #FFFFFF;
+  bottom: 0;
+  height: 100%;
+  left: 0;
+  margin: 0;
+  opacity: 0.5;
+  padding: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 100%;
+}

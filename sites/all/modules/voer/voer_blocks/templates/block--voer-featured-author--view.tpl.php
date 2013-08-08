@@ -5,7 +5,7 @@
       <?php echo l($fullname, 'person/' . $author_id); ?>
     </h2>
 
-    <h5>&nbsp;</h5>
+    <h5><?php echo t('Module: ') . $material_count; ?></h5>
 
     <?php if (isset($text)) : ?>
       <p><?php print $text; ?></p>

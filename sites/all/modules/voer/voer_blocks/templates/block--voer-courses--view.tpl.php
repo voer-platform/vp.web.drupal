@@ -1,4 +1,4 @@
-<div class="span4">
+<div class="span4" style="position: relative;">
   <div class="vertical-shadow suggested-action">
     <div class="suggested-action-image-link cls_module" style="background-image: url('<?php echo $image_path; ?>');"><a href="/m/<?php print $material_id ?>">&nbsp;</a></div>
     <h2 class="pulls ellipsis suggested-action-title">
@@ -14,6 +14,7 @@
       <p><?php print $description; ?></p>
     <?php endif; ?>
 
-    <span class="caption"><?php echo $content_type . ' (' . (int)$total_count . ')'; ?></span>
+    <span class="caption"><?php echo $content_type; ?></span>
   </div>
+  <div class="span4_wrapper_tmp"></div>
 </div>

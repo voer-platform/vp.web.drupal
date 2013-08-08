@@ -105,7 +105,7 @@ function voer_api_get_materials_by_categories($cagetories = array(), $page = 1){
 function voer_api_get_materials_by_authors($authors = array()){
   $voer = new VoerApi();
   $url = VOER_API_COMMAND_MATERIAL;
-  $params = array('authors' => implode(',', $authors));
+  $params = array('author' => implode(',', $authors));
   $response = $voer->auth_request($url, "GET", $params);
   // $client = voer_api_client();
   // $response = $client->doGet(VOER_API_COMMAND_MATERIAL, array('authors' => implode(',', $authors)));
