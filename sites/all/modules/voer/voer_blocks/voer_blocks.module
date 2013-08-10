@@ -45,32 +45,67 @@ function voer_blocks_block_view($delta='') {
 
   switch($delta) {
     case 'voer_categories_block' :
-      $block['content'] = voer_categories_block_view();
+      $block['content'] = voer_categories_block_view($delta);
       break;
     case 'voer_modules_block' :
-      $block['content'] = voer_modules_block_view();
+      $block['content'] = voer_modules_block_view($delta);
       break;
     case 'voer_collections_block' :
-      $block['content'] = voer_collections_block_view();
+      $block['content'] = voer_collections_block_view($delta);
       break;
     case 'voer_courses_block' :
-      $block['content'] = voer_courses_block_view();
+      $block['content'] = voer_courses_block_view($delta);
       break;
     case 'voer_questionaire_block' :
-      $block['content'] = voer_questionaires_block_view();
+      $block['content'] = voer_questionaires_block_view($delta);
       break;
     case 'voer_help_support_block' :
-      $block['content'] = voer_help_supports_block_view();
+      $block['content'] = voer_help_supports_block_view($delta);
       break;
     case 'voer_featured_author_block' :
-      $block['content'] = voer_featured_authors_block_view();
+      $block['content'] = voer_featured_authors_block_view($delta);
       break;
   }
 
   return $block;
 }
 
-function voer_categories_block_view(){
+function voer_blocks_block_configure($delta = ""){
+  $form = array();
+  switch ($delta){
+    case 'voer_categories_block' :
+    case 'voer_modules_block' :
+    case 'voer_collections_block' :
+    case 'voer_courses_block' :
+    case 'voer_questionaire_block' :
+    case 'voer_help_support_block' :
+      $form[$delta . "_material_id"] = array(
+        '#type' => 'textfield',
+        '#title' => t('Material ID'),
+        '#size' => 60,
+        '#description' => t('Get material id for show content in block.'),
+        '#default_value' => variable_get($delta . "_material_id", "")
+      );
+      break;
+  }
+  return $form;
+}
+
+function voer_blocks_block_save($delta = "", $edit = array()){
+  switch ($delta){
+    case 'voer_categories_block' :
+    case 'voer_modules_block' :
+    case 'voer_collections_block' :
+    case 'voer_courses_block' :
+    case 'voer_questionaire_block' :
+    case 'voer_help_support_block' :
+      variable_set($delta . "_material_id", $edit[$delta . "_material_id"]);
+      break;
+  }
+  return;
+}
+
+function voer_categories_block_view($delta = ""){
   $output = array();
 
   module_load_include('inc', 'voer_api');
@@ -102,10 +137,10 @@ function voer_categories_block_view(){
   }
 }
 
-function voer_modules_block_view()
+function voer_modules_block_view($delta = "")
 {
   //Fix module_id
-  $module_id = 'efee186d';
+  $module_id = variable_get($delta . "_material_id", "");
 
   module_load_include('inc', 'voer_api');
   try {
@@ -129,10 +164,10 @@ function voer_modules_block_view()
   }
 }
 
-function voer_collections_block_view()
+function voer_collections_block_view($delta = "")
 {
   //Fix module_id
-  $module_id = '4d8788745d285b27e59b74abdc95c16c';
+  $module_id = variable_get($delta . "_material_id", "");
 
   module_load_include('inc', 'voer_api');
   try {
@@ -156,10 +191,10 @@ function voer_collections_block_view()
   }
 }
 
-function voer_questionaires_block_view()
+function voer_questionaires_block_view($delta = "")
 {
   //Fix module_id
-  $module_id = 'c651b437';
+  $module_id = variable_get($delta . "_material_id", "");
 
   module_load_include('inc', 'voer_api');
   try {
@@ -183,10 +218,10 @@ function voer_questionaires_block_view()
   }
 }
 
-function voer_help_supports_block_view()
+function voer_help_supports_block_view($delta = "")
 {
   //Fix module_id
-  $module_id = '8385225b';
+  $module_id = variable_get($delta . "_material_id", "");
 
   module_load_include('inc', 'voer_api');
   try {
@@ -210,10 +245,10 @@ function voer_help_supports_block_view()
   }
 }
 
-function voer_courses_block_view()
+function voer_courses_block_view($delta = "")
 {
   //Fix module_id
-  $module_id = 'ca163929';
+  $module_id = variable_get($delta . "_material_id", "");
 
   module_load_include('inc', 'voer_api');
   try {
@@ -237,7 +272,7 @@ function voer_courses_block_view()
   }
 }
 
-function voer_featured_authors_block_view()
+function voer_featured_authors_block_view($delta = "")
 {
   module_load_include('inc', 'voer_api');
   $author_list = (array)voer_api_get_all_authors();

@@ -98,6 +98,20 @@ function voer_content_menu() {
     'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
   );
 
+  $items['collection/%node/clone'] = array(
+    'access callback' => 'voer_content_clone_access',
+    'access arguments' => array(1),
+    // 'access arguments' => array('access content'),
+    'page callback' => 'voer_content_clone',
+    'page arguments' => array(1),
+    'title' => 'Checkout',
+    // 'title callback' => 'clone_action_link_title',
+    // 'title arguments' => array(1),
+    'weight' => 5,
+    'file' => 'voer_content.pages.inc',
+    'type' => MENU_LOCAL_TASK,
+    'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
+  );
   return $items;
 }
 

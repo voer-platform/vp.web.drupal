@@ -49,7 +49,11 @@ function voer_module_load($id = NULL, $reset = FALSE){
   module_load_include('inc', 'voer_content');
   $node = voer_material_load($id);
   if ($node){
-    drupal_goto("node/" . $node->nid);
+    if ($node->type == "voer_module"){
+      drupal_goto("node/" . $node->nid);
+    }else if ($node->type == "voer_collection"){
+      drupal_goto("collection/" . $node->nid);
+    }
     return FALSE;
   }else{
     return FALSE;
