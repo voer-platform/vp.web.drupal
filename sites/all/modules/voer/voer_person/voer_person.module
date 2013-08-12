@@ -20,6 +20,12 @@ function voer_person_menu(){
     'type' => MENU_CALLBACK,
   );
 
+  $items['person/register'] = array(
+    'page callback' => '_voer_person_register',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+
   return $items;
 }
 
@@ -90,25 +96,20 @@ function search_person_by_keyword()
   module_load_include('inc', 'voer_api');
   $authors = voer_api_search_on_person($keyword, $page);
 
-  $author_list = array();
-
   if ($authors->count > 0) {
-    foreach ($authors->results as $author) {
-      $author_list[$author->id] = $author->fullname;
-    }
-
     $row_data = array();
-    foreach ($author_list as $id => $fullname) {
+
+    foreach ($authors->results as $author) {
       $row_data_tmp = array();
       $row_data_tmp[] = array(
         'data' => theme('html_tag', array('element' => array(
           '#type' => 'html_tag',
           '#tag' => 'span',
-          '#value' => $fullname,
+          '#value' => $author->fullname ? $author->fullname : $author->user_id,
         ))),
       );
 
-      if (in_array($id, $author_selected_array)) {
+      if (in_array($author->id, $author_selected_array)) {
         $class_name = 'display_none';
       } else {
         $class_name = '';
@@ -121,9 +122,9 @@ function search_person_by_keyword()
           '#attributes' => array(
             'class' => array($class_name),
           ),
-          '#value' => '<span class="voer-add-authors" rel="'.$id.'"></span>'
+          '#value' => '<span class="voer-add-authors" rel="'.$author->id.'"></span>'
         ))),
-        'class' => 'voer-add-authors-'.$id,
+        'class' => 'voer-add-authors-'.$author->id,
       );
 
       $row_data[] = $row_data_tmp;
@@ -178,4 +179,126 @@ function load_person_info()
     echo drupal_json_encode($author);
   }
   echo '';
+}
+
+/**
+ * Implements of hook_user_presave()
+ */
+function voer_person_user_presave(&$edit, &$account, $category = NULL)
+{
+  module_load_include('inc', 'voer_api');
+
+  $author = array();
+  $author['email'] = $edit['mail'];
+  $author['user_id'] = $edit['name'];
+
+  if (isset($edit['field_person_fullname'][LANGUAGE_NONE][0]['value'])) {
+    $author['fullname'] = $edit['field_person_fullname'][LANGUAGE_NONE][0]['value'];
+  }
+
+  if (isset($edit['field_person_first_name'][LANGUAGE_NONE][0]['value'])) {
+    $author['first_name'] = $edit['field_person_first_name'][LANGUAGE_NONE][0]['value'];
+  }
+
+  if (isset($edit['field_person_last_name'][LANGUAGE_NONE][0]['value'])) {
+    $author['last_name'] = $edit['field_person_last_name'][LANGUAGE_NONE][0]['value'];
+  }
+
+  if (isset($edit['field_person_title'][LANGUAGE_NONE][0]['value'])) {
+    $author['title'] = $edit['field_person_title'][LANGUAGE_NONE][0]['value'];
+  }
+
+  if (isset($edit['field_person_homepage'][LANGUAGE_NONE][0]['value'])) {
+    $author['homepage'] = $edit['field_person_homepage'][LANGUAGE_NONE][0]['value'];
+  }
+
+  if (isset($edit['field_person_affiliation'][LANGUAGE_NONE][0]['value'])) {
+    $author['affiliation'] = $edit['field_person_affiliation'][LANGUAGE_NONE][0]['value'];
+  }
+
+  if (isset($edit['field_person_affiliation_url'][LANGUAGE_NONE][0]['value'])) {
+    $author['affiliation_url'] = $edit['field_person_affiliation_url'][LANGUAGE_NONE][0]['value'];
+  }
+
+  if (isset($edit['field_person_national'][LANGUAGE_NONE][0]['value'])) {
+    $author['national'] = $edit['field_person_national'][LANGUAGE_NONE][0]['value'];
+  }
+
+  if (isset($edit['field_person_biography'][LANGUAGE_NONE][0]['value'])) {
+    $author['biography'] = $edit['field_person_biography'][LANGUAGE_NONE][0]['value'];
+  }
+
+  if (isset($edit['field_person_client_id'][LANGUAGE_NONE][0]['value'])) {
+    $author['client_id'] = $edit['field_person_client_id'][LANGUAGE_NONE][0]['value'];
+  }
+
+  if (isset($edit['field_person_id'][LANGUAGE_NONE][0]['value']) && $edit['field_person_id'][LANGUAGE_NONE][0]['value']) {
+    $author['id'] = $edit['field_person_id'][LANGUAGE_NONE][0]['value'];
+    voer_api_update_author($author);
+  } else {
+    $new_author = voer_api_create_author($author);
+    $edit['field_person_id'][LANGUAGE_NONE][0]['value'] = $new_author->id;
+  }
+}
+
+function voer_person_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'user_profile_form') {
+    $form['field_person_id']['#access'] = FALSE;
+  }
+}
+
+function _voer_person_register()
+{
+  //set up the user fields
+  $fields = array(
+    'name' => $_REQUEST['name'],
+    'mail' => $_REQUEST['mail'],
+    'field_person_fullname' => array(LANGUAGE_NONE => array(0 => array('value' => $_REQUEST['fullname']))),
+    'pass' => user_password(8),
+    'status' => 1,
+    'init' => $_REQUEST['mail'],
+    'roles' => array(
+      DRUPAL_AUTHENTICATED_RID => TRUE,
+    ),
+  );
+
+  $result = array();
+  $result['status'] = FALSE;
+
+  if (user_validate_name($fields['name'])) {
+    $result['message'] = user_validate_name($fields['name']);
+  } elseif (_voer_person_validate_username($fields['name'])) {
+    $result['message'] = t('Username is exists.');
+  } elseif (user_validate_mail($fields['mail'])) {
+    $result['message'] = user_validate_mail($fields['mail']);
+  } elseif (_voer_person_validate_mail($fields['mail'])) {
+    $result['message'] = t('The e-mail address @mail is already taken', array('@mail' => $fields['mail']));
+  } else {
+    $account = user_save('', $fields);
+    $field_person_id = $account->field_person_id;
+    $result['status'] = TRUE;
+    $result['message'] = $field_person_id[LANGUAGE_NONE][0]['value'];
+    $account->password = $fields['pass'];
+
+    // Send the e-mail through the user module.
+    drupal_mail('user', 'register_no_approval_required', $fields['mail'], NULL, array('account' => $account), variable_get('site_mail', 'noreply@example.com'));
+  }
+
+  return drupal_json_output($result);
+}
+
+function _voer_person_validate_username($username) {
+  if (db_query("SELECT COUNT(*) FROM {users} WHERE name = :name", array(':name' => $username))->fetchField()) {
+    return TRUE;
+  }
+
+  return FALSE;
+}
+
+function _voer_person_validate_mail($email) {
+  if (db_query("SELECT COUNT(*) FROM {users} WHERE mail = :mail", array(':mail' => $email))->fetchField()) {
+    return TRUE;
+  }
+
+  return FALSE;
 }

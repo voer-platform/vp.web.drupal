@@ -323,11 +323,7 @@ function voer_api_get_all_authors(){
 function voer_api_create_author($author){
   $voer = new VoerApi();
   $url = VOER_API_COMMAND_AUTHOR;
-  $params = array(
-    "fullname" => $author->fulname,
-    "bio" => $author->bio
-  );
-  $response = $voer->auth_request($url, "POST", $params);
+  $response = $voer->auth_request($url, "POST", $author);
   // $client = voer_api_client();
   // $response = $client->doPost(VOER_API_COMMAND_AUTHOR, array(
   //   "fullname" => $author->fulname,
@@ -357,12 +353,8 @@ function voer_api_get_author($id){
  */
 function voer_api_update_author($author){
   $voer = new VoerApi();
-  $url = VOER_API_COMMAND_AUTHOR . $author->id . "/";
-  $params = array(
-    'fullname' => $author->fullname,
-    'bio' => $author->bio
-  );
-  $response = $voer->auth_request($url, "PUT", $params);
+  $url = VOER_API_COMMAND_AUTHOR . $author['id'] . "/";
+  $response = $voer->auth_request($url, "PUT", $author);
   // $client = voer_api_client();
   // $response = $client->doPut(VOER_API_COMMAND_AUTHOR . $author->id . "/", array(
   //   'fullname' => $author->fullname,

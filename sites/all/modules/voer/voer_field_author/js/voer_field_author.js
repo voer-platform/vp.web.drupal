@@ -100,6 +100,44 @@
           $('.voer-field-author-selected-'+role_name).val(author_selected_array.join(','));
         });
       }
+
+      $('.voer-add-new-author-btn', context).click(function () {
+        var name = $('.edit-voer-add-new-author-name').val();
+        var mail = $('.edit-voer-add-new-author-mail').val();
+        var fullname = $('.edit-voer-add-new-author-fullname').val();
+
+        showLoadingState('.voer-add-author-form');
+        $.post('/person/register', {name: name, mail: mail, fullname: fullname}, function(res){
+          removeLoadingState('.voer-add-author-form');
+          if (res.status) {
+            $.getJSON('/person/info', {author_id: res.message}, function(data){
+              if (data) {
+                var rowEle = '<td><a target="_blank" href="/person/'+data.id+'">'+data.fullname+'</a></td>';
+                rowEle += '<td><a target="_blank" href="/person/'+data.id+'">'+data.user_id+'</a></td>';
+
+                for (var i=0;i<author_roles.length;i++) {
+                  rowEle += '<td class="member-role-'+author_roles[i]+'"><input type="checkbox" class="member-roles roles-'+author_roles[i]+'-'+data.id+'" value="'+data.id+'" role="'+author_roles[i]+'"></td>';
+                }
+                rowEle += '<td><span class="voer-author-delete" title="Delete author" rel="'+data.id+'"></span></td>';
+
+                if ($('#voer-node-table tbody tr > td').hasClass('empty')) {
+                  $('#voer-node-table tbody').empty();
+                }
+
+                $('#voer-node-table tbody').append('<tr>'+rowEle+'</tr>');
+                $('.voer-field-author-picker-list').show();
+
+                resetTableAuthorPicker();
+                initAuthorDeleteBtn();
+              }
+            });
+          } else {
+            alert(res.message);
+          }
+        });
+
+        return false;
+      });
     }
   };
 }(jQuery));
