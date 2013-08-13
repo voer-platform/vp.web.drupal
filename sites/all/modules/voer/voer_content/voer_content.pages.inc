@@ -124,3 +124,12 @@ function voer_content_clone($original_node) {
   return drupal_get_form($node->type . '_node_form', $node, $form_state);
 }
 
+function voer_content_pdf($node){
+  module_load_include('inc', 'voer_api');
+  $version = $node->field_voer_material_version[$node->language][0]['value'];
+  $material_id = $node->field_voer_material_id[$node->language][0]['value'];
+  header('Content-type: application/pdf');
+  header('Content-Disposition: attachment; filename="downloaded.pdf"');
+  print voer_api_get_pdf($material_id, $version);
+}
+

@@ -1,4 +1,4 @@
-<?php if ($page) : ?>
+<?php if ($page && false) : ?>
 <div class="btn-toolbar">
   <div class="btn-group">
   <a href="#" class="btn btn-inverse disabled"><i class="icon-white icon-thumbs-up"></i></a>

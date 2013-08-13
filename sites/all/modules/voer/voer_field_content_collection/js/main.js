@@ -63,7 +63,7 @@ Drupal.behaviors.voer_field_content_collection = {
                     if ($("#collection-outline").jstree("get_selected") && $("#collection-outline").jstree("get_selected").length > 0){
                         parentNode = null;
                     }
-                    $("#collection-outline").jstree("create", parentNode, "last", { "data": "Chapter", "attr" : { "rel" : "bundle" } });
+                    $("#collection-outline").jstree("create", parentNode, "last", { "data": "Section", "attr" : { "rel" : "bundle" } });
                     break;
                 case "search":
                     $("#collection-outline").jstree("search", document.getElementById("text").value);

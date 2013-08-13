@@ -516,3 +516,10 @@ function voer_api_get_images($material_id){
   }
   return $result;
 }
+
+function voer_api_get_pdf($material_id, $version){
+  $voer = new VoerApi();
+  $url = VOER_API_COMMAND_MATERIAL . $material_id . "/" . $version . "/pdf/";
+  $response = $voer->auth_request($url);
+  return $response;
+}

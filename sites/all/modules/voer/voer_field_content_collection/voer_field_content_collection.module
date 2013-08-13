@@ -98,6 +98,18 @@ function voer_field_content_collection_field_widget_form(&$form, &$form_state, $
   // $required = $element['#required'];
   $value = isset($items[$delta]['value']) ? $items[$delta]['value'] : '';
 
+  //Convert
+  $objValue = json_decode($value);
+  dpm($objValue);
+  if ($objValue){
+    $result = array();
+    foreach ($objValue->content as $item) {
+      $result[] = _transform_json_vpr_to_editor($item);
+    }
+    $value = json_encode($result);
+  }
+
+
   $widget = $element;
   $widget['#delta'] = $delta;
 
@@ -194,8 +206,54 @@ function field_voer_content_outline_validate($element, &$form_state) {
 
   if (isset($form_state['values'][$field_name][$element['#language']][$delta]['value'])) {
     $value = $form_state['values'][$field_name][$element['#language']][$delta]['value']['outline_text'];
+    // Transform
+    $objValue = json_decode($value);
+    $result = new stdClass();
+    $result->content = array();
+    foreach ($objValue as $item) {
+      $result->content[] = _transform_json_editor_to_vpr($item);
+    }
+    $value = json_encode($result);
+    // dpm($value);
     form_set_value($element, $value, $form_state);
   }
+}
+
+function _transform_json_editor_to_vpr($obj){
+  $type = $obj->attr->rel;
+  $result = new stdClass();
+  if ($type == "module"){
+    $result->title = $obj->data;
+    $result->id = $obj->attr->id;
+    $result->type = 'module';
+  }else if ($type == "bundle"){
+    $result->title = $obj->data;
+    $result->type = 'subcollection';
+    $result->content = array();
+    foreach ($obj->children as $item) {
+      $result->content[] = _transform_json_editor_to_vpr($item);
+    }
+  }
+  return $result;
+}
+
+function _transform_json_vpr_to_editor($obj){
+  $type = $obj->type;
+  $result = new stdClass();
+  $result->attr = new stdClass();
+  if ($type == "module"){
+    $result->data = $obj->title;
+    $result->attr->id = $obj->id;
+    $result->attr->rel = 'module';
+  }else if ($type == "subcollection"){
+    $result->data = $obj->title;
+    $result->attr->rel = 'bundle';
+    $result->children = array();
+    foreach ($obj->content as $item) {
+      $result->children[] = _transform_json_vpr_to_editor($item);
+    }
+  }
+  return $result;
 }
 
 /**

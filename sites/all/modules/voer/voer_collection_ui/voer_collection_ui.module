@@ -66,6 +66,17 @@ function voer_collection_outline_block_view(){
 
 function _walk_through($arrItems, $nid = 0){
   $result = array();
+  if ($item->type == "module"){
+    $id = $item->id;
+    $pies = explode("|", $id);
+    $module_id = $pies[0];
+    $a['data'] = l($item->title, 'collection/' . $nid . "/" .$module_id);
+  }else if ($item->type == 'subcollection'){
+    foreach ($item->content as $m){
+      $r = _walk_through($m, $nid);
+      $result[] = $r;
+    }
+  }
   foreach ($arrItems as $item){
     $item = (array) $item;
     $a = array();
@@ -73,11 +84,6 @@ function _walk_through($arrItems, $nid = 0){
       $a['children'] = _walk_through($item['children'], $nid);
     }
     if ($item['attr']->rel == 'module'){
-      $id = $item['attr']->id;
-      $pies = explode("|", $id);
-      $module_id = $pies[0];
-
-      $a['data'] = l($item['data'], 'collection/' . $nid . "/" .$module_id);
     }else{
       if (array_key_exists("children", $a)){
         $a['data'] = l($item['data'], 'm/#');

@@ -98,6 +98,16 @@ function voer_content_menu() {
     'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
   );
 
+  $items['node/%node/pdf'] = array(
+    'access callback' => 'voer_content_clone_access',
+    'access arguments' => array(1),
+    'page callback' => 'voer_content_pdf',
+    'page arguments' => array(1),
+    'title' => 'PDF',
+    'file' => 'voer_content.pages.inc',
+  );
+
+
   $items['collection/%node/clone'] = array(
     'access callback' => 'voer_content_clone_access',
     'access arguments' => array(1),
@@ -471,32 +481,35 @@ function show_collection($node){
   }else{
     $outline =$node->field_voer_outline['und'][0]['value'];
     $outline = json_decode($outline);
-    $result = find_first_module($outline);
-    if ($result){
-      $pies = explode("|", $result['attr']->id);
-      $n = voer_material_load($pies[0]);
-      return node_view($n);
+    if (isset($outline->content)){
+      $result = find_first_module($outline);
+      if ($result){
+        $pies = explode("|", $result->id);
+        $n = voer_material_load($pies[0]);
+        return node_view($n);
+      }else{
+        return "";
+      }
     }else{
       return "";
     }
   }
 }
 
-function find_first_module($items){
-  foreach ($items as $item) {
+function find_first_module($item){
+  if (isset($item->type) && $item->type == "module"){
+    return $item;
+  }else{
     $item = (array) $item;
-    if (array_key_exists("children", $item)){
-      $result = find_first_module($item['children']);
-      if ($result != NULL){
-        return $result;
-      }
-    }else{
-      if ($item['attr']->rel == "module"){
-        return $item;
+    if (array_key_exists("content", $item)){
+      foreach ($item['content'] as $it) {
+        $result = find_first_module($it);
+        if ($result != NULL){
+          return $result;
+        }
       }
     }
   }
-  return NULL;
 }
 
 
