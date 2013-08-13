@@ -1,12 +1,5 @@
-<?php if ($page && false) : ?>
-<div class="btn-toolbar">
-  <div class="btn-group">
-  <a href="#" class="btn btn-inverse disabled"><i class="icon-white icon-thumbs-up"></i></a>
-  <a href="#" class="btn btn-inverse disabled"><i class="icon-white icon-heart"></i></a>
-  <a href="#" class="btn btn-inverse disabled"><i class="icon-white icon-download-alt"></i></a>
-  <a href="#" class="btn btn-inverse disabled"><i class="icon-white icon-share-alt"></i></a>
-  </div>
-</div>
+<?php if ($page) : ?>
+<div><strong>PDF Version:</strong> <a href="/node/<?php echo $node->nid . '/pdf' ?>">PDF</a></div>
 <?php endif; ?>
 
 <article id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
