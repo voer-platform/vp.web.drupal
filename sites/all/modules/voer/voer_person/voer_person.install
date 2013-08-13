@@ -1,0 +1,115 @@
+<?php
+/**
+ * Implementation of hook_install().
+ */
+function voer_person_install()
+{
+  _voer_person_create_fields();
+  _voer_person_create_instance_fields();
+}
+
+function _voer_person_create_fields()
+{
+  foreach (_voer_person_fields() as $field_name => $field_label) {
+    if (!field_info_field($field_name)) {
+      if ($field_name == 'field_person_biography') {
+        $field = array(
+          'field_name' => $field_name,
+          'type' => 'text_long',
+          'settings' => array(
+            'required' => FALSE,
+          ),
+        );
+      } else {
+        $field = array(
+          'field_name' => $field_name,
+          'type' => 'text',
+          'settings' => array(
+            'required' => FALSE,
+          ),
+        );
+      }
+      field_create_field($field);
+    }
+  }
+}
+
+function _voer_person_create_instance_fields()
+{
+  foreach (_voer_person_fields() as $field_name => $field_label) {
+    $instance = array(
+      'field_name' => $field_name,
+      'entity_type' => 'user',
+      'label' => $field_name,
+      'bundle' => 'user',
+      'required' => FALSE,
+    );
+    field_create_instance($instance);
+  }
+}
+
+/**
+ * Implements hook_uninstall()
+ */
+function voer_person_uninstall(){
+  foreach (_voer_person_fields() as $field_name => $field_label) {
+    field_delete_field($field_name);
+  }
+}
+
+function _voer_person_fields()
+{
+  return array(
+    'field_person_fullname' => t('Fullname'),
+    'field_person_first_name' => t('First name'),
+    'field_person_last_name' => t('Last name'),
+    'field_person_title' => t('Title'),
+    'field_person_homepage' => t('Homepage'),
+    'field_person_affiliation' => t('Affiliation'),
+    'field_person_affiliation_url' => t('Affiliation URL'),
+    'field_person_national' => t('National'),
+    'field_person_biography' => t('Biography'),
+    'field_person_client_id' => t('Client ID'),
+    'field_person_id' => t('VOER ID'),
+  );
+}
+
+/**
+ * Add some fields for person
+ */
+function voer_person_update_1(){
+  foreach (_voer_person_fields() as $field_name => $field_label) {
+    if (!field_info_field($field_name)) {
+      if ($field_name == 'field_person_biography') {
+        $field = array(
+          'field_name' => $field_name,
+          'type' => 'text_long',
+          'settings' => array(
+            'required' => FALSE,
+          ),
+        );
+      } else {
+        $field = array(
+          'field_name' => $field_name,
+          'type' => 'text',
+          'settings' => array(
+            'required' => FALSE,
+          ),
+        );
+      }
+      field_create_field($field);
+    }
+
+    $instance = array(
+      'field_name' => $field_name,
+      'entity_type' => 'user',
+      'label' => $field_label,
+      'bundle' => 'user',
+      'required' => FALSE,
+    );
+
+    if (!field_info_instance('user', $field_name, 'user')){
+      field_create_instance($instance);
+    }
+  }
+}
