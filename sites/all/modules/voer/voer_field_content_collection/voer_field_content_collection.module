@@ -100,7 +100,7 @@ function voer_field_content_collection_field_widget_form(&$form, &$form_state, $
 
   //Convert
   $objValue = json_decode($value);
-  dpm($objValue);
+  // dpm($objValue);
   if ($objValue){
     $result = array();
     foreach ($objValue->content as $item) {
