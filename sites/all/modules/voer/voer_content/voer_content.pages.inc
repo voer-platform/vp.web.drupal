@@ -128,8 +128,9 @@ function voer_content_pdf($node){
   module_load_include('inc', 'voer_api');
   $version = $node->field_voer_material_version[$node->language][0]['value'];
   $material_id = $node->field_voer_material_id[$node->language][0]['value'];
+  $title = $node->title;
   header('Content-type: application/pdf');
-  header('Content-Disposition: attachment; filename="downloaded.pdf"');
+  header('Content-Disposition: attachment; filename="'. $title . '.pdf"');
   print voer_api_get_pdf($material_id, $version);
 }
 
