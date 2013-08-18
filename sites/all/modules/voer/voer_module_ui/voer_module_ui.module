@@ -13,8 +13,7 @@ function voer_module_ui_menu(){
   );
 
   $items['m/all'] = array(
-    // 'title callback' => 'voer_module_title',
-    // 'title arguments' => array(1),
+    'title' => t('List modules'),
     'page callback' => 'show_material_list_page',
     'access arguments' => array('access content'),
   );
@@ -83,7 +82,7 @@ function show_material_list_page() {
   module_load_include('inc', 'voer_api');
   try {
     $page = isset($_GET['page']) ? $_GET['page'] : 0;
-    $materials = voer_api_get_all_materials($page + 1);
+    $materials = voer_api_get_all_materials(VOER_MATERIAL_TYPE_MODULE, $page + 1);
     if ($materials->count == 0){
       return t("Materials not found!");
     }else{

@@ -14,6 +14,6 @@
       <p><?php print $description; ?></p>
     <?php endif; ?>
 
-    <span class="caption"><?php echo l($content_type . ' (' . (int)$total_count . ')', 'collection/all'); ?></span>
+    <span class="caption"><?php echo $content_type . ' (' . (int)$total_count . ')'; ?></span>
   </div>
 </div>
