@@ -11,6 +11,6 @@
       <p><?php print $text; ?></p>
     <?php endif; ?>
 
-    <span class="caption"><?php echo $sub_title . ' (' . (int)$total_count . ')'; ?></span>
+    <span class="caption"><?php echo l($sub_title . ' (' . (int)$total_count . ')', 'person/all'); ?></span>
   </div>
 </div>

@@ -331,6 +331,9 @@ e.g. multipage*/
   text-transform: uppercase;
   top: 10px;
 }
+.suggested-action .caption a {
+  color: white;
+}
 .suggested-action .suggested-action-title {
   color: #c10c3e;
 }

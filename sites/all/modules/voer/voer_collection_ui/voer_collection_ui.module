@@ -2,6 +2,16 @@
 
 define('VOER_COLLECTION_UI', 'voer_collection_ui');
 
+function voer_collection_ui_menu(){
+  $items['collection/all'] = array(
+    'title' => t('List collections'),
+    'page callback' => 'show_collection_list_page',
+    'access arguments' => array('access content'),
+  );
+
+  return $items;
+}
+
 /**
  * Implements hook_theme().
  */
@@ -87,3 +97,33 @@ function _walk_through($item, $nid = 0){
   return $a;
 }
 
+function show_collection_list_page() {
+  module_load_include('inc', 'voer_api');
+  try {
+    $page = isset($_GET['page']) ? $_GET['page'] : 0;
+    $materials = voer_api_get_all_materials(VOER_MATERIAL_TYPE_COLLECTION, $page + 1);
+    if ($materials->count == 0){
+      return t("Collection not found!");
+    }else{
+      $nodes = array();
+      pager_default_initialize($materials->count, 10);
+      foreach ($materials->results as $key => $material) {
+        $node = new stdClass();
+        $node->type = 'voer_module';
+        node_object_prepare($node);
+        $node->title = $material->title;
+        $node->material_id = $material->material_id;
+        $node->nid = $key;
+        $node->comment = 0;
+        $node->field_voer_description[LANGUAGE_NONE][0]['value'] = $material->description;
+        $nodes[] = $node;
+      }
+      $output = node_view_multiple($nodes);
+      $output['pager'] = array('#markup' => theme('pager'));
+      return $output;
+    }
+  } catch (Exception $e) {
+    drupal_set_message($e->getMessage(), 'error');
+    return "";
+  }
+}

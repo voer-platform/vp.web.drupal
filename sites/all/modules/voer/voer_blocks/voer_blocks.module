@@ -171,7 +171,7 @@ function voer_collections_block_view($delta = "")
 
   module_load_include('inc', 'voer_api');
   try {
-    $module_list = voer_api_get_all_materials();
+    $module_list = voer_api_get_all_materials(VOER_MATERIAL_TYPE_COLLECTION);
 
     $module = (array)voer_api_get_detail_material($module_id);
     $module['content_type'] = 'collection';
@@ -184,7 +184,7 @@ function voer_collections_block_view($delta = "")
       $module['category_name'] = $category['name'];
     }
 
-    return theme('voer_module_custom', $module);
+    return theme('voer_collection_custom', $module);
 
   } catch (Exception $e) {
     return "";
@@ -238,7 +238,7 @@ function voer_help_supports_block_view($delta = "")
       $module['category_name'] = $category['name'];
     }
 
-    return theme('voer_module_custom', $module);
+    return theme('voer_help_custom', $module);
 
   } catch (Exception $e) {
     return "";
@@ -319,6 +319,10 @@ function voer_featured_authors_block_view($delta = "")
 */
 function voer_blocks_theme($existing, $type, $theme, $path) {
   return array(
+    'voer_collection_custom' => array(
+      'arguments' => array('module' => array()),
+      'template' => 'templates/block--voer-collection--view',
+    ),
     'voer_module_custom' => array(
       'arguments' => array('module' => array()),
       'template' => 'templates/block--voer-module',
@@ -330,6 +334,10 @@ function voer_blocks_theme($existing, $type, $theme, $path) {
     'voer_questionaires_custom' => array(
       'arguments' => array('module' => array()),
       'template' => 'templates/block--voer-questionaires--view',
+    ),
+    'voer_help_custom' => array(
+      'arguments' => array('module' => array()),
+      'template' => 'templates/block--voer-help--view',
     ),
     'voer_module_featured_author' => array(
       'arguments' => array('author' => array()),

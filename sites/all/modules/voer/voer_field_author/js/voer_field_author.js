@@ -12,8 +12,13 @@
       initAuthorDeleteBtn();
 
       $('.voer-field-author-search-btn', context).click(function () {
-        var keyword = jQuery('.voer-field-author-search-text').val();
-        searchAuthorByKeyword(keyword);
+        var keyword = $.trim(jQuery('.voer-field-author-search-text').val());
+
+        if (keyword) {
+          searchAuthorByKeyword(keyword);
+        } else {
+          alert($('.voer-field-author-search-text').attr('placeholder'));
+        }
         return false;
       });
 

@@ -14,18 +14,22 @@ define('VOER_API_COMMAND_SEARCH', '' . VOER_API_VERSION . '/search/');
 
 define('VOER_API_RESULT_NOT_FOUND', 'Not found');
 
+define('VOER_MATERIAL_TYPE_MODULE', 1);
+define('VOER_MATERIAL_TYPE_COLLECTION', 2);
+
 /*** BEGIN: MATERIAL ***/
 /**
  * Get all materials
  * @return [type] [description]
  */
-function voer_api_get_all_materials(){
+function voer_api_get_all_materials($type = VOER_MATERIAL_TYPE_MODULE, $page = 1){
   // $client = voer_api_client();
   // $client->setAuthenticate('vpweb', 'b079d6f6f0eaa03e40c086d525bdaa8b');
   $voer = new VoerApi();
   // $voer->refresh_token();
   $url = VOER_API_COMMAND_MATERIAL;
-  $response = $voer->auth_request($url);
+  $params = array('material_type' => $type, 'page' => $page);
+  $response = $voer->auth_request($url, 'GET', $params);
   // $response = $client->doGet(VOER_API_COMMAND_MATERIAL);
   return json_decode($response);
 }
@@ -102,10 +106,10 @@ function voer_api_get_materials_by_categories($cagetories = array(), $page = 1){
  * @param  array  $authors [description]
  * @return [type]          [description]
  */
-function voer_api_get_materials_by_authors($authors = array()){
+function voer_api_get_materials_by_authors($authors = array(), $page = 1){
   $voer = new VoerApi();
   $url = VOER_API_COMMAND_MATERIAL;
-  $params = array('author' => implode(',', $authors));
+  $params = array('author' => implode(',', $authors), 'page' => $page);
   $response = $voer->auth_request($url, "GET", $params);
   // $client = voer_api_client();
   // $response = $client->doGet(VOER_API_COMMAND_MATERIAL, array('authors' => implode(',', $authors)));
@@ -306,10 +310,11 @@ function voer_api_delete_category($id){
  * Get all authors
  * @return Object List of authors
  */
-function voer_api_get_all_authors(){
+function voer_api_get_all_authors($page = 1){
   $voer = new VoerApi();
   $url = VOER_API_COMMAND_AUTHOR;
-  $response = $voer->auth_request($url);
+  $params = array('page' => $page);
+  $response = $voer->auth_request($url, 'GET', $params);
   // $client = voer_api_client();
   // $response = $client->doGet(VOER_API_COMMAND_AUTHOR);
   return json_decode($response);
