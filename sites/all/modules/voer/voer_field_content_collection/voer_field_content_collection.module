@@ -175,7 +175,7 @@ function voer_field_content_collection_field_widget_form(&$form, &$form_state, $
 
       $widget['module_keyword'] = array(
         '#type' => 'textfield',
-        '#description' => t('Select people to serve as authors.'),
+        '#description' => t('Enter keyword to search module.'),
         '#attributes' => array(
           'placeholder' => t('Please enter keyword'),
           'class' => array('voer-module-search-text'),
@@ -224,7 +224,10 @@ function _transform_json_editor_to_vpr($obj){
   $result = new stdClass();
   if ($type == "module"){
     $result->title = $obj->data;
-    $result->id = $obj->attr->id;
+    $tmpid = $obj->attr->id;
+    $pies = explode("|", $tmpid);
+    $result->id = $pies[0];
+    $result->version = $pies[1];
     $result->type = 'module';
   }else if ($type == "bundle"){
     $result->title = $obj->data;
@@ -243,7 +246,7 @@ function _transform_json_vpr_to_editor($obj){
   $result->attr = new stdClass();
   if ($type == "module"){
     $result->data = $obj->title;
-    $result->attr->id = $obj->id;
+    $result->attr->id = $obj->id . "|" . $obj->version;
     $result->attr->rel = 'module';
   }else if ($type == "subcollection"){
     $result->data = $obj->title;

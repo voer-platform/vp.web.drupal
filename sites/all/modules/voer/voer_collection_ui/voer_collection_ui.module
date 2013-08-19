@@ -54,8 +54,11 @@ function voer_collection_outline_block_view(){
       if ($node->type == "voer_collection"){
         $outline = $node->field_voer_outline[$node->language][0]['value'];
         $outline = json_decode($outline);
-        if ($outline){
-          $items = _walk_through($outline, $node->nid);
+        if (isset($outline->content)){
+          $items = array();
+          foreach ($outline->content as $item){
+            $items[] = _walk_through($item, $node->nid);
+          }
           return theme('item_list', array("items" => $items, 'attributes' => array('class' => 'nav nav-list')));
         }
       }
@@ -64,35 +67,23 @@ function voer_collection_outline_block_view(){
   return "";
 }
 
-function _walk_through($arrItems, $nid = 0){
-  $result = array();
+function _walk_through($item, $nid = 0){
+  $a = array();
   if ($item->type == "module"){
-    $id = $item->id;
-    $pies = explode("|", $id);
-    $module_id = $pies[0];
-    $a['data'] = l($item->title, 'collection/' . $nid . "/" .$module_id);
+    $mid = $item->id;
+    $version = isset($item->version) ? $item->version : "";
+    $a['data'] = l($item->title, 'collection/' . $nid . "/" .$mid);
   }else if ($item->type == 'subcollection'){
+    $first = true;
     foreach ($item->content as $m){
-      $r = _walk_through($m, $nid);
-      $result[] = $r;
-    }
-  }
-  foreach ($arrItems as $item){
-    $item = (array) $item;
-    $a = array();
-    if (array_key_exists("children", $item)){
-      $a['children'] = _walk_through($item['children'], $nid);
-    }
-    if ($item['attr']->rel == 'module'){
-    }else{
-      if (array_key_exists("children", $a)){
-        $a['data'] = l($item['data'], 'm/#');
-      }else{
-        $a['data'] = l($item['data'], '#');
+      if ($first){
+        $a['data'] = l($item->title, 'collection/' . $nid . "/" . $m->id);
+        $first = false;
       }
+      $r = _walk_through($m, $nid);
+      $a['children'][] = $r;
     }
-    $result[] = $a;
   }
-  return $result;
+  return $a;
 }
 

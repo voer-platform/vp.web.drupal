@@ -85,10 +85,11 @@ Drupal.behaviors.voer_field_content_collection = {
             return false;
         });
 
-        jQuery('.voer-module-search-text').keyup(function(e){
-            if (e.keyCode == 13){
+        jQuery('.voer-module-search-text').keypress(function(e){
+            if (e.which == 13){
                 var keyword = jQuery('.voer-module-search-text').val();
                 searchModuleByKeyword(keyword);
+                return false;
             }
         });
 
