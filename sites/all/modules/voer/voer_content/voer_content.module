@@ -125,6 +125,15 @@ function voer_content_menu() {
   return $items;
 }
 
+function voer_content_pdf_access($node){
+  global $user;
+  if (sizeof($node->field_voer_material_version) > 0 || !empty($node->field_voer_material_version[LANGUAGE_NONE][0]['value'])){
+    return true;
+  }else{
+    return false;
+  }
+}
+
 function voer_content_clone_access($node){
   global $user;
   if (sizeof($node->field_voer_material_version) > 0 || !empty($node->field_voer_material_version[LANGUAGE_NONE][0]['value'])){
