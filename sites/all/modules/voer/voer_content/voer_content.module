@@ -99,7 +99,7 @@ function voer_content_menu() {
   );
 
   $items['node/%node/pdf'] = array(
-    'access callback' => 'voer_content_clone_access',
+    'access callback' => 'voer_content_pdf_access',
     'access arguments' => array(1),
     'page callback' => 'voer_content_pdf',
     'page arguments' => array(1),
