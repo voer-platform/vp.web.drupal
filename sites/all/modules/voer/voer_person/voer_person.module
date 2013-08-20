@@ -48,20 +48,23 @@ function voer_person_theme(){
 function person_load($id = NULL){
   module_load_include('inc', 'voer_api');
   $person = voer_api_get_author($id);
-  if ($person){
+  if (isset($person->id)){
     return $person;
   }else{
-    return FALSE;
+    return NULL;
   }
 }
 
 function show_person_page($person){
-
+  if (!$person) {
+    return t("Author is not found!");
+  }
   return theme("voer_person_view", (array) $person) . drupal_render(show_materials_by_authors($person));
 }
 
 function show_materials_by_authors($person){
   module_load_include('inc', 'voer_api');
+
   try {
     $page = isset($_GET['page']) ? $_GET['page'] : 0;
     $materials = voer_api_get_materials_by_authors(array($person->id), $page + 1);
