@@ -479,19 +479,6 @@ article.node-voer-module td, th { padding: .3em; border: 1px #999 solid; }
   margin-top: -10px;
 }
 
-/* VOER field author*/
-.voer-field-author-roles {
-  overflow: hidden;
-}
-.voer-field-author-roles .field-label {
-  float: left;
-  text-transform: capitalize;
-}
-.voer-field-author-roles .voer_field_author_content{
-  float: left;
-  margin-left: 5px;
-}
-
 /* wrapper temp, will remove soon */
 .row-fluid .span4_wrapper_tmp {
   background-color: #FFFFFF;

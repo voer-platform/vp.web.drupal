@@ -1,5 +1,19 @@
 <?php if ($page) : ?>
-<div><strong>PDF Version:</strong> <a href="/node/<?php echo $node->nid . '/pdf' ?>">PDF</a></div>
+  <?php $metadata = ''; ?>
+
+  <?php if (isset($content['field_voer_authors'][0]['author'])) : ?>
+  <?php $metadata .= render($content['field_voer_authors'][0]['author']) . ' | '; ?>
+  <?php endif; ?>
+
+  <?php if (isset($content['field_voer_categories'][0])) : ?>
+  <?php $metadata .= render($content['field_voer_categories'][0]) . ' | '; ?>
+  <?php endif; ?>
+
+  <?php $metadata .= sprintf('<a href="/node/%s/pdf">PDF</a>', $node->nid); ?>
+
+<div>
+  <strong>Metadata:</strong> <?php echo $metadata; ?>
+</div>
 <?php endif; ?>
 
 <article id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
@@ -24,16 +38,7 @@
     hide($content['comments']);
     hide($content['links']);
     hide($content['field_tags']);
-    print render($content);
-  ?>
-
-  <?php
-  if ($page){
-    //dpm($node);
-    $category_id = $node->field_voer_categories[$node->language][0]['value'];
-
-
-  }
+    print render($content['body']);
   ?>
 
   <?php if (!empty($content['field_tags']) || !empty($content['links'])): ?>

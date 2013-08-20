@@ -78,10 +78,8 @@ function voer_field_author_field_formatter_view($entity_type, $entity, $field, $
             }
 
             $element[$delta][$role_name] = array(
-              '#prefix' => sprintf('<div class="voer-field-author-roles"><div class="field-label">%s: </div>', $role_name),
-              '#suffix' => '</div>',
               '#type' => 'html_tag',
-              '#tag' => 'div',
+              '#tag' => 'span',
               '#attributes' => array(
                 'class' => 'voer_field_author_content',
               ),

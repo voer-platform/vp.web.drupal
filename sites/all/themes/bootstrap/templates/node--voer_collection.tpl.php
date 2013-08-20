@@ -1,12 +1,18 @@
+<?php if ($page) : ?>
+  <?php $metadata = ''; ?>
 
-<?php if ($page && false) : ?>
-<div class="btn-toolbar">
-  <div class="btn-group">
-  <a href="#" class="btn btn-inverse disabled"><i class="icon-white icon-thumbs-up"></i></a>
-  <a href="#" class="btn btn-inverse disabled"><i class="icon-white icon-heart"></i></a>
-  <a href="#" class="btn btn-inverse disabled"><i class="icon-white icon-download-alt"></i></a>
-  <a href="#" class="btn btn-inverse disabled"><i class="icon-white icon-share-alt"></i></a>
-  </div>
+  <?php if (isset($content['field_voer_authors'][0]['author'])) : ?>
+  <?php $metadata .= render($content['field_voer_authors'][0]['author']) . ' | '; ?>
+  <?php endif; ?>
+
+  <?php if (isset($content['field_voer_categories'][0])) : ?>
+  <?php $metadata .= render($content['field_voer_categories'][0]) . ' | '; ?>
+  <?php endif; ?>
+
+  <?php $metadata .= sprintf('<a href="/node/%s/pdf">PDF</a>', $node->nid); ?>
+
+<div>
+  <strong>Metadata:</strong> <?php echo $metadata; ?>
 </div>
 <?php endif; ?>
 
@@ -32,7 +38,7 @@
     hide($content['comments']);
     hide($content['links']);
     hide($content['field_tags']);
-    print render($content);
+    print render($content['body']);
   ?>
 
   <?php if (!empty($content['field_tags']) || !empty($content['links'])): ?>
