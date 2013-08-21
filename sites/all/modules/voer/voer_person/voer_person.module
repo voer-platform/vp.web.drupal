@@ -290,8 +290,15 @@ function voer_person_user_presave(&$edit, &$account, $category = NULL)
 }
 
 function voer_person_form_alter(&$form, &$form_state, $form_id) {
+  global $user;
+
   if ($form_id == 'user_profile_form') {
     $form['field_person_id']['#access'] = FALSE;
+    $form['field_person_client_id']['#access'] = FALSE;
+
+    if (!in_array('administrator', $user->roles)) {
+      $form['overlay_control']['#access'] = FALSE;
+    }
   }
 }
 
