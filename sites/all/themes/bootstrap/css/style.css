@@ -475,8 +475,11 @@ article.node-voer-module td, th { padding: .3em; border: 1px #999 solid; }
 #voer-search-form div.control-group{
   display: inline-block;
 }
-#voer-search-form #edit-search{
-  margin-top: -10px;
+#voer-search-form div.control-group{
+  display: inline-block;
+}
+#voer-search-form #edit-search input.form-text{
+  width: 100%;
 }
 
 /* wrapper temp, will remove soon */
