@@ -109,7 +109,7 @@ function show_collection_list_page() {
       pager_default_initialize($materials->count, 10);
       foreach ($materials->results as $key => $material) {
         $node = new stdClass();
-        $node->type = 'voer_module';
+        $node->type = 'voer_collection';
         node_object_prepare($node);
         $node->title = $material->title;
         $node->material_id = $material->material_id;

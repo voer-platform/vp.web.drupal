@@ -34,6 +34,16 @@
   </header>
 
   <?php
+    $current_path = isset($_GET['q']) ? $_GET['q'] : "";
+    $params = explode("/", $current_path);
+    $thefirst = $params[0];
+  ?>
+
+  <?php if ($page && $thefirst == 'collection'): ?>
+  <h2 class='sub-title'><?php print $title; ?></h2>
+  <?php endif; ?>
+
+  <?php
     // Hide comments, tags, and links now so that we can render them later.
     hide($content['comments']);
     hide($content['links']);

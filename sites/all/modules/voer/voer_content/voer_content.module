@@ -7,6 +7,10 @@ define('VOER_MATERIAL_METADATA_FORM', 'material_metadata_form');
 define('VOER_MATERIAL_CONTENT_FORM', 'material_content_form');
 
 
+function voer_material_type($type_id){
+  $types = array(1 => "voer_module", 2 => "voer_collection");
+  return $types[$type_id];
+}
 
 function voer_content_entity_info_alter(&$entity_info) {
   $entity_info['node']['uri callback'] = 'voer_content_uri';
@@ -147,7 +151,7 @@ function voer_content_clone_access($node){
 
 function voer_content_preprocess_node(&$variables){
   $type = $variables['type'];
-  if ($type == 'voer_module'){
+  if ($type == 'voer_module' || $type == 'voer_collection'){
     $variables['page'] = $variables['view_mode'] == 'full';
     if (isset($variables['material_id'])){
       $module_path =  "m/" . $variables['material_id'];

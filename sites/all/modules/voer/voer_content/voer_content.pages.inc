@@ -69,11 +69,9 @@ function show_materials_by_category($category){
     }else{
       $nodes = array();
       pager_default_initialize($materials->count, 10);
-      // dpm($materials);
-      // return "";
       foreach ($materials->results as $key => $material) {
         $node = new stdClass();
-        $node->type = 'voer_module';
+        $node->type = voer_material_type($material->material_type);
         node_object_prepare($node);
         $node->title = $material->title;
         $node->material_id = $material->material_id;
