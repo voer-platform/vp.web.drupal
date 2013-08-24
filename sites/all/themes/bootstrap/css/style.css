@@ -371,9 +371,9 @@ h2.suggested-action-title {
 hr {
   background: #CCC;
   border: 0;
-  -moz-box-shadow: 0 2px 2px rgba(0, 0, 0, 0.075);
+  /*-moz-box-shadow: 0 2px 2px rgba(0, 0, 0, 0.075);
   -webkit-box-shadow: 0 2px 2px rgba(0, 0, 0, 0.075);
-  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.075);
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.075);*/
   clear: both;
   color: #CCC;
   display: block;
@@ -403,7 +403,8 @@ hr.thin {
 }
 .front #page-header .row-fluid .span4 {
   margin-bottom: 20px;
-  margin-left: 15px;
+  margin-left: 0;
+  margin-right: 15px;
 }
 ul.category_list {
   float: none !important;
@@ -490,13 +491,46 @@ article.node-voer-module td, th { padding: .3em; border: 1px #999 solid; }
 #voer-search-form div.control-group{
   display: inline-block;
 }
-#voer-search-form div.control-group  input.form-text{
-  width: 100%;
-}
 #voer-search-form #edit-search{
   margin-top: -10px;
 }
-
+#voer-search-form .input-append {
+  margin-right: 10px;
+}
+.input-append .control-group {
+  margin-bottom: 0;
+}
+@media (max-width: 480px) {
+  .category_list li {
+    width: 100%;
+  }
+}
+@media (max-width: 767px) {
+  .category_list li {
+    width: 100%;
+  }
+}
+@media (min-width: 768px) {
+  .front #block-voer-blocks-voer-courses-block .span4,
+  .front #block-voer-blocks-voer-featured-author-block .span4 {
+    margin-right: 0 !important;
+  }
+}
+@media (min-width: 768px) and (max-width: 979px) {
+  .row-fluid ul.span6 {
+    width: 75%;
+  }
+}
+@media (max-width: 585px) {
+  #voer-search-form input.input-xxlarge {
+    width: 200px;
+  }
+}
+@media (max-width: 388px) {
+  #voer-search-form input.input-xxlarge {
+    width: 100px;
+  }
+}
 /* wrapper temp, will remove soon */
 .row-fluid .span4_wrapper_tmp {
   background-color: #FFFFFF;

@@ -148,12 +148,14 @@ function search_person_by_keyword()
     $row_data = array();
 
     foreach ($authors->results as $author) {
+      $user_name = $author->fullname ? $author->fullname : $author->user_id;
+
       $row_data_tmp = array();
       $row_data_tmp[] = array(
         'data' => theme('html_tag', array('element' => array(
           '#type' => 'html_tag',
           '#tag' => 'span',
-          '#value' => $author->fullname ? $author->fullname : $author->user_id,
+          '#value' => l($user_name, 'person/'.$author->id, array('attributes' => array('target' => '_blank'))),
         ))),
       );
 
@@ -363,6 +365,7 @@ function voer_person_preprocess_node(&$variables){
   if ($type == 'person'){
     if (isset($variables['person_id'])){
       $module_path =  "person/" . $variables['person_id'];
+      $variables['display_submitted'] = FALSE;
       $variables['node_url'] = base_path() . $module_path;
       $variables['content']['links']['node']['#links']['node-readmore']['href'] = $module_path;
     }

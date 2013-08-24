@@ -67,7 +67,7 @@ function _voer_person_fields()
     'field_person_homepage' => t('Homepage'),
     'field_person_affiliation' => t('Affiliation'),
     'field_person_affiliation_url' => t('Affiliation URL'),
-    'field_person_national' => t('National'),
+    'field_person_national' => t('Nationality'),
     'field_person_biography' => t('Biography'),
     'field_person_client_id' => t('Client ID'),
     'field_person_id' => t('VOER ID'),
@@ -111,5 +111,22 @@ function voer_person_update_1(){
     if (!field_info_instance('user', $field_name, 'user')){
       field_create_instance($instance);
     }
+  }
+}
+
+/**
+ * Change name of field field_person_national
+ */
+function voer_person_update_2(){
+  $instance = array(
+    'field_name' => 'field_person_national',
+    'entity_type' => 'user',
+    'label' => t('Nationality'),
+    'bundle' => 'user',
+    'required' => FALSE,
+  );
+
+  if (field_info_instance('user', 'field_person_national', 'user')){
+    field_update_instance($instance);
   }
 }

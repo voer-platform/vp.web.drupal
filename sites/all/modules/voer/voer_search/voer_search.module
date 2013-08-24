@@ -1,4 +1,6 @@
 <?php
+define('VOER_SEARCH_TYPE_MODULE', 1);
+define('VOER_SEARCH_TYPE_AUTHOR', 2);
 
 function voer_search_menu(){
   $items = array();
@@ -6,6 +8,12 @@ function voer_search_menu(){
     'load arguments' => array('%map', '%index'),
     'page callback' => 'search_voer_page',
     'page arguments' => array(1),
+    'access arguments' => array('access content'),
+  );
+  $items['s/%menu_tail/%type'] = array(
+    'load arguments' => array('%map', '%index'),
+    'page callback' => 'search_voer_page',
+    'page arguments' => array(1, 2),
     'access arguments' => array('access content'),
   );
   $items['ajax/s/m'] = array(
@@ -44,12 +52,33 @@ function voer_search_form(){
   $form['keyword'] = array(
     '#type' => 'textfield',
     '#weight' => 0,
+    '#prefix' => '<div class="input-append">',
+    '#suffix' => '<button class="btn btn-primary" type="submit" name="op">'.t('Search').'</button></div>',
+    '#attributes' => array(
+      'class' => array('input-xxlarge'),
+      'placeholder' => t('Please enter something'),
+    ),
   );
+
+  $form['search_on'] = array(
+    '#type' => 'select',
+    '#options' => array(VOER_SEARCH_TYPE_MODULE => 'Module', VOER_SEARCH_TYPE_AUTHOR => 'Author'),
+    '#default_value' => VOER_SEARCH_TYPE_MODULE,
+    '#required' => TRUE,
+    '#attributes' => array(
+      'class' => array('search-on-select'),
+    ),
+  );
+
   $form['search'] = array(
     '#type' => 'submit',
     '#weight' => 10,
     '#value' => t('Search'),
+    '#attributes' => array(
+      'style' => 'display: none;',
+    ),
   );
+
   return $form;
 }
 
@@ -61,7 +90,10 @@ function voer_search_form_validate($form, &$form_state){
 
 function voer_search_form_submit($form, &$form_state){
   $keyword = trim($form_state['values']['keyword']);
-  drupal_goto("s/" . $keyword);
+
+  $type = $form_state['values']['search_on'];
+
+  drupal_goto("s/" . $keyword . '/'. $type);
 }
 
 function ajax_search_module_page(){
@@ -125,7 +157,17 @@ function ajax_search_module_page(){
 
 function search_voer_page($keyword){
   $keyword = trim($keyword);
-  return show_materials_result($keyword);
+  $type = arg(2);
+
+  if (!$type) {
+    $type == VOER_SEARCH_TYPE_MODULE;
+  }
+
+  if ($type == VOER_SEARCH_TYPE_MODULE) {
+    return show_materials_result($keyword);
+  } elseif ($type == VOER_SEARCH_TYPE_AUTHOR) {
+    return search_by_author($keyword);
+  }
 }
 
 function show_materials_result($keyword){
@@ -161,3 +203,41 @@ function show_materials_result($keyword){
   }
 }
 
+function search_by_author($keyword) {
+  module_load_include('inc', 'voer_api');
+  try {
+    $page = isset($_GET['page']) ? $_GET['page'] : 0;
+    $authors = voer_api_search_on_person($keyword, $page + 1);
+    if ($authors->count == 0){
+      return t("Author not found!");
+    } else {
+      $nodes = array();
+      pager_default_initialize($authors->count, 10);
+      foreach ($authors->results as $key => $author) {
+        $node = new stdClass();
+        $node->type = 'person';
+        node_object_prepare($node);
+
+        if (isset($author->fullname)) {
+          $node->title = $author->fullname;
+        } else {
+          $node->title = $author->user_id;
+        }
+
+        $node->person_id = $author->id;
+        $node->nid = $key;
+        $node->comment = 0;
+        if (isset($author->biography)) {
+          $node->body[LANGUAGE_NONE][0]['value'] = $author->biography;
+        }
+        $nodes[] = $node;
+      }
+      $output = node_view_multiple($nodes);
+      $output['pager'] = array('#markup' => theme('pager'));
+      return $output;
+    }
+  } catch (Exception $e) {
+    drupal_set_message($e->getMessage(), 'error');
+    return "";
+  }
+}
