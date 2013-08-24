@@ -12,7 +12,7 @@
   <?php $metadata .= sprintf('<a href="/node/%s/pdf">PDF</a>', $node->nid); ?>
 
 <div>
-  <strong>Metadata:</strong> <?php echo $metadata; ?>
+  <?php echo $metadata; ?>
 </div>
 <?php endif; ?>
 
