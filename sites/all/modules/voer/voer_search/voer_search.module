@@ -1,16 +1,18 @@
 <?php
-define('VOER_SEARCH_TYPE_MODULE', 1);
+define('VOER_SEARCH_TYPE_CONTENT', 1);
 define('VOER_SEARCH_TYPE_AUTHOR', 2);
 
 function voer_search_menu(){
   $items = array();
   $items['s/%menu_tail'] = array(
+    'title' => t('Search results:'),
     'load arguments' => array('%map', '%index'),
     'page callback' => 'search_voer_page',
     'page arguments' => array(1),
     'access arguments' => array('access content'),
   );
   $items['s/%menu_tail/%type'] = array(
+    'title' => t('Search results:'),
     'load arguments' => array('%map', '%index'),
     'page callback' => 'search_voer_page',
     'page arguments' => array(1, 2),
@@ -62,8 +64,8 @@ function voer_search_form(){
 
   $form['search_on'] = array(
     '#type' => 'select',
-    '#options' => array(VOER_SEARCH_TYPE_MODULE => 'Module', VOER_SEARCH_TYPE_AUTHOR => 'Author'),
-    '#default_value' => VOER_SEARCH_TYPE_MODULE,
+    '#options' => array(VOER_SEARCH_TYPE_CONTENT => 'Content', VOER_SEARCH_TYPE_AUTHOR => 'Author'),
+    '#default_value' => VOER_SEARCH_TYPE_CONTENT,
     '#required' => TRUE,
     '#attributes' => array(
       'class' => array('search-on-select'),
@@ -160,10 +162,10 @@ function search_voer_page($keyword){
   $type = arg(2);
 
   if (!$type) {
-    $type == VOER_SEARCH_TYPE_MODULE;
+    $type == VOER_SEARCH_TYPE_CONTENT;
   }
 
-  if ($type == VOER_SEARCH_TYPE_MODULE) {
+  if ($type == VOER_SEARCH_TYPE_CONTENT) {
     return show_materials_result($keyword);
   } elseif ($type == VOER_SEARCH_TYPE_AUTHOR) {
     return search_by_author($keyword);
