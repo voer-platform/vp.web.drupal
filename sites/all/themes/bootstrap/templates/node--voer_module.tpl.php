@@ -11,7 +11,14 @@
 
   <?php $metadata .= sprintf('<a href="/node/%s/pdf">PDF</a>', $node->nid); ?>
 
-<div>
+  <?php if (isset($content['field_fivestar_rating'])) : ?>
+    <?php $metadata .= ' | '.render($content['field_fivestar_rating']); ?>
+  <?php endif; ?>
+
+  <?php if ($content['links']['statistics']) : ?>
+    <?php $metadata .= ' | '.$content['links']['statistics']['#links']['statistics_counter']['title']; ?>
+  <?php endif; ?>
+<div id="voer-content-metadata">
   <?php echo $metadata; ?>
 </div>
 <?php endif; ?>
@@ -48,6 +55,7 @@
     hide($content['comments']);
     hide($content['links']);
     hide($content['field_tags']);
+    unset($content['links']['statistics']);
     print render($content['body']);
   ?>
 

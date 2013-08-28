@@ -9,9 +9,14 @@
   <?php $metadata .= render($content['field_voer_categories'][0]) . ' | '; ?>
   <?php endif; ?>
 
-  <?php $metadata .= sprintf('<a href="/node/%s/pdf">PDF</a>', $node->nid); ?>
+  <?php if (isset($content['field_fivestar_rating'])) : ?>
+    <?php $metadata .= ' | '.render($content['field_fivestar_rating']); ?>
+  <?php endif; ?>
 
-<div>
+  <?php if ($content['links']['statistics']) : ?>
+    <?php $metadata .= ' | '.$content['links']['statistics']['#links']['statistics_counter']['title']; ?>
+  <?php endif; ?>
+<div id="voer-content-metadata">
   <?php echo $metadata; ?>
 </div>
 <?php endif; ?>
@@ -37,6 +42,7 @@
     // Hide comments, tags, and links now so that we can render them later.
     hide($content['comments']);
     hide($content['links']);
+    unset($content['links']['statistics']);
     hide($content['field_tags']);
     print render($content['body']);
   ?>

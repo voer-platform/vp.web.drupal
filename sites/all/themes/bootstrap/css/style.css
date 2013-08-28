@@ -537,6 +537,17 @@ article.node-voer-module td, th { padding: .3em; border: 1px #999 solid; }
   margin-right: 5px;
   text-transform: capitalize;
 }
+#voer-content-metadata .field-name-field-fivestar-rating,
+#voer-content-metadata div.controls .fivestar-widget,
+#voer-content-metadata div.controls .fivestar-summary-average-count {
+  display: inline-block;
+}
+#voer-content-metadata div.controls p.help-block {
+  display: none;
+}
+#voer-content-metadata form.fivestar-widget {
+  margin: 0;
+}
 /* wrapper temp, will remove soon */
 .row-fluid .span4_wrapper_tmp {
   background-color: #FFFFFF;
