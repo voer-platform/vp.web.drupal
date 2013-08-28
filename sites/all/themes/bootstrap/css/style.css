@@ -531,6 +531,12 @@ article.node-voer-module td, th { padding: .3em; border: 1px #999 solid; }
     width: 100px;
   }
 }
+.field-person-item-label {
+  float: left;
+  font-weight: bold;
+  margin-right: 5px;
+  text-transform: capitalize;
+}
 /* wrapper temp, will remove soon */
 .row-fluid .span4_wrapper_tmp {
   background-color: #FFFFFF;
