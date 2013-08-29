@@ -3,15 +3,6 @@
   <h2><?php print $fullname; ?></h2>
 
   <div class="field-persons">
-    <?php if (isset($email) && $email) : ?>
-    <div class="field-person-item">
-      <div class="field-person-item-label"><?php echo t('Email'); ?>:</div>
-      <div class="field-person-item-content">
-        <a href="mailto:<?php echo $email; ?>"><?php echo $email; ?></a>
-      </div>
-    </div>
-    <?php endif; ?>
-
     <?php if (isset($title) && $title) : ?>
     <div class="field-person-item">
       <div class="field-person-item-label"><?php echo t('Title'); ?>:</div>
