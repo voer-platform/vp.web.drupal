@@ -198,11 +198,10 @@ function voer_questionaires_block_view($delta = "")
 
   module_load_include('inc', 'voer_api');
   try {
-    $module_list = voer_api_get_all_materials();
 
     $module = (array)voer_api_get_detail_material($module_id);
     $module['content_type'] = 'questionaire';
-    $module['total_count'] = $module_list->count;
+    $module['total_count'] = 0;
     $module['image_path'] = drupal_get_path('module', 'voer_blocks') . '/images/default_questionaire_image.jpg';
 
     $category = (array)voer_api_get_category($module['categories']);
@@ -252,11 +251,10 @@ function voer_courses_block_view($delta = "")
 
   module_load_include('inc', 'voer_api');
   try {
-    $module_list = voer_api_get_all_materials();
 
     $module = (array)voer_api_get_detail_material($module_id);
     $module['content_type'] = 'courseware';
-    $module['total_count'] = $module_list->count;
+    $module['total_count'] = 0;
     $module['image_path'] = drupal_get_path('module', 'voer_blocks') . '/images/default_courseware_image.jpg';
 
     $category = (array)voer_api_get_category($module['categories']);
