@@ -103,7 +103,7 @@ function ajax_search_module_page(){
   $page = isset($_POST['page']) ? $_POST['page'] : 1;
 
   module_load_include('inc', 'voer_api');
-  $materials = voer_api_search_on_material($keyword, $page);
+  $materials = voer_api_search_all_module($keyword, $page);
 
   $result = array();
   $material_list = array();

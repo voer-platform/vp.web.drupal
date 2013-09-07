@@ -56,9 +56,14 @@ function person_load($id = NULL){
 }
 
 function show_person_page($person){
+  module_load_include('inc', 'voer_api');
+
   if (!$person) {
     return t("Author is not found!");
   }
+  $materials = voer_api_get_materials_by_authors(array($person->id));
+  $person->material_count = $materials->count;
+
   return theme("voer_person_view", (array) $person) . drupal_render(show_materials_by_authors($person));
 }
 
