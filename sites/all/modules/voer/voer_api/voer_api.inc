@@ -535,3 +535,12 @@ function voer_api_get_author_avatar($author_id){
   $response = $voer->auth_request($url);
   return $response;
 }
+
+function voer_api_get_related_modules($material_id)
+{
+  $voer = new VoerApi();
+  $url = VOER_API_COMMAND_MATERIAL . $material_id . "/similar/";
+  $response = $voer->auth_request($url);
+
+  return json_decode($response);
+}

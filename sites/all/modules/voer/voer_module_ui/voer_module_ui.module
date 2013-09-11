@@ -108,3 +108,55 @@ function show_material_list_page() {
     return "";
   }
 }
+
+/**
+ * Implements hook_block_info().
+ */
+function voer_module_ui_block_info(){
+  // This example comes from node.module.
+  $blocks['voer_module_ui_related_block'] = array(
+    'info' => t('VOER - Related modules'),
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function voer_module_ui_block_view($delta='') {
+  $block = array();
+
+  switch($delta) {
+    case 'voer_module_ui_related_block' :
+      $block['content'] = voer_module_ui_related_block();
+      break;
+  }
+
+  return $block;
+}
+
+function voer_module_ui_related_block()
+{
+  module_load_include('inc', 'voer_api');
+
+  try {
+    $current_node = node_load(arg(1));//print_r($current_node);die;
+
+    $related_modules = voer_api_get_related_modules($current_node->field_voer_material_id[LANGUAGE_NONE][0]['value']);
+
+    $list = array();
+    foreach ($related_modules as $module) {
+      $list[$module->material_id] = l($module->title, 'm/' . $module->material_id, array('class' => 'category-link'));
+    }
+
+    if ($list) {
+      return '<h2>'.t('Các bài khác').'</h2>' . theme('item_list', array('items' => $list));
+    } else {
+      return '';
+    }
+
+  } catch (Exception $e) {
+    return "";
+  }
+}

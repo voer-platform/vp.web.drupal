@@ -243,7 +243,7 @@ function voer_person_user_presave(&$edit, &$account, $category = NULL)
 {
   module_load_include('inc', 'voer_api');
 
-  if (count($edit) > 1 && isset($edit['status']) && !isset($edit['data'])) {
+  if (count($edit) > 1 && isset($edit['status'])) {
     $author = array();
     $author['email'] = $edit['mail'];
     $author['user_id'] = $edit['name'];
@@ -287,6 +287,11 @@ function voer_person_user_presave(&$edit, &$account, $category = NULL)
     if (isset($edit['field_person_client_id'][LANGUAGE_NONE][0]['value'])) {
       $author['client_id'] = $edit['field_person_client_id'][LANGUAGE_NONE][0]['value'];
     }
+
+//    if ($edit['picture']) {
+//      $avatar = $edit['picture'];
+//      $author['avatar'] = array('file' => '@' .drupal_realpath($avatar->uri) . ';filename='. $avatar->filename);
+//    }
 
     if (isset($edit['field_person_id'][LANGUAGE_NONE][0]['value']) && $edit['field_person_id'][LANGUAGE_NONE][0]['value']) {
       $author['id'] = $edit['field_person_id'][LANGUAGE_NONE][0]['value'];
