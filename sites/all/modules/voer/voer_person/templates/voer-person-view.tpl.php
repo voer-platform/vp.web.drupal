@@ -1,5 +1,10 @@
 <section style="overflow: hidden;">
+  <?php if ($avatar) : ?>
+  <img src="<?php echo sprintf('http://%s:%s/%s%s/avatar/', VOER_API_URL, VOER_API_PORT, VOER_API_COMMAND_AUTHOR, $author_id); ?>" width="120" style="float: right" />
+  <?php else : ?>
   <img src="<?php echo base_path() . drupal_get_path('module', 'voer_person') . '/images/author.png'; ?>" width="120" style="float: right" />
+  <?php endif; ?>
+
   <?php if (isset($title) && $title) : ?>
     <h2><?php print $title . ' ' . $fullname; ?></h2>
   <?php else : ?>

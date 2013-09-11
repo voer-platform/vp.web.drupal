@@ -63,6 +63,7 @@ function show_person_page($person){
   }
   $materials = voer_api_get_materials_by_authors(array($person->id));
   $person->material_count = $materials->count;
+  $person->author_id = $person->id;
 
   return theme("voer_person_view", (array) $person) . drupal_render(show_materials_by_authors($person));
 }
@@ -288,10 +289,10 @@ function voer_person_user_presave(&$edit, &$account, $category = NULL)
       $author['client_id'] = $edit['field_person_client_id'][LANGUAGE_NONE][0]['value'];
     }
 
-//    if ($edit['picture']) {
-//      $avatar = $edit['picture'];
-//      $author['avatar'] = array('file' => '@' .drupal_realpath($avatar->uri) . ';filename='. $avatar->filename);
-//    }
+    if ($edit['picture']) {
+      $avatar = $edit['picture'];
+      $author['avatar'] = '@' .drupal_realpath($avatar->uri) . ';filename='. $avatar->filename;
+    }
 
     if (isset($edit['field_person_id'][LANGUAGE_NONE][0]['value']) && $edit['field_person_id'][LANGUAGE_NONE][0]['value']) {
       $author['id'] = $edit['field_person_id'][LANGUAGE_NONE][0]['value'];
