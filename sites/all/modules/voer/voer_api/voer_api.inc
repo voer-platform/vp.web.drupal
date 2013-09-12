@@ -198,7 +198,7 @@ function voer_api_search_on_material($keyword = NULL, $page = 1){
 function voer_api_search_all_module($keyword = NULL, $page = 1){
   $voer = new VoerApi();
   $url = VOER_API_COMMAND_SEARCH;
-  $params = array('kw' => $keyword, 'on' => 'm', 'page' => $page, 'material_type' => VOER_MATERIAL_TYPE_MODULE);
+  $params = array('kw' => $keyword, 'on' => 'm', 'page' => $page, 'type' => VOER_MATERIAL_TYPE_MODULE);
   $response = $voer->auth_request($url, "GET", $params);
   return json_decode($response);
 }
