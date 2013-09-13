@@ -67,7 +67,8 @@ function voer_collection_creation_wizard($form, &$form_state, $entity) {
     $form_state['step_information'] = _voer_collection_creation_steps();
   }
   $step = &$form_state['step'];
-  drupal_set_title(t('Create a collection: Step @step', array('@step' => $step)));
+  $step_count = count(_voer_collection_creation_steps());
+  drupal_set_title(t('Create a collection: Step @step/@step_count', array('@step' => $step, '@step_count' => $step_count)));
 
   // Call the function named in $form_state['step_information'] to get the
   // form elements to display for this step.

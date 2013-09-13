@@ -118,6 +118,10 @@ function voer_module_ui_block_info(){
     'info' => t('VOER - Related modules'),
   );
 
+  $blocks['voer_module_ui_attachment_block'] = array(
+    'info' => t('VOER - Attachment modules'),
+  );
+
   return $blocks;
 }
 
@@ -130,6 +134,9 @@ function voer_module_ui_block_view($delta='') {
   switch($delta) {
     case 'voer_module_ui_related_block' :
       $block['content'] = voer_module_ui_related_block();
+      break;
+    case 'voer_module_ui_attachment_block' :
+      $block['content'] = voer_module_ui_attachment_block();
       break;
   }
 
@@ -152,6 +159,31 @@ function voer_module_ui_related_block()
 
     if ($list) {
       return '<h2>'.t('Các bài khác').'</h2>' . theme('item_list', array('items' => $list));
+    } else {
+      return '';
+    }
+
+  } catch (Exception $e) {
+    return "";
+  }
+}
+
+function voer_module_ui_attachment_block()
+{
+  module_load_include('inc', 'voer_api');
+
+  try {
+    $current_node = node_load(arg(1));
+
+    $attachment_files = voer_api_get_images($current_node->field_voer_material_id[LANGUAGE_NONE][0]['value']);
+
+    $list = array();
+    foreach ($attachment_files as $file_name => $file_url) {
+      $list[] = l($file_name, $file_url, array('class' => 'category-link'));
+    }
+
+    if ($list) {
+      return '<h4 class="voer-attach-file-item">'.t('File đính kèm').'</h4>' . theme('item_list', array('items' => $list));
     } else {
       return '';
     }
