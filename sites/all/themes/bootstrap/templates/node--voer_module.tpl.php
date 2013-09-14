@@ -1,3 +1,21 @@
+<?php if ($navigation) : ?>
+<ul class="pager">
+  <?php if ($navigation['prev_url']) : ?>
+  <li class="previous"><?php echo $navigation['prev_url']; ?></li>
+  <?php else : ?>
+  <li class="previous disabled"><a href="#">&larr; Prev</a></li>
+  <?php endif; ?>
+
+  <li><?php echo $navigation['home_url']; ?></li>
+
+  <?php if ($navigation['next_url']) : ?>
+  <li class="next"><?php echo $navigation['next_url']; ?></li>
+  <?php else : ?>
+  <li class="next disabled"><a href="#">Newer →</a></li>
+  <?php endif; ?>
+</ul>
+<?php endif; ?>
+
 <?php if ($page) : ?>
   <?php $metadata = ''; ?>
 
@@ -69,3 +87,17 @@
   <?php print render($content['comments']); ?>
 
 </article> <!-- /.node -->
+
+<?php if ($navigation) : ?>
+<ul class="pager">
+  <?php if ($navigation['prev_url']) : ?>
+  <li class="previous"><?php echo $navigation['prev_url']; ?></li>
+  <?php endif; ?>
+
+  <li><?php echo $navigation['home_url']; ?></li>
+
+  <?php if ($navigation['next_url']) : ?>
+  <li class="next"><?php echo $navigation['next_url']; ?></li>
+  <?php endif; ?>
+</ul>
+<?php endif; ?>

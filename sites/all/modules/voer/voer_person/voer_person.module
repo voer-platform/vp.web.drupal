@@ -244,7 +244,7 @@ function voer_person_user_presave(&$edit, &$account, $category = NULL)
 {
   module_load_include('inc', 'voer_api');
 
-  if (count($edit) > 1 && isset($edit['status'])) {
+  if (isset($edit['status']) && isset($edit['mail']) && isset($edit['name'])) {
     $author = array();
     $author['email'] = $edit['mail'];
     $author['user_id'] = $edit['name'];

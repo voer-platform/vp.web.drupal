@@ -159,6 +159,38 @@ function voer_content_preprocess_node(&$variables){
       $variables['content']['links']['node']['#links']['node-readmore']['href'] = $module_path;
     }
   }
+
+  if (arg(0) == 'node' || arg(0) == 'collection') {
+    $navigation = array('prev_url' => '', 'home_url' => '', 'next_url' => '');
+
+    if (arg(1)) {
+      $node = node_load(arg(1));
+      $outline = $node->field_voer_outline[$node->language][0]['value'];
+      $outline = json_decode($outline);
+
+      if ($node->type == 'voer_collection' && isset($outline->content)) {
+        $navFlat = array();
+        _get_collection_navigation($outline->content, $navFlat);
+        $current_module_id = $variables['field_voer_material_id'][LANGUAGE_NONE][0]['value'];
+        $navigation['home_url'] = l(t('Home'), 'collection/' . arg(1));
+
+        if ($navFlat[0] == $current_module_id) {
+          $navigation['next_url'] = l(t('Next →'), 'collection/' . arg(1) . "/" . $navFlat[1]);
+        } else {
+          $pos = array_search($current_module_id, $navFlat);
+          if (isset($navFlat[$pos-1])) {
+            $navigation['prev_url'] = l(t('← Prev'), 'collection/' . arg(1) . "/" . $navFlat[$pos-1]);
+          }
+          
+          if (isset($navFlat[$pos+1])) {
+            $navigation['next_url'] = l(t('Next →'), 'collection/' . arg(1) . "/" . $navFlat[$pos+1]);
+          }
+        }
+
+        $variables['navigation'] = $navigation;
+      }
+    }
+  }
 }
 
 function voer_category_load($id = NULL, $reset = FALSE){
@@ -525,5 +557,14 @@ function find_first_module($item){
   }
 }
 
-
+function _get_collection_navigation($outline, &$navFlat)
+{
+  foreach ($outline as $item) {
+    if ($item->type == 'module') {
+      $navFlat[] = $item->id;
+    } elseif ($item->type == 'subcollection') {
+      _get_collection_navigation($item->content, $navFlat);
+    }
+  }
+}
 
