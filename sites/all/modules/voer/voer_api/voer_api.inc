@@ -195,6 +195,14 @@ function voer_api_search_on_material($keyword = NULL, $page = 1){
   return json_decode($response);
 }
 
+function voer_api_search_all_module($keyword = NULL, $page = 1){
+  $voer = new VoerApi();
+  $url = VOER_API_COMMAND_SEARCH;
+  $params = array('kw' => $keyword, 'on' => 'm', 'page' => $page, 'type' => VOER_MATERIAL_TYPE_MODULE);
+  $response = $voer->auth_request($url, "GET", $params);
+  return json_decode($response);
+}
+
 function voer_api_search_on_person($keyword = NULL, $page = 1){
   $voer = new VoerApi();
   $url = VOER_API_COMMAND_SEARCH;
@@ -519,4 +527,20 @@ function voer_api_get_pdf($material_id, $version){
   $url = VOER_API_COMMAND_MATERIAL . $material_id . "/" . $version . "/pdf/";
   $response = $voer->auth_request($url);
   return $response;
+}
+
+function voer_api_get_author_avatar($author_id){
+  $voer = new VoerApi();
+  $url = VOER_API_COMMAND_AUTHOR . $author_id . "/avatar/";
+  $response = $voer->auth_request($url);
+  return $response;
+}
+
+function voer_api_get_related_modules($material_id)
+{
+  $voer = new VoerApi();
+  $url = VOER_API_COMMAND_MATERIAL . $material_id . "/similar/";
+  $response = $voer->auth_request($url);
+
+  return json_decode($response);
 }

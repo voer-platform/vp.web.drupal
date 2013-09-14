@@ -56,9 +56,15 @@ function person_load($id = NULL){
 }
 
 function show_person_page($person){
+  module_load_include('inc', 'voer_api');
+
   if (!$person) {
     return t("Author is not found!");
   }
+  $materials = voer_api_get_materials_by_authors(array($person->id));
+  $person->material_count = $materials->count;
+  $person->author_id = $person->id;
+
   return theme("voer_person_view", (array) $person) . drupal_render(show_materials_by_authors($person));
 }
 
@@ -238,56 +244,63 @@ function voer_person_user_presave(&$edit, &$account, $category = NULL)
 {
   module_load_include('inc', 'voer_api');
 
-  $author = array();
-  $author['email'] = $edit['mail'];
-  $author['user_id'] = $edit['name'];
+  if (count($edit) > 1 && isset($edit['status'])) {
+    $author = array();
+    $author['email'] = $edit['mail'];
+    $author['user_id'] = $edit['name'];
 
-  if (isset($edit['field_person_fullname'][LANGUAGE_NONE][0]['value'])) {
-    $author['fullname'] = $edit['field_person_fullname'][LANGUAGE_NONE][0]['value'];
-  }
+    if (isset($edit['field_person_fullname'][LANGUAGE_NONE][0]['value'])) {
+      $author['fullname'] = $edit['field_person_fullname'][LANGUAGE_NONE][0]['value'];
+    }
 
-  if (isset($edit['field_person_first_name'][LANGUAGE_NONE][0]['value'])) {
-    $author['first_name'] = $edit['field_person_first_name'][LANGUAGE_NONE][0]['value'];
-  }
+    if (isset($edit['field_person_first_name'][LANGUAGE_NONE][0]['value'])) {
+      $author['first_name'] = $edit['field_person_first_name'][LANGUAGE_NONE][0]['value'];
+    }
 
-  if (isset($edit['field_person_last_name'][LANGUAGE_NONE][0]['value'])) {
-    $author['last_name'] = $edit['field_person_last_name'][LANGUAGE_NONE][0]['value'];
-  }
+    if (isset($edit['field_person_last_name'][LANGUAGE_NONE][0]['value'])) {
+      $author['last_name'] = $edit['field_person_last_name'][LANGUAGE_NONE][0]['value'];
+    }
 
-  if (isset($edit['field_person_title'][LANGUAGE_NONE][0]['value'])) {
-    $author['title'] = $edit['field_person_title'][LANGUAGE_NONE][0]['value'];
-  }
+    if (isset($edit['field_person_title'][LANGUAGE_NONE][0]['value'])) {
+      $author['title'] = $edit['field_person_title'][LANGUAGE_NONE][0]['value'];
+    }
 
-  if (isset($edit['field_person_homepage'][LANGUAGE_NONE][0]['value'])) {
-    $author['homepage'] = $edit['field_person_homepage'][LANGUAGE_NONE][0]['value'];
-  }
+    if (isset($edit['field_person_homepage'][LANGUAGE_NONE][0]['value'])) {
+      $author['homepage'] = $edit['field_person_homepage'][LANGUAGE_NONE][0]['value'];
+    }
 
-  if (isset($edit['field_person_affiliation'][LANGUAGE_NONE][0]['value'])) {
-    $author['affiliation'] = $edit['field_person_affiliation'][LANGUAGE_NONE][0]['value'];
-  }
+    if (isset($edit['field_person_affiliation'][LANGUAGE_NONE][0]['value'])) {
+      $author['affiliation'] = $edit['field_person_affiliation'][LANGUAGE_NONE][0]['value'];
+    }
 
-  if (isset($edit['field_person_affiliation_url'][LANGUAGE_NONE][0]['value'])) {
-    $author['affiliation_url'] = $edit['field_person_affiliation_url'][LANGUAGE_NONE][0]['value'];
-  }
+    if (isset($edit['field_person_affiliation_url'][LANGUAGE_NONE][0]['value'])) {
+      $author['affiliation_url'] = $edit['field_person_affiliation_url'][LANGUAGE_NONE][0]['value'];
+    }
 
-  if (isset($edit['field_person_national'][LANGUAGE_NONE][0]['value'])) {
-    $author['national'] = $edit['field_person_national'][LANGUAGE_NONE][0]['value'];
-  }
+    if (isset($edit['field_person_national'][LANGUAGE_NONE][0]['value'])) {
+      $author['national'] = $edit['field_person_national'][LANGUAGE_NONE][0]['value'];
+    }
 
-  if (isset($edit['field_person_biography'][LANGUAGE_NONE][0]['value'])) {
-    $author['biography'] = $edit['field_person_biography'][LANGUAGE_NONE][0]['value'];
-  }
+    if (isset($edit['field_person_biography'][LANGUAGE_NONE][0]['value'])) {
+      $author['biography'] = $edit['field_person_biography'][LANGUAGE_NONE][0]['value'];
+    }
 
-  if (isset($edit['field_person_client_id'][LANGUAGE_NONE][0]['value'])) {
-    $author['client_id'] = $edit['field_person_client_id'][LANGUAGE_NONE][0]['value'];
-  }
+    if (isset($edit['field_person_client_id'][LANGUAGE_NONE][0]['value'])) {
+      $author['client_id'] = $edit['field_person_client_id'][LANGUAGE_NONE][0]['value'];
+    }
 
-  if (isset($edit['field_person_id'][LANGUAGE_NONE][0]['value']) && $edit['field_person_id'][LANGUAGE_NONE][0]['value']) {
-    $author['id'] = $edit['field_person_id'][LANGUAGE_NONE][0]['value'];
-    voer_api_update_author($author);
-  } else {
-    $new_author = voer_api_create_author($author);
-    $edit['field_person_id'][LANGUAGE_NONE][0]['value'] = $new_author->id;
+    if ($edit['picture']) {
+      $avatar = $edit['picture'];
+      $author['avatar'] = '@' .drupal_realpath($avatar->uri) . ';filename='. $avatar->filename;
+    }
+
+    if (isset($edit['field_person_id'][LANGUAGE_NONE][0]['value']) && $edit['field_person_id'][LANGUAGE_NONE][0]['value']) {
+      $author['id'] = $edit['field_person_id'][LANGUAGE_NONE][0]['value'];
+      voer_api_update_author($author);
+    } else {
+      $new_author = voer_api_create_author($author);
+      $edit['field_person_id'][LANGUAGE_NONE][0]['value'] = $new_author->id;
+    }
   }
 }
 

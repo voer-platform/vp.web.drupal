@@ -113,6 +113,7 @@ function voer_content_clone($original_node) {
   $node->path = NULL;
   $node->files = array();
   $node->title = t('Clone of !title', array('!title' => $node->title));
+  $node->field_voer_material_id[LANGUAGE_NONE][0]['value'] = $original_node->field_voer_material_id[LANGUAGE_NONE][0]['value'];
   $node->field_voer_material_version[LANGUAGE_NONE][0]['value'] = "";
   // dpm($node);
   $form_state = array();

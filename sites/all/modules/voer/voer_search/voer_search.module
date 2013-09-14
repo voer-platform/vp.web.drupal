@@ -4,18 +4,11 @@ define('VOER_SEARCH_TYPE_AUTHOR', 2);
 
 function voer_search_menu(){
   $items = array();
-  $items['s/%menu_tail'] = array(
+  $items['s/%'] = array(
     'title' => t('Search results:'),
-    'load arguments' => array('%map', '%index'),
+    'load arguments' => array('%map'),
     'page callback' => 'search_voer_page',
     'page arguments' => array(1),
-    'access arguments' => array('access content'),
-  );
-  $items['s/%menu_tail/%type'] = array(
-    'title' => t('Search results:'),
-    'load arguments' => array('%map', '%index'),
-    'page callback' => 'search_voer_page',
-    'page arguments' => array(1, 2),
     'access arguments' => array('access content'),
   );
   $items['ajax/s/m'] = array(
@@ -103,7 +96,7 @@ function ajax_search_module_page(){
   $page = isset($_POST['page']) ? $_POST['page'] : 1;
 
   module_load_include('inc', 'voer_api');
-  $materials = voer_api_search_on_material($keyword, $page);
+  $materials = voer_api_search_all_module($keyword, $page);
 
   $result = array();
   $material_list = array();
@@ -162,7 +155,7 @@ function search_voer_page($keyword){
   $type = arg(2);
 
   if (!$type) {
-    $type == VOER_SEARCH_TYPE_CONTENT;
+    $type = VOER_SEARCH_TYPE_CONTENT;
   }
 
   if ($type == VOER_SEARCH_TYPE_CONTENT) {

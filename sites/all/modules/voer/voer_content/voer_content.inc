@@ -108,6 +108,7 @@ function material_from_vpr($material){
 
 function publish_module($module){
   module_load_include('inc', 'voer_api');
+  module_load_include('module', 'voer_field_author');
   try {
     if (isset($module->field_voer_material_id) && sizeof($module->field_voer_material_id)){
       $material_id = $module->field_voer_material_id[LANGUAGE_NONE][0]['value'];
@@ -125,14 +126,6 @@ function publish_module($module){
   }
   $categories = implode(",", $arr_cats);
 
-  $arr_authors = array();
-  if (isset($module->field_voer_authors)){
-    foreach ($module->field_voer_authors[LANGUAGE_NONE] as $val) {
-      $arr_authors[] = $val['value'];
-    }
-  }
-  $authors = implode(',', $arr_authors);
-
   $params = array(
     // "material_id" => $material_id,
     "text" => $module->body[LANGUAGE_NONE][0]['value'],
@@ -142,11 +135,17 @@ function publish_module($module){
     "description" => $module->field_voer_description[LANGUAGE_NONE][0]['value'],
     "keywords" => "",//$module->field_voer_keywords[LANGUAGE_NONE][0]['value'],
     "categories" => $categories,
-    "authors" => $module->uid,
-    "editor_id" => $module->uid,
-    "license_id" => 1,
     "language" => "en",
   );
+
+  if (isset($module->field_voer_authors)){
+    $val = $module->field_voer_authors[LANGUAGE_NONE][0];
+
+    foreach (_voer_field_author_roles() as $role_name) {
+      if ($val[$role_name])
+        $params[$role_name] = $val[$role_name];
+    }
+  }
 
   try {
     if (empty($material_id)){
@@ -165,6 +164,7 @@ function publish_module($module){
 function publish_collection($collection){
   $module = $collection;
   module_load_include('inc', 'voer_api');
+  module_load_include('module', 'voer_field_author');
   try {
     if (isset($module->field_voer_material_id) && sizeof($module->field_voer_material_id)){
       $material_id = $module->field_voer_material_id[LANGUAGE_NONE][0]['value'];
@@ -182,14 +182,6 @@ function publish_collection($collection){
   }
   $categories = implode(",", $arr_cats);
 
-  $arr_authors = array();
-  if (isset($module->field_voer_authors)){
-    foreach ($module->field_voer_authors[LANGUAGE_NONE] as $val) {
-      $arr_authors[] = $val['author'];
-    }
-  }
-  $authors = implode(',', $arr_authors);
-
   $params = array(
     // "material_id" => $material_id,
     "text" => $module->field_voer_outline[LANGUAGE_NONE][0]['value'],
@@ -199,11 +191,17 @@ function publish_collection($collection){
     "description" => $module->field_voer_description[LANGUAGE_NONE][0]['value'],
     "keywords" => "",//$module->field_voer_keywords[LANGUAGE_NONE][0]['value'],
     "categories" => $categories,
-    "authors" => $arr_authors,
-    "editor_id" => $module->uid,
-    "license_id" => 1,
     "language" => "en",
   );
+
+  if (isset($module->field_voer_authors)){
+    $val = $module->field_voer_authors[LANGUAGE_NONE][0];
+
+    foreach (_voer_field_author_roles() as $role_name) {
+      if ($val[$role_name])
+        $params[$role_name] = $val[$role_name];
+    }
+  }
 
   try {
     if (empty($material_id)){
