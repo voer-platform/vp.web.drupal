@@ -53,6 +53,15 @@ function voer_module_view($module){
  */
 function voer_module_load($id = NULL, $reset = FALSE){
   module_load_include('inc', 'voer_content');
+  $u = isset($_GET['q']) ? $_GET['q'] : "";
+  // dpm($_GET[q]);
+  $pies = explode("/", $u);
+  $version = "";
+  if (sizeof($pies) > 2){
+    $version = $pies[2];
+  }
+  // dpm($version);
+
   $node = voer_material_load($id);
   if ($node){
     if ($node->type == "voer_module"){

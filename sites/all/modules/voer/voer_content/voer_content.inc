@@ -1,6 +1,6 @@
 <?php
 
-function voer_material_load($material_id, $reload = FALSE){
+function voer_material_load($material_id, $material_version = "", $reload = FALSE){
   $version = 1;
   // Kiem tra tren db web da co hay chua
   $query = new EntityFieldQuery();
@@ -18,7 +18,7 @@ function voer_material_load($material_id, $reload = FALSE){
   }else{
     module_load_include('inc', 'voer_api');
     try{
-      $m = voer_api_get_detail_material($material_id);
+      $m = voer_api_get_detail_material($material_id, $material_version);
       $node = material_from_vpr($m);
       return $node;
     } catch (Exception $e) {
