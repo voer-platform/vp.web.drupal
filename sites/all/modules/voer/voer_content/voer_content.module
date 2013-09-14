@@ -43,10 +43,15 @@ function voer_content_menu_alter(&$items) {
   $items['node/add/voer-module']['file'] =  'voer_content_module.inc';
   $items['node/add/voer-module']['file path'] = drupal_get_path('module', 'voer_content');
 
-  // Modify add voer module
+  // Modify add voer collection
   $items['node/add/voer-collection']['page callback'] = 'voer_collection_creation';
   $items['node/add/voer-collection']['file'] =  'voer_content_collection.inc';
   $items['node/add/voer-collection']['file path'] = drupal_get_path('module', 'voer_content');
+
+  // Modify add voer course
+  $items['node/add/voer-course']['page callback'] = 'voer_course_creation';
+  $items['node/add/voer-course']['file'] =  'voer_content_course.inc';
+  $items['node/add/voer-course']['file path'] = drupal_get_path('module', 'voer_content');
 
   $items['node/%node/edit']['access callback'] = 'voer_module_disable_node_edit';
   $items['node/%node/edit']['access arguments'] = array(1);
