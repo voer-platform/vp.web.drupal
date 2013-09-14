@@ -44,6 +44,13 @@ function _voer_person_create_instance_fields()
       'bundle' => 'user',
       'required' => FALSE,
     );
+
+    if ($field_name == 'field_person_biography') {
+      $instance['settings'] = array(
+        'text_processing' => TRUE,
+      );
+    }
+
     field_create_instance($instance);
   }
 }
@@ -108,6 +115,12 @@ function voer_person_update_1(){
       'required' => FALSE,
     );
 
+    if ($field_name == 'field_person_biography') {
+      $instance['settings'] = array(
+        'text_processing' => TRUE,
+      );
+    }
+
     if (!field_info_instance('user', $field_name, 'user')){
       field_create_instance($instance);
     }
@@ -127,6 +140,26 @@ function voer_person_update_2(){
   );
 
   if (field_info_instance('user', 'field_person_national', 'user')){
+    field_update_instance($instance);
+  }
+}
+
+/**
+ * Change name of field field_person_biography to richtext
+ */
+function voer_person_update_3(){
+  $instance = array(
+    'field_name' => 'field_person_biography',
+    'entity_type' => 'user',
+    'label' => t('Biography'),
+    'bundle' => 'user',
+    'required' => FALSE,
+    'settings' => array(
+      'text_processing' => TRUE,
+    )
+  );
+
+  if (field_info_instance('user', 'field_person_biography', 'user')){
     field_update_instance($instance);
   }
 }
