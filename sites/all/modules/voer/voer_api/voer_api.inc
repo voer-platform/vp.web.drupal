@@ -77,7 +77,7 @@ function voer_api_get_materials_by_id($id) {
 
 function voer_api_get_detail_material($material_id, $version = NULL){
   $voer = new VoerApi();
-  if ($version == NULL){
+  if ($version == NULL || $version == ""){
     $url = VOER_API_COMMAND_MATERIAL . $material_id . "/";
   }else{
     $url = VOER_API_COMMAND_MATERIAL . $material_id . "/" . $version . "/";
