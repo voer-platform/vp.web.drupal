@@ -544,3 +544,26 @@ function voer_api_get_related_modules($material_id)
 
   return json_decode($response);
 }
+
+function voer_api_get_attachments($material_id, $version)
+{
+  $voer = new VoerApi();
+  $url = VOER_API_COMMAND_MATERIAL . $material_id ;
+
+  if ($version) {
+    $url .= '/' . $version;
+  }
+
+  $url .= '/mfiles/';
+  $response = $voer->auth_request($url);
+  return json_decode($response);
+}
+
+function voer_api_get_attachment_info($attachment_id)
+{
+  $voer = new VoerApi();
+
+  $url = VOER_API_COMMAND_FILES . $attachment_id . '/';
+  $response = $voer->auth_request($url);
+  return json_decode($response);
+}

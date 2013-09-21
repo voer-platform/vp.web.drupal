@@ -86,6 +86,7 @@
 
   <?php print render($content['comments']); ?>
 
+  <?php echo $voer_attachment; ?>
 </article> <!-- /.node -->
 
 <?php if ($navigation) : ?>

@@ -18,6 +18,12 @@ function voer_module_ui_menu(){
     'access arguments' => array('access content'),
   );
 
+  $items['m/%/attachment'] = array(
+    'page callback' => 'voer_module_ui_attachment',
+    'page arguments' => array(1),
+    'access arguments' => array('access content'),
+  );
+
   return $items;
 }
 
@@ -127,10 +133,6 @@ function voer_module_ui_block_info(){
     'info' => t('VOER - Related modules'),
   );
 
-  $blocks['voer_module_ui_attachment_block'] = array(
-    'info' => t('VOER - Attachment modules'),
-  );
-
   return $blocks;
 }
 
@@ -143,9 +145,6 @@ function voer_module_ui_block_view($delta='') {
   switch($delta) {
     case 'voer_module_ui_related_block' :
       $block['content'] = voer_module_ui_related_block();
-      break;
-    case 'voer_module_ui_attachment_block' :
-      $block['content'] = voer_module_ui_attachment_block();
       break;
   }
 
@@ -177,27 +176,52 @@ function voer_module_ui_related_block()
   }
 }
 
-function voer_module_ui_attachment_block()
+function voer_module_ui_preprocess_node(&$variables)
 {
-  module_load_include('inc', 'voer_api');
+  if ($variables['type'] == 'voer_module') {
+    module_load_include('inc', 'voer_api');
+    $content = $variables['content'];
 
-  try {
     $current_node = node_load(arg(1));
 
-    $attachment_files = voer_api_get_images($current_node->field_voer_material_id[LANGUAGE_NONE][0]['value']);
+    if (isset($current_node->field_voer_material_id[LANGUAGE_NONE][0]['value'])) {
+      $material_id = $current_node->field_voer_material_id[LANGUAGE_NONE][0]['value'];
 
-    $list = array();
-    foreach ($attachment_files as $file_name => $file_url) {
-      $list[] = l($file_name, $file_url, array('class' => 'category-link'));
+      $version = '';
+      if (isset($current_node->field_voer_material_version[LANGUAGE_NONE][0]['value'])) {
+        $version = $current_node->field_voer_material_version[LANGUAGE_NONE][0]['value'];
+      }
+
+      $attachment_files = voer_api_get_attachments($material_id, $version);
+      $attachUrl = "http://" . VOER_API_URL . ":" . VOER_API_PORT . "/" . VOER_API_VERSION . '/mfiles/';
+
+      $list = array();
+      foreach ($attachment_files as $attachment_id) {
+        $file_url = $attachUrl . $attachment_id . '/get';
+
+        if (!strpos($content['body']['#object']->body['und'][0]['value'], $file_url)) {
+          $attachment_info = voer_api_get_attachment_info($attachment_id);
+          $list[] = l($attachment_info->name, sprintf('m/%s/attachment', $attachment_id), array('class' => 'category-link'));
+        }
+      }
+
+      $variables['voer_attachment'] = '';
+
+      if ($list) {
+        $variables['voer_attachment'] = '<h4 class="voer-attach-file-item">'.t('File đính kèm').'</h4>' . theme('item_list', array('items' => $list));
+      }
     }
-
-    if ($list) {
-      return '<h4 class="voer-attach-file-item">'.t('File đính kèm').'</h4>' . theme('item_list', array('items' => $list));
-    } else {
-      return '';
-    }
-
-  } catch (Exception $e) {
-    return "";
   }
+}
+
+function voer_module_ui_attachment(){
+  $attachment_id = arg(1);
+  module_load_include('inc', 'voer_api');
+  $attachment_info = voer_api_get_attachment_info($attachment_id);
+
+  $attachUrl = 'http://' . VOER_API_URL . ':' . VOER_API_PORT . '/' . VOER_API_VERSION . '/mfiles/' . $attachment_id . '/get';
+
+  header(sprintf('Content-type: %s', $attachment_info->mime_type));
+  header('Content-Disposition: attachment; filename="'. $attachment_info->name . '"');
+  readfile($attachUrl);;
 }
