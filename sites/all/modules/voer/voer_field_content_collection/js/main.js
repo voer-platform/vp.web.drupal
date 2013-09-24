@@ -52,16 +52,34 @@ Drupal.behaviors.voer_field_content_collection = {
                         var id = $(this).val();
                         var title = $(this).parent().text().trim();
                         var parentNode = -1;
-                        if ($("#collection-outline").jstree("get_selected") && $("#collection-outline").jstree("get_selected").length > 0){
-                            parentNode = null;
+                        if ($("#collection-outline").jstree("get_selected")){
+                            if ($("#collection-outline").jstree("get_selected").length > 1){
+                                parentNode = -1;
+                            }else{
+                                var selected = $("#collection-outline").jstree("get_selected");
+                                if (selected.attr("rel") == "bundle"){
+                                    parentNode = null;
+                                }else{
+                                    parentNode = -1;
+                                }
+                            }
                         }
                         $("#collection-outline").jstree("create", parentNode, "last", { "data": title, "attr" : { "id": id, "rel" : "module" } });
                     });
                     break;
                 case "add_folder":
                     var parentNode = -1;
-                    if ($("#collection-outline").jstree("get_selected") && $("#collection-outline").jstree("get_selected").length > 0){
-                        parentNode = null;
+                    if ($("#collection-outline").jstree("get_selected")){
+                        if ($("#collection-outline").jstree("get_selected").length > 1){
+                            parentNode = -1;
+                        }else{
+                            var selected = $("#collection-outline").jstree("get_selected");
+                            if (selected.attr("rel") == "bundle"){
+                                parentNode = null;
+                            }else{
+                                parentNode = -1;
+                            }
+                        }
                     }
                     $("#collection-outline").jstree("create", parentNode, "last", { "data": "Section", "attr" : { "rel" : "bundle" } });
                     break;
