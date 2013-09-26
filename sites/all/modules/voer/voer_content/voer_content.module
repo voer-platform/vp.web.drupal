@@ -176,7 +176,7 @@ function voer_content_preprocess_node(&$variables){
       if ($node->type == 'voer_collection' && isset($outline->content)) {
         $navFlat = array();
         _get_collection_navigation($outline->content, $navFlat);
-        $current_module_id = $variables['field_voer_material_id'][LANGUAGE_NONE][0]['value'];
+        $current_module_id = $variables['field_voer_material_id'][0]['value'];
         $navigation['home_url'] = l(t('Home'), 'collection/' . arg(1));
 
         if ($navFlat[0] == $current_module_id) {
@@ -186,7 +186,7 @@ function voer_content_preprocess_node(&$variables){
           if (isset($navFlat[$pos-1])) {
             $navigation['prev_url'] = l(t('← Prev'), 'collection/' . arg(1) . "/" . $navFlat[$pos-1]);
           }
-          
+
           if (isset($navFlat[$pos+1])) {
             $navigation['next_url'] = l(t('Next →'), 'collection/' . arg(1) . "/" . $navFlat[$pos+1]);
           }
