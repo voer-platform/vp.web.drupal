@@ -58,12 +58,17 @@ function voer_content_menu_alter(&$items) {
 }
 
 function voer_module_disable_node_edit($node){
-  if ($node->type == 'voer_module' || $node->type == 'voer_collection'){
-    if (sizeof($node->field_voer_material_version) && !empty($node->field_voer_material_version[LANGUAGE_NONE][0]['value'])){
-      return false;
-    }else{
-      return true;
+  $result = node_access("update", $node);
+  if ($result){
+    if ($node->type == 'voer_module' || $node->type == 'voer_collection'){
+      if (sizeof($node->field_voer_material_version) && !empty($node->field_voer_material_version[LANGUAGE_NONE][0]['value'])){
+        return false;
+      }else{
+        return true;
+      }
     }
+  }else{
+    return $result;
   }
 }
 
@@ -186,7 +191,7 @@ function voer_content_preprocess_node(&$variables){
           if (isset($navFlat[$pos-1])) {
             $navigation['prev_url'] = l(t('← Prev'), 'collection/' . arg(1) . "/" . $navFlat[$pos-1]);
           }
-          
+
           if (isset($navFlat[$pos+1])) {
             $navigation['next_url'] = l(t('Next →'), 'collection/' . arg(1) . "/" . $navFlat[$pos+1]);
           }
