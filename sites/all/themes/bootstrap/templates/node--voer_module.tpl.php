@@ -1,4 +1,4 @@
-<?php if ($navigation) : ?>
+<?php if (isset($navigation)) : ?>
 <ul class="pager">
   <?php if ($navigation['prev_url']) : ?>
   <li class="previous"><?php echo $navigation['prev_url']; ?></li>
@@ -33,7 +33,7 @@
     <?php $metadata .= ' | '.render($content['field_fivestar_rating']); ?>
   <?php endif; ?>
 
-  <?php if ($content['links']['statistics']) : ?>
+  <?php if (isset($content['links']['statistics'])) : ?>
     <?php $metadata .= ' | '.$content['links']['statistics']['#links']['statistics_counter']['title']; ?>
   <?php endif; ?>
 <div id="voer-content-metadata">
@@ -86,13 +86,17 @@
 
   <?php print render($content['comments']); ?>
 
+  <?php if (isset($voer_attachment)) : ?>
   <?php echo $voer_attachment; ?>
+  <?php endif; ?>
 </article> <!-- /.node -->
 
-<?php if ($navigation) : ?>
+<?php if (isset($navigation)) : ?>
 <ul class="pager">
   <?php if ($navigation['prev_url']) : ?>
   <li class="previous"><?php echo $navigation['prev_url']; ?></li>
+  <?php else : ?>
+  <li class="previous disabled"><a href="#">&larr; Prev</a></li>
   <?php endif; ?>
 
   <li><?php echo $navigation['home_url']; ?></li>

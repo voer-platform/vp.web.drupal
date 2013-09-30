@@ -93,6 +93,9 @@ function voer_search_form_submit($form, &$form_state){
 
 function ajax_search_module_page(){
   $keyword = $_POST['keyword'];
+  $collection_selected = json_decode($_POST['collection_selected']);
+  $collection_flat = array();
+  _get_collection_flat($collection_selected, $collection_flat);
   $page = isset($_POST['page']) ? $_POST['page'] : 1;
 
   module_load_include('inc', 'voer_api');
@@ -106,13 +109,21 @@ function ajax_search_module_page(){
       $material_list[$material->material_id . "|" . $material->version] = $material->title;
     }
 
-    $result = array(
-      '#type' => 'checkboxes',
-      '#options' => $material_list,
-      // '#attributes' => array(
-      //   'class' => array('input-checkbox-item'),
-      // ),
-    );
+    $result = array();
+    foreach ($material_list as $material_id => $material_name) {
+      $material_item = array(
+        '#title' => $material_name,
+        '#type' => 'checkbox',
+        '#return_value' => $material_id,
+      );
+
+      if (in_array($material_id, $collection_flat)) {
+        $material_item['#attributes']['checked'] = TRUE;
+        $material_item['#attributes']['disabled'] = TRUE;
+      }
+
+      $result[] = $material_item;
+    }
 
     $next_button = array();
     $prev_button = array();
@@ -234,5 +245,16 @@ function search_by_author($keyword) {
   } catch (Exception $e) {
     drupal_set_message($e->getMessage(), 'error');
     return "";
+  }
+}
+
+function _get_collection_flat($collections, &$navFlat)
+{
+  foreach ($collections as $item) {
+    if ($item->attr->rel == 'module') {
+      $navFlat[] = $item->attr->id;
+    } elseif ($item->attr->rel == 'bundle') {
+      _get_collection_flat($item->children, $navFlat);
+    }
   }
 }

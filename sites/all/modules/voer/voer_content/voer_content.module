@@ -173,7 +173,7 @@ function voer_content_preprocess_node(&$variables){
   if (arg(0) == 'node' || arg(0) == 'collection') {
     $navigation = array('prev_url' => '', 'home_url' => '', 'next_url' => '');
 
-    if (arg(1)) {
+    if (arg(1) != 'all') {
       $node = node_load(arg(1));
       $outline = $node->field_voer_outline[$node->language][0]['value'];
       $outline = json_decode($outline);

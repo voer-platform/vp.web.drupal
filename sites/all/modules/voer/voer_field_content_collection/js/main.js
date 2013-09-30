@@ -49,22 +49,25 @@ Drupal.behaviors.voer_field_content_collection = {
             switch(this.id) {
                 case "add_default":
                     $("#voer_module_search_result input[type=checkbox]:checked").map(function(){
-                        var id = $(this).val();
-                        var title = $(this).parent().text().trim();
-                        var parentNode = -1;
-                        if ($("#collection-outline").jstree("get_selected")){
-                            if ($("#collection-outline").jstree("get_selected").length > 1){
-                                parentNode = -1;
-                            }else{
-                                var selected = $("#collection-outline").jstree("get_selected");
-                                if (selected.attr("rel") == "bundle"){
-                                    parentNode = null;
-                                }else{
+                        if (!$(this).attr('disabled')) {
+                            var id = $(this).val();
+                            var title = $(this).parent().text().trim();
+                            var parentNode = -1;
+                            if ($("#collection-outline").jstree("get_selected")){
+                                if ($("#collection-outline").jstree("get_selected").length > 1){
                                     parentNode = -1;
+                                }else{
+                                    var selected = $("#collection-outline").jstree("get_selected");
+                                    if (selected.attr("rel") == "bundle"){
+                                        parentNode = null;
+                                    }else{
+                                        parentNode = -1;
+                                    }
                                 }
                             }
+                            $("#collection-outline").jstree("create", parentNode, "last", { "data": title, "attr" : { "id": id, "rel" : "module" } });
+                            $(this).attr('disabled', 'disabled');
                         }
-                        $("#collection-outline").jstree("create", parentNode, "last", { "data": title, "attr" : { "id": id, "rel" : "module" } });
                     });
                     break;
                 case "add_folder":
@@ -90,6 +93,13 @@ Drupal.behaviors.voer_field_content_collection = {
                     var jsonData = $("#collection-outline").jstree('get_json', -1);
                     var jsonStr =  JSON.stringify(jsonData);
                     console.log(jsonStr);
+                    break;
+                case 'remove':
+                    $("#collection-outline").jstree('get_selected').each(function(){
+                       var material_id = $(this).attr('id');
+                       $('#voer_module_search_result input[value="'+material_id+'"]').removeAttr('disabled').removeAttr('checked');
+                    });
+                    $("#collection-outline").jstree(this.id);
                     break;
                 default:
                     $("#collection-outline").jstree(this.id);
@@ -125,13 +135,15 @@ function searchModuleByKeyword(keyword, page) {
     page = 1;
   }
 
+  var collection_selected = jQuery('#voer-outline-wrapper .voer-outline-text').val();
+
   if (jQuery('#voer_module_search_result').length == 0) {
     jQuery('<div id="voer_module_search_result"></div>').appendTo('#voer-outline-wrapper');
   }
 
   //showLoadingState('#edit-field-voer-authors');
 
-  jQuery.post('/ajax/s/m', {keyword: keyword, page: page}, function(data){
+  jQuery.post('/ajax/s/m', {keyword: keyword, page: page, collection_selected: collection_selected}, function(data){
     // removeLoadingState('#edit-field-voer-authors');
     jQuery('#voer_module_search_result').html(data);
   })
