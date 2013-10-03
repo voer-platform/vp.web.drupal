@@ -87,11 +87,14 @@ function _walk_through($item, $nid = 0){
     $first = true;
     foreach ($item->content as $m){
       if ($first){
-        $a['data'] = l($item->title, 'collection/' . $nid . "/" . $m->id);
+        $a['data'] = l($item->title, 'collection/' . $nid . "/" . (isset($m->id) ? $m->id : ""));
         $first = false;
       }
       $r = _walk_through($m, $nid);
       $a['children'][] = $r;
+    }
+    if ($first){
+      $a['data'] = l($item->title, 'collection/' . $nid . "/");
     }
   }
   return $a;
