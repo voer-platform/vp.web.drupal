@@ -16,6 +16,12 @@
 </ul>
 <?php endif; ?>
 
+<?php
+  $current_path = isset($_GET['q']) ? $_GET['q'] : "";
+  $params = explode("/", $current_path);
+  $thefirst = $params[0];
+?>
+
 <?php if ($page) : ?>
   <?php $metadata = ''; ?>
 
@@ -27,7 +33,13 @@
   <?php $metadata .= render($content['field_voer_categories'][0]) . ' | '; ?>
   <?php endif; ?>
 
-  <?php $metadata .= sprintf('<a href="/node/%s/pdf">PDF</a>', $node->nid); ?>
+  <?php
+    if ($thefirst == "collection"){
+      $metadata .= sprintf('<a href="/node/%s/pdf">PDF</a>', $params[1]);
+    }else{
+      $metadata .= sprintf('<a href="/node/%s/pdf">PDF</a>', $node->nid);
+    }
+  ?>
 
   <?php if (isset($content['field_fivestar_rating'])) : ?>
     <?php $metadata .= ' | '.render($content['field_fivestar_rating']); ?>
@@ -40,7 +52,6 @@
   <?php echo $metadata; ?>
 </div>
 <?php endif; ?>
-
 <article id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
 
   <header>
@@ -57,12 +68,6 @@
       </span>
     <?php endif; ?>
   </header>
-
-  <?php
-    $current_path = isset($_GET['q']) ? $_GET['q'] : "";
-    $params = explode("/", $current_path);
-    $thefirst = $params[0];
-  ?>
 
   <?php if ($page && $thefirst == 'collection'): ?>
   <h2 class='sub-title'><?php print $title; ?></h2>
