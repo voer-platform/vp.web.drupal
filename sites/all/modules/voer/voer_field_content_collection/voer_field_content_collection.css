@@ -17,3 +17,6 @@
     background-color:transparent;
     background-position: 0;
 }
+#collection-outline{
+    overflow: auto;
+}
