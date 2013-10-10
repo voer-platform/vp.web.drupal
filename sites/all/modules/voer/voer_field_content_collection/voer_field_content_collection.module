@@ -100,14 +100,20 @@ function voer_field_content_collection_field_widget_form(&$form, &$form_state, $
 
   //Convert
   $objValue = json_decode($value);
-  // dpm($objValue);
   if ($objValue){
     $result = array();
     foreach ($objValue->content as $item) {
       $result[] = _transform_json_vpr_to_editor($item);
     }
     $value = json_encode($result);
+    //Them root node
+    $value = '[{"attr":{"id":"root-outline","rel":"root"},"data":"Outline","state":"open","children": '. $value . '}]';
   }
+  // dpm($value);
+  if ($value == ""){
+    $value = '[{"attr":{"id":"root-outline","rel":"root"},"data":"Outline","state":"open"}]';
+  }
+  // dpm($value);
 
 
   $widget = $element;
@@ -210,7 +216,8 @@ function field_voer_content_outline_validate($element, &$form_state) {
     $objValue = json_decode($value);
     $result = new stdClass();
     $result->content = array();
-    foreach ($objValue as $item) {
+    //Bo qua root node
+    foreach ($objValue->children as $item) {
       $result->content[] = _transform_json_editor_to_vpr($item);
     }
     $value = json_encode($result);

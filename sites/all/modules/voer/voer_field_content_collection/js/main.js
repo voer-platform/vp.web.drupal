@@ -13,13 +13,26 @@ Drupal.behaviors.voer_field_content_collection = {
                 // Those two checks may slow jstree a lot, so use only when needed
                 "max_depth" : -2,
                 "max_children" : -2,
-                "valid_children" : [ "bundle", "module" ],
+                "valid_children" : [ "root" ],
                 "types": {
                     "module" : {
                         "valid_children" : "none"
                     },
                     "bundle" : {
                         "valid_children" : [ "module", "bundle" ]
+                    },
+                    "root":{
+                        // can have files and folders inside, but NOT other `drive` nodes
+                        "valid_children" : [ "module", "bundle" ],
+                        "icon" : {
+                            "image" : "/misc/kdm_home.png"
+                        },
+                        // those prevent the functions with the same name to be used on `drive` nodes
+                        // internally the `before` event is used
+                        "start_drag" : false,
+                        "move_node" : false,
+                        "delete_node" : false,
+                        "remove" : false
                     }
                 }
             }
@@ -55,13 +68,13 @@ Drupal.behaviors.voer_field_content_collection = {
                             var parentNode = -1;
                             if ($("#collection-outline").jstree("get_selected")){
                                 if ($("#collection-outline").jstree("get_selected").length > 1){
-                                    parentNode = -1;
+                                    parentNode = $('ul>li#root-outline');
                                 }else{
                                     var selected = $("#collection-outline").jstree("get_selected");
-                                    if (selected.attr("rel") == "bundle"){
+                                    if (selected.attr("rel") == "bundle" || selected.attr("rel") == "root"){
                                         parentNode = null;
                                     }else{
-                                        parentNode = -1;
+                                        parentNode = $('ul>li#root-outline');
                                     }
                                 }
                             }
@@ -74,13 +87,13 @@ Drupal.behaviors.voer_field_content_collection = {
                     var parentNode = -1;
                     if ($("#collection-outline").jstree("get_selected")){
                         if ($("#collection-outline").jstree("get_selected").length > 1){
-                            parentNode = -1;
+                            parentNode = $('ul>li#root-outline');
                         }else{
                             var selected = $("#collection-outline").jstree("get_selected");
-                            if (selected.attr("rel") == "bundle"){
+                            if (selected.attr("rel") == "bundle" || selected.attr("rel") == "root"){
                                 parentNode = null;
                             }else{
-                                parentNode = -1;
+                                parentNode = $('ul>li#root-outline');
                             }
                         }
                     }
