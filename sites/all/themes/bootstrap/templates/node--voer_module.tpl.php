@@ -1,3 +1,21 @@
+<script>
+  function downloadPDF(){
+    // alert('hi');
+    return false;
+  }
+
+  function getPDF(){
+    $.ajax({
+      url: url,
+      complete: function (jqxhr, txt_status) {
+        console.log ("Complete: [ " + txt_status + " ] " + jqxhr);
+        // if (response code is 301) {
+        console.log ("Location: " + jqxhr.getResponseHeader("Location"));
+        // }
+      }
+    });
+  }
+</script>
 <?php if (isset($navigation)) : ?>
 <ul class="pager">
   <?php if ($navigation['prev_url']) : ?>
@@ -34,11 +52,21 @@
   <?php endif; ?>
 
   <?php
+    $metadata .= "<div class='btn-group'>";
+    $metadata .= "<a class='btn dropdown-toggle' data-toggle='dropdown' href='#'>Download";
+    $metadata .= "<span class='caret'></span>";
+    $metadata .= "</a>";
+    $metadata .= "<ul class='dropdown-menu'>";
+    $metadata .= "<!-- dropdown menu links -->";
     if ($thefirst == "collection"){
-      $metadata .= sprintf('<a href="/node/%s/pdf">PDF</a>', $params[1]);
+      $metadata .= sprintf('<li><a href="/node/%s/pdf" onclick="downloadPDF();">Collection as PDF</a></li>', $params[1]);
+      $metadata .= "<li class='divider'></li>";
+      $metadata .= sprintf('<li><a href="/node/%s/pdf" onclick="downloadPDF();">Module as PDF</a></li>', $node->nid);
     }else{
-      $metadata .= sprintf('<a href="/node/%s/pdf">PDF</a>', $node->nid);
+      $metadata .= sprintf('<li><a href="/node/%s/pdf" onclick="downloadPDF();"> Save PDF</a></li>', $node->nid);
     }
+    $metadata .= "</ul>";
+    $metadata .= "</div>";
   ?>
 
   <?php if (isset($content['field_fivestar_rating'])) : ?>
