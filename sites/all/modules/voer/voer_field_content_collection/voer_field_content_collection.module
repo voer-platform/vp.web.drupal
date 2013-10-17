@@ -212,12 +212,14 @@ function field_voer_content_outline_validate($element, &$form_state) {
 
   if (isset($form_state['values'][$field_name][$element['#language']][$delta]['value'])) {
     $value = $form_state['values'][$field_name][$element['#language']][$delta]['value']['outline_text'];
+    // dpm($value);
     // Transform
     $objValue = json_decode($value);
+    // dpm($objValue[0]);
     $result = new stdClass();
     $result->content = array();
     //Bo qua root node
-    foreach ($objValue->children as $item) {
+    foreach ($objValue[0]->children as $item) {
       $result->content[] = _transform_json_editor_to_vpr($item);
     }
     $value = json_encode($result);
@@ -236,6 +238,8 @@ function _transform_json_editor_to_vpr($obj){
     $result->id = $pies[0];
     $result->version = $pies[1];
     $result->type = 'module';
+    $result->url = "http://voer.edu.vn/m/" . $result->id . "/" . $result->version;
+    $result->license = "http://creativecommons.org/licenses/by/3.0/";
   }else if ($type == "bundle"){
     $result->title = $obj->data;
     $result->type = 'subcollection';

@@ -562,3 +562,10 @@ article.node-voer-module td, th { padding: .3em; border: 1px #999 solid; }
   top: 0;
   width: 100%;
 }
+
+#voer-content-metadata .btn-group .btn {
+  background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+  border: medium none;
+  box-shadow: none;
+  padding: 0;
+}
