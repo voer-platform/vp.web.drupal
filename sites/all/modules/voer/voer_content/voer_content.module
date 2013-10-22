@@ -136,6 +136,13 @@ function voer_content_menu() {
     'type' => MENU_LOCAL_TASK,
     'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
   );
+
+  $item['module/import'] = array(
+    'page callback' => 'voer_document_import',
+    'file' => 'voer_content.page.inc',
+    'type' => MENU_CALLBACK
+  );
+
   return $items;
 }
 
@@ -177,11 +184,12 @@ function voer_content_preprocess_node(&$variables){
       $node = node_load(arg(1));
       $outline = $node->field_voer_outline[$node->language][0]['value'];
       $outline = json_decode($outline);
-
+      dpm($outline);
       if ($node->type == 'voer_collection' && isset($outline->content)) {
         $navFlat = array();
         _get_collection_navigation($outline->content, $navFlat);
         $current_module_id = $variables['field_voer_material_id'][0]['value'];
+        dpm($current_module_id);
         $navigation['home_url'] = l(t('Home'), 'collection/' . arg(1));
 
         if ($navFlat[0] == $current_module_id) {
