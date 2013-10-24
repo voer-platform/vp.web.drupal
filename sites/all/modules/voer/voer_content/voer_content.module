@@ -193,9 +193,13 @@ function voer_content_preprocess_node(&$variables){
       if ($node->type == 'voer_collection' && isset($outline->content)) {
         $navFlat = array();
         _get_collection_navigation($outline->content, $navFlat);
-        dpm($navFlat);
-        $current_module_id = $variables['field_voer_material_id'][0]['value'];
-        dpm($variables);
+        // dpm($navFlat);
+        if (isset($variables['field_voer_material_id'][LANGUAGE_NONE])){
+          $current_module_id = $variables['field_voer_material_id'][LANGUAGE_NONE][0]['value'];
+        }else{
+          $current_module_id = $variables['field_voer_material_id'][0]['value'];
+        }
+        // dpm($variables);
         $navigation['home_url'] = l(t('Home'), 'collection/' . arg(1));
 
         if ($navFlat[0] == $current_module_id) {
