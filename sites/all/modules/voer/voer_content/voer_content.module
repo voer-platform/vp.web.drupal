@@ -58,6 +58,11 @@ function voer_content_menu_alter(&$items) {
 }
 
 function voer_module_disable_node_edit($node){
+  global $user;
+  if ($user->name == 'admin'){
+    return true;
+  }
+
   $result = node_access("update", $node);
   if ($result){
     if ($node->type == 'voer_module' || $node->type == 'voer_collection'){
@@ -184,12 +189,12 @@ function voer_content_preprocess_node(&$variables){
       $node = node_load(arg(1));
       $outline = $node->field_voer_outline[$node->language][0]['value'];
       $outline = json_decode($outline);
-      dpm($outline);
+      // dpm($outline);
       if ($node->type == 'voer_collection' && isset($outline->content)) {
         $navFlat = array();
         _get_collection_navigation($outline->content, $navFlat);
         $current_module_id = $variables['field_voer_material_id'][0]['value'];
-        dpm($current_module_id);
+        dpm($variables);
         $navigation['home_url'] = l(t('Home'), 'collection/' . arg(1));
 
         if ($navFlat[0] == $current_module_id) {
@@ -349,6 +354,18 @@ function voer_content_module_form_alter(&$form, &$form_state, $form_id){
       '#weight'=> 11,
       '#submit' => array('voer_content_form_push'),
     );
+  }
+
+  if (sizeof($node->field_voer_material_version) > 0 && !empty($node->field_voer_material_version[LANGUAGE_NONE][0]['value'])){
+    $form['actions']['save'] = array(
+      '#type'=> 'submit',
+      '#value'=> 'Save to VPR',
+      '#weight'=> 11,
+      '#submit' => array('voer_content_form_push__'),
+    );
+
+    unset($form['actions']['submit']);
+    unset($form['actions']['preview']);
   }
 }
 
