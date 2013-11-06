@@ -1,3 +1,6 @@
+<?php
+$theme_path = drupal_get_path('theme', 'bootstrap');
+?>
 <!DOCTYPE html>
 <html lang="<?php print $language->language; ?>">
 <head>
@@ -10,8 +13,8 @@
   <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
   <![endif]-->
-  <link rel="stylesheet" href="https://display-mathml.googlecode.com/hg/display-mathml.css?r=stable" />
-  <script src="https://display-mathml.googlecode.com/hg/display-mathml.js?r=stable"></script>
+  <link rel="stylesheet" href="<?php print $theme_path; ?>/js/display-mathml.css" />
+  <script src="<?php print $theme_path; ?>/js/display-mathml.js"></script>
 </head>
 <body class="<?php print $classes; ?>" <?php print $attributes;?>>
   <?php print $page_top; ?>
