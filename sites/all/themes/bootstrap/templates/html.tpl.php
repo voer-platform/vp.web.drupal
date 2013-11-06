@@ -13,8 +13,8 @@ $theme_path = drupal_get_path('theme', 'bootstrap');
   <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
   <![endif]-->
-  <link rel="stylesheet" href="<?php print $theme_path; ?>/js/display-mathml.css" />
-  <script src="<?php print $theme_path; ?>/js/display-mathml.js"></script>
+  <link rel="stylesheet" href="/<?php print $theme_path; ?>/js/display-mathml.css" />
+  <script src="/<?php print $theme_path; ?>/js/display-mathml.js"></script>
 </head>
 <body class="<?php print $classes; ?>" <?php print $attributes;?>>
   <?php print $page_top; ?>
