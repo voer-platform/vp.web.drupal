@@ -108,7 +108,6 @@ mdgw.mathml.DisplayMathML.prototype.scan = function(doc) {
         mathTags.pushElements(doc.getElementsByTagNameNS('http://www.w3.org/1998/Math/MathML', 'math'));
     }
     mathTags.pushElements(doc.getElementsByTagName('mml:math')); /* Microsoft Office */
-    mathTags.pushElements(doc.getElementsByTagName('semantics'));
 
     return mathTags;
 };
@@ -551,6 +550,12 @@ mdgw.mathml.MathMLRenderer.prototype._handle = function(target, child) {
             this._recursive(sup, children[i+1]);
         }
 
+        break;
+      case 'semantics':
+        var fragment = mdgw.mathml.createElement('div', 'semantics', target);
+        this._recursive(fragment, child);
+        break;
+      case 'annotation':
         break;
       case 'none':
         break;
