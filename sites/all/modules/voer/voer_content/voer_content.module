@@ -55,6 +55,28 @@ function voer_content_menu_alter(&$items) {
 
   $items['node/%node/edit']['access callback'] = 'voer_module_disable_node_edit';
   $items['node/%node/edit']['access arguments'] = array(1);
+
+  $items['node/%node']['access callback'] = 'voer_module_view_node';
+  $items['node/%node']['access arguments'] = array(1);
+}
+
+function voer_module_view_node($node){
+  global $user;
+
+  if ($node->type == 'voer_module' || $node->type == 'voer_collection'){
+    if (sizeof($node->field_voer_material_version) && !empty($node->field_voer_material_version[LANGUAGE_NONE][0]['value'])){
+      return true;
+    }else{
+      if ($user->uid == $node->uid){
+        return true;
+      }else{
+        return false;
+      }
+    }
+  }else{
+    $result = node_access("update", $node);
+    return $result;
+  }
 }
 
 function voer_module_disable_node_edit($node){
@@ -510,6 +532,11 @@ function voer_content_form_push($form, &$form_state)
       drupal_goto("collection/" . $node->nid);
     }
   }
+}
+
+function voer_content_form_save($form, &$form_state){
+  module_load_include('inc', 'voer_content');
+
 }
 
 function voer_module_import_validate($form, &$form_state){

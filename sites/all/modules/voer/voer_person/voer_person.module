@@ -81,7 +81,7 @@ function show_materials_by_authors($person){
       pager_default_initialize($materials->count, 10);
       foreach ($materials->results as $key => $material) {
         $node = new stdClass();
-        $node->type = 'voer_module';
+        $node->type = voer_material_type($material->material_type);
         node_object_prepare($node);
         $node->title = $material->title;
         $node->material_id = $material->material_id;

@@ -219,6 +219,8 @@ function voer_module_creation_wizard_next_submit($form, &$form_state) {
  * @ingroup form_example
  */
 function voer_module_license_info($form, &$form_state, $entity) {
+  drupal_set_title(t('Create a module: Step 1/3 - License'));
+
   $form = array();
   $form['voer_content_entity'] = array(
     '#type' => 'value',
@@ -254,6 +256,8 @@ function voer_module_license_info_validate($form, &$form_state){
  * @ingroup form_example
  */
 function voer_module_metadata_info($form, &$form_state, $entity) {
+  drupal_set_title(t('Create a module: Step 2/3 - Metadata'));
+
   $form = array();
   $form['title'] = array(
     '#type' => 'textfield',
@@ -355,6 +359,8 @@ function voer_module_import_content_validate($form, &$form_state){
  * @ingroup form_example
  */
 function voer_module_content($form, &$form_state) {
+  drupal_set_title(t('Create a module: Step 3/3 - Content'));
+
   $form = array();
 
   $form['import_file'] = array(

@@ -5,7 +5,7 @@ define('VOER_SEARCH_TYPE_AUTHOR', 2);
 function voer_search_menu(){
   $items = array();
   $items['s/%'] = array(
-    'title' => t('Search results:'),
+    'title' => t(''),
     'load arguments' => array('%map'),
     'page callback' => 'search_voer_page',
     'page arguments' => array(1),
