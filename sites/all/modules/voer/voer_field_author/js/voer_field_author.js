@@ -74,7 +74,9 @@
             }
 
             var index = author_selected_array.indexOf(author_id);
-            author_selected_array.splice(index, 1);
+            if (index >= 0) {
+              author_selected_array.splice(index, 1);
+            }
 
             $('.voer-field-author-selected-'+author_roles[i]).val(author_selected_array.join(','));
           }

@@ -13,7 +13,7 @@
     <?php $metadata .= ' | '.render($content['field_fivestar_rating']); ?>
   <?php endif; ?>
 
-  <?php if ($content['links']['statistics']) : ?>
+  <?php if (isset($content['links']['statistics'])) : ?>
     <?php $metadata .= ' | '.$content['links']['statistics']['#links']['statistics_counter']['title']; ?>
   <?php endif; ?>
 <div id="voer-content-metadata">

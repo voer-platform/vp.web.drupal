@@ -40,7 +40,7 @@ function _voer_person_create_instance_fields()
     $instance = array(
       'field_name' => $field_name,
       'entity_type' => 'user',
-      'label' => $field_name,
+      'label' => $field_label,
       'bundle' => 'user',
       'required' => FALSE,
     );

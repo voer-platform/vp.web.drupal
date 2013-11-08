@@ -109,6 +109,17 @@ function voer_field_author_field_formatter_view($entity_type, $entity, $field, $
 function voer_field_author_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
   module_load_include('inc', 'voer_api');
 
+  global $user;
+  $user_data = user_load($user->uid);
+
+  if (isset($user_data->field_person_id[LANGUAGE_NONE][0]['value'])) {
+    $person_id = $user_data->field_person_id[LANGUAGE_NONE][0]['value'];
+  } elseif (isset($user_data->field_person_id[0]['value'])) {
+    $person_id = $user_data->field_person_id[0]['value'];
+  }
+
+  $current_author = (array)voer_api_get_author($person_id);
+
   $field_name = $field['field_name'];
 
   $author = isset($items[$delta]['author']) ? $items[$delta]['author'] : '';
@@ -162,6 +173,37 @@ function voer_field_author_field_widget_form(&$form, &$form_state, $field, $inst
 
       $row_data = array();
       $author_roles = array();
+
+      if (!isset($form['#node_edit_form']) || $form['#node_edit_form'] == FALSE) {
+        $row_data_tmp = array(
+          l($current_author['fullname'], 'person/'.$current_author['id'], array('attributes' => array('target' => '_blank'))),
+          l($current_author['user_id'], 'person/'.$current_author['id'], array('attributes' => array('target' => '_blank'))),
+        );
+
+        foreach ($voer_field_author_roles as $index => $role_name) {
+          if ($index < 4) {
+            $checked = TRUE;
+          } else {
+            $checked = FALSE;
+          }
+
+          $row_data_tmp[] = array(
+            'data' => theme('checkbox', array('element' => array(
+              '#checked' => $checked,
+              '#attributes' => array(
+                'class' => array('member-roles', 'roles-'.$role_name.'-1'),
+                'value' => $current_author['id'],
+                'role' => $role_name,
+                )
+              )
+            )),
+            'class' => 'member-role-'.$role_name,
+          );
+        }
+
+        $row_data_tmp[] = sprintf('<span class="voer-author-delete" title="Delete author" rel="%s"></span>', 1);
+        $row_data[] = $row_data_tmp;
+      }
 
       foreach ($voer_field_author_roles as $role_name) {
         if ($$role_name) {
@@ -227,7 +269,14 @@ function voer_field_author_field_widget_form(&$form, &$form_state, $field, $inst
         );
       }
 
-      $widget['voer_field_author_search_text'] = array(
+      $widget['voer_field_author_add_more'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Add more authors'),
+        '#collapsible' => TRUE,
+        '#collapsed' => TRUE,
+      );
+
+      $widget['voer_field_author_add_more']['voer_field_author_search_text'] = array(
         '#type' => 'textfield',
         '#description' => t('Select people to serve as authors.'),
         '#attributes' => array(
@@ -236,7 +285,7 @@ function voer_field_author_field_widget_form(&$form, &$form_state, $field, $inst
         ),
       );
 
-      $widget['voer_field_author_search_btn'] = array(
+      $widget['voer_field_author_add_more']['voer_field_author_search_btn'] = array(
         '#type' => 'button',
         '#value' => t('Search'),
         '#attributes' => array(
@@ -244,28 +293,29 @@ function voer_field_author_field_widget_form(&$form, &$form_state, $field, $inst
         ),
       );
 
-//      foreach ($voer_field_author_roles as $role_name) {
-//        $widget[$role_name] = array(
-//          '#type' => 'hidden',
-//          '#default_value' => isset($$role_name) ? $$role_name : '',
-//          '#attributes' => array(
-//            'class' => array('voer-field-author-selected-'.$role_name),
-//          ),
-//        );
-//      }
-
       break;
   }
 
   $element['author_extra'] = $widget;
-  foreach ($voer_field_author_roles as $role_name) {
-    $widget = array(
-      '#type' => 'hidden',
-      '#default_value' => isset($$role_name) ? $$role_name : '',
-      '#attributes' => array(
-        'class' => array('voer-field-author-selected-'.$role_name),
-      ),
-    );
+  foreach ($voer_field_author_roles as $index => $role_name) {
+    if ((!isset($form['#node_edit_form']) || $form['#node_edit_form'] == FALSE) && $index < 4) {
+      $widget = array(
+        '#type' => 'hidden',
+        '#value' => $current_author['id'],
+        '#default_value' => isset($$role_name) ? $$role_name : '',
+        '#attributes' => array(
+          'class' => array('voer-field-author-selected-'.$role_name),
+        ),
+      );
+    } else {
+      $widget = array(
+        '#type' => 'hidden',
+        '#default_value' => isset($$role_name) ? $$role_name : '',
+        '#attributes' => array(
+          'class' => array('voer-field-author-selected-'.$role_name),
+        ),
+      );
+    }
 
     $element[$role_name] = $widget;
   }
@@ -275,7 +325,7 @@ function voer_field_author_field_widget_form(&$form, &$form_state, $field, $inst
     '#title' => t('Add new author'),
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
-    '#attributes' => array('class' => array('voer-add-author-form')),
+    '#attributes' => array('class' => array('voer-add-author-form'), 'style' => 'display: none;'),
   );
 
   $element['voer_add_author_form']['name'] = array(
@@ -319,15 +369,27 @@ function voer_field_author_field_widget_form(&$form, &$form_state, $field, $inst
 }
 
 function voer_field_author_text_validate($element, &$form_state) {
+  global $user;
+  $user_data = user_load($user->uid);
+
+  if (isset($user_data->field_person_id[LANGUAGE_NONE][0]['value'])) {
+    $person_id = $user_data->field_person_id[LANGUAGE_NONE][0]['value'];
+  } elseif (isset($user_data->field_person_id[0]['value'])) {
+    $person_id = $user_data->field_person_id[0]['value'];
+  }
+
   $delta = $element['#delta'];
   $field = $form_state['field'][$element['#field_name']][$element['#language']]['field'];
   $field_name = $field['field_name'];
   $voer_field_author_roles = _voer_field_author_roles();
 
-  foreach ($voer_field_author_roles as $role_name) {
-    if (isset($form_state['values'][$field_name][$element['#language']][$delta][$role_name])) {
+  foreach ($voer_field_author_roles as $index => $role_name) {
+    if (isset($form_state['values'][$field_name][$element['#language']][$delta][$role_name]) && $form_state['values'][$field_name][$element['#language']][$delta][$role_name]) {
       $value = $form_state['values'][$field_name][$element['#language']][$delta][$role_name];
       form_set_value($element, $value, $form_state);
+    } elseif ($index < 4) {
+      $form_state['values'][$field_name][$element['#language']][$delta][$role_name] = $person_id;
+      form_set_value($element, $person_id, $form_state);
     }
   }
 }
