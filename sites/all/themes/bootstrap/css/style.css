@@ -569,3 +569,15 @@ article.node-voer-module td, th { padding: .3em; border: 1px #999 solid; }
   box-shadow: none;
   padding: 0;
 }
+
+article.node-voer-module{}
+article.node-voer-module figure{
+  text-align: center;
+}
+article.node-voer-module figure figcaption{
+  font-size: 90%;
+  font-style: italic;
+}
+article.node-voer-module div.mtable td, article.node-voer-module div.mtable th{
+  border: none;
+}
