@@ -209,7 +209,16 @@ function voer_api_search_on_person($keyword = NULL, $page = 1){
   $params = array('kw' => $keyword, 'on' => 'p', 'page' => $page);
   $response = $voer->auth_request($url, "GET", $params);
   return json_decode($response);
- }
+}
+
+function voer_api_search_default($keyword = NULL, $page = 1)
+{
+  $voer = new VoerApi();
+  $url = VOER_API_COMMAND_SEARCH;
+  $params = array('kw' => $keyword, 'page' => $page);
+  $response = $voer->auth_request($url, "GET", $params);
+  return json_decode($response);
+}
 
 /*** BEGIN::CATEGORY ***/
 /**
