@@ -39,6 +39,14 @@
   </div>
 </header>
 
+<?php if (!empty($page['banner'])): ?>
+<div id="welcome" role="banner" >
+  <div class="container">
+    <?php print render($page['banner']); ?>
+  </div>
+</div>
+<?php endif; ?>
+
 <div class="main-container container">
 
   <header role="banner" id="page-header">

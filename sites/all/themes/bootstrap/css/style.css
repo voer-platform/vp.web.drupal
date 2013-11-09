@@ -10,6 +10,16 @@
   margin: 0;
 }
 
+#welcome{
+  background-color: #333;
+}
+#welcome div.container{
+  height: 250px;
+}
+#welcome div.region-banner{
+  height: 250px;
+  position: relative;
+}
 .submitted {
   margin-bottom: 1em;
   font-style: italic;
@@ -61,7 +71,7 @@ body.toolbar-drawer .navbar-fixed-top {
 
 @media(min-width: 980px) {
   body.toolbar {
-    padding-top: 94px !important;
+    padding-top: 70px !important;
   }
 
   body.toolbar-drawer {
@@ -235,6 +245,7 @@ e.g. multipage*/
 .navbar-inner{
   background-color: #C10C3E;
   background-image: none;
+  border: none;
 }
 
 .navbar .nav > li > a{
@@ -577,7 +588,44 @@ article.node-voer-module figure{
 article.node-voer-module figure figcaption{
   font-size: 90%;
   font-style: italic;
+  color: #777;
 }
 article.node-voer-module div.mtable td, article.node-voer-module div.mtable th{
   border: none;
+}
+#block-voer-search-voer-search-block{
+  position: absolute;
+  top: 110px;
+}
+#block-voer-search-voer-search-block input#edit-keyword{
+  border: 0 none;
+  border-radius: 1px;
+  box-shadow: 0 0 0 1px #555555 inset, 0 0 0 6px rgba(255, 255, 255, 0.5), 0 0 4px 6px rgba(0, 0, 0, 0.25);
+  font-size: 17px;
+  height: 30px;
+  margin: 0;
+  padding: 5px 6px 5px 9px;
+  width: 400px;
+}
+#block-voer-search-voer-search-block button{
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: rgba(0, 0, 0, 0);
+    border-color: -moz-use-text-color -moz-use-text-color -moz-use-text-color #555555;
+    border-image: none;
+    border-style: none none none solid;
+    border-width: medium medium medium 1px;
+    height: 34px;
+    position: absolute;
+    right: 0;
+    top: 3px;
+    width: 40px;
+}
+ul#outline-collection li.folder > a{
+  font-weight: bold;
+}
+ul#outline-collection li a.active{
+  color: #DD3333;
 }

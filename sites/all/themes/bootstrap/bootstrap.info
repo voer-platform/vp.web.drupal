@@ -3,6 +3,7 @@ description = Built to use Bootstrap, a sleek, intuitive, and powerful front-end
 core = 7.x
 regions[navigation]     = 'Navigation'
 regions[header]         = 'Top Bar'
+regions[banner]         = 'Banner'
 regions[highlighted]    = 'Highlighted'
 regions[help]           = 'Help'
 regions[content]        = 'Content'
