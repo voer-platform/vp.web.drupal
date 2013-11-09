@@ -42,6 +42,7 @@
 <?php if (!empty($page['banner'])): ?>
 <div id="welcome" role="banner" >
   <div class="container">
+    <h1 id="welcome-text">Take the world's best documents, online, for free.</h1>
     <?php print render($page['banner']); ?>
   </div>
 </div>

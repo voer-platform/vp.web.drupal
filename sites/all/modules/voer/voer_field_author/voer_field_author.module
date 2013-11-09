@@ -116,9 +116,15 @@ function voer_field_author_field_widget_form(&$form, &$form_state, $field, $inst
     $person_id = $user_data->field_person_id[LANGUAGE_NONE][0]['value'];
   } elseif (isset($user_data->field_person_id[0]['value'])) {
     $person_id = $user_data->field_person_id[0]['value'];
+  }else{
+    $person_id = "";
   }
 
-  $current_author = (array)voer_api_get_author($person_id);
+  if ($person_id != ""){
+    $current_author = (array)voer_api_get_author($person_id);
+  }else{
+    $current_author = null;
+  }
 
   $field_name = $field['field_name'];
 
@@ -174,7 +180,7 @@ function voer_field_author_field_widget_form(&$form, &$form_state, $field, $inst
       $row_data = array();
       $author_roles = array();
 
-      if (!isset($form['#node_edit_form']) || $form['#node_edit_form'] == FALSE) {
+      if ((!isset($form['#node_edit_form']) || $form['#node_edit_form'] == FALSE) && $current_author) {
         $row_data_tmp = array(
           l($current_author['fullname'], 'person/'.$current_author['id'], array('attributes' => array('target' => '_blank'))),
           l($current_author['user_id'], 'person/'.$current_author['id'], array('attributes' => array('target' => '_blank'))),

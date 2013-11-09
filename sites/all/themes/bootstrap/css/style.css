@@ -503,7 +503,7 @@ article.node-voer-module td, th { padding: .3em; border: 1px #999 solid; }
   display: inline-block;
 }
 #voer-search-form #edit-search{
-  margin-top: -10px;
+  margin-top: 0px;
 }
 #voer-search-form .input-append {
   margin-right: 10px;
@@ -595,7 +595,7 @@ article.node-voer-module div.mtable td, article.node-voer-module div.mtable th{
 }
 #block-voer-search-voer-search-block{
   position: absolute;
-  top: 110px;
+  top: 100px;
 }
 #block-voer-search-voer-search-block input#edit-keyword{
   border: 0 none;
@@ -618,6 +618,8 @@ article.node-voer-module div.mtable td, article.node-voer-module div.mtable th{
     border-style: none none none solid;
     border-width: medium medium medium 1px;
     height: 34px;
+    border-radius: 0px;
+    background-image: none;
     position: absolute;
     right: 0;
     top: 3px;
@@ -627,5 +629,11 @@ ul#outline-collection li.folder > a{
   font-weight: bold;
 }
 ul#outline-collection li a.active{
-  color: #DD3333;
+  color: #EE7700;
+}
+h1#welcome-text{
+  position: absolute;
+  margin-top: 30px;
+  text-shadow: 0 0 24px rgba(0, 0, 0, 0.5), 0 0 64px rgba(0, 0, 0, 0.25), 0 2px rgba(0, 0, 0, 0.75);
+  color: #FFF;
 }

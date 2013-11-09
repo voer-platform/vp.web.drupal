@@ -68,9 +68,8 @@ function voer_search_form(){
   $form['search'] = array(
     '#type' => 'submit',
     '#weight' => 10,
-    '#value' => t('Search'),
+    '#value' => "<i class='icon-search'></i>",
     '#attributes' => array(
-      'class' => array('icon-search'),
     ),
   );
 

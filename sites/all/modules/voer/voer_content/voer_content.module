@@ -209,36 +209,39 @@ function voer_content_preprocess_node(&$variables){
 
     if (arg(1) != 'all') {
       $node = node_load(arg(1));
-      $outline = $node->field_voer_outline[$node->language][0]['value'];
-      $outline = json_decode($outline);
-      // dpm($outline);
-      if ($node->type == 'voer_collection' && isset($outline->content)) {
-        $navFlat = array();
-        _get_collection_navigation($outline->content, $navFlat);
-        // dpm($navFlat);
-        if (isset($variables['field_voer_material_id'][LANGUAGE_NONE])){
-          $current_module_id = $variables['field_voer_material_id'][LANGUAGE_NONE][0]['value'];
-        }else{
-          $current_module_id = $variables['field_voer_material_id'][0]['value'];
-        }
-        // dpm($variables);
-        $navigation['home_url'] = l(t('Home'), 'collection/' . arg(1));
+      if ($node->type == 'voer_collection'){
+        $outline = $node->field_voer_outline[$node->language][0]['value'];
+        $outline = json_decode($outline);
+        // dpm($outline);
+        if (isset($outline->content)) {
+          $navFlat = array();
+          _get_collection_navigation($outline->content, $navFlat);
+          // dpm($navFlat);
+          if (isset($variables['field_voer_material_id'][LANGUAGE_NONE])){
+            $current_module_id = $variables['field_voer_material_id'][LANGUAGE_NONE][0]['value'];
+          }else{
+            $current_module_id = $variables['field_voer_material_id'][0]['value'];
+          }
+          // dpm($variables);
+          $navigation['home_url'] = l(t('Home'), 'collection/' . arg(1));
 
-        if ($navFlat[0] == $current_module_id) {
-          $navigation['next_url'] = l(t('Next →'), 'collection/' . arg(1) . "/" . $navFlat[1]);
-        } else {
-          $pos = array_search($current_module_id, $navFlat);
-          if (isset($navFlat[$pos-1])) {
-            $navigation['prev_url'] = l(t('← Prev'), 'collection/' . arg(1) . "/" . $navFlat[$pos-1]);
+          if ($navFlat[0] == $current_module_id) {
+            $navigation['next_url'] = l(t('Next →'), 'collection/' . arg(1) . "/" . $navFlat[1]);
+          } else {
+            $pos = array_search($current_module_id, $navFlat);
+            if (isset($navFlat[$pos-1])) {
+              $navigation['prev_url'] = l(t('← Prev'), 'collection/' . arg(1) . "/" . $navFlat[$pos-1]);
+            }
+
+            if (isset($navFlat[$pos+1])) {
+              $navigation['next_url'] = l(t('Next →'), 'collection/' . arg(1) . "/" . $navFlat[$pos+1]);
+            }
           }
 
-          if (isset($navFlat[$pos+1])) {
-            $navigation['next_url'] = l(t('Next →'), 'collection/' . arg(1) . "/" . $navFlat[$pos+1]);
-          }
+          $variables['navigation'] = $navigation;
         }
-
-        $variables['navigation'] = $navigation;
       }
+
     }
   }
 }
@@ -391,7 +394,7 @@ function voer_content_module_form_alter(&$form, &$form_state, $form_id){
       '#submit' => array('voer_content_form_push__'),
     );
 
-    unset($form['actions']['submit']);
+    // unset($form['actions']['submit']);
     unset($form['actions']['preview']);
   }
 }
