@@ -47,30 +47,30 @@ function voer_search_form(){
   $form['keyword'] = array(
     '#type' => 'textfield',
     '#weight' => 0,
-    '#prefix' => '<div class="input-append">',
-    '#suffix' => '<button class="btn btn-primary" type="submit" name="op">'.t('Search').'</button></div>',
+    // '#prefix' => '<div class="input-append">',
+    //'#suffix' => '<button class="icon-search" type="submit" name="op">'.t('Search').'</button></div>',
     '#attributes' => array(
       'class' => array('input-xxlarge'),
       'placeholder' => t('Please enter something'),
     ),
   );
 
-  $form['search_on'] = array(
-    '#type' => 'select',
-    '#options' => array(VOER_SEARCH_TYPE_CONTENT => 'Content', VOER_SEARCH_TYPE_AUTHOR => 'Author'),
-    '#default_value' => VOER_SEARCH_TYPE_CONTENT,
-    '#required' => TRUE,
-    '#attributes' => array(
-      'class' => array('search-on-select'),
-    ),
-  );
+  // $form['search_on'] = array(
+  //   '#type' => 'select',
+  //   '#options' => array(VOER_SEARCH_TYPE_CONTENT => 'Content', VOER_SEARCH_TYPE_AUTHOR => 'Author'),
+  //   '#default_value' => VOER_SEARCH_TYPE_CONTENT,
+  //   '#required' => TRUE,
+  //   '#attributes' => array(
+  //     'class' => array('search-on-select'),
+  //   ),
+  // );
 
   $form['search'] = array(
     '#type' => 'submit',
     '#weight' => 10,
     '#value' => t('Search'),
     '#attributes' => array(
-      'style' => 'display: none;',
+      'class' => array('icon-search'),
     ),
   );
 
