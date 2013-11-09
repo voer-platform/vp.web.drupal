@@ -56,6 +56,8 @@ function voer_collection_ui_block_view($delta=''){
 }
 
 function voer_collection_outline_block_view(){
+  drupal_add_js(drupal_get_path('module', 'voer_collection_ui') .'/js/outline.js');
+
   $current_path = isset($_GET['q']) ? $_GET['q'] : "";
   $params = explode("/", $current_path);
   if ($params[0] == "node" || $params[0] == "collection"){
@@ -69,7 +71,7 @@ function voer_collection_outline_block_view(){
           foreach ($outline->content as $item){
             $items[] = _walk_through($item, $node->nid);
           }
-          return theme('item_list', array("items" => $items, 'attributes' => array('class' => 'nav nav-list')));
+          return theme('item_list', array("items" => $items, 'attributes' => array('id' => 'outline-collection', 'class' => 'nav nav-list')));
         }
       }
     }
