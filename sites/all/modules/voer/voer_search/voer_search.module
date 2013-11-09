@@ -95,7 +95,7 @@ function ajax_search_module_page(){
   $keyword = $_POST['keyword'];
   $collection_selected = json_decode($_POST['collection_selected']);
   $collection_flat = array();
-  _get_collection_flat($collection_selected, $collection_flat);
+  _get_collection_flat($collection_selected[0]->children, $collection_flat);
   $page = isset($_POST['page']) ? $_POST['page'] : 1;
 
   module_load_include('inc', 'voer_api');
