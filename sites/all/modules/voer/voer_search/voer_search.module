@@ -43,6 +43,11 @@ function voer_search_block_view($delta='') {
 }
 
 function voer_search_form(){
+  $default_value = '';
+  if (arg(0) == 's' && arg(1)) {
+    $default_value = arg(1);
+  }
+
   $form = array();
   $form['keyword'] = array(
     '#type' => 'textfield',
@@ -52,6 +57,7 @@ function voer_search_form(){
     '#attributes' => array(
       'class' => array('input-xxlarge'),
       'placeholder' => t('Please enter something'),
+      'value' => $default_value,
     ),
   );
 
