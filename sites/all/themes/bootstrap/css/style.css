@@ -87,11 +87,11 @@ body.toolbar-drawer .navbar-fixed-top {
 
 @media(min-width: 980px) {
   body.toolbar {
-    padding-top: 70px !important;
+    padding-top: 0px !important;
   }
 
   body.toolbar-drawer {
-    padding-top: 129px !important;
+    padding-top: 66px !important;
   }
 }
 
