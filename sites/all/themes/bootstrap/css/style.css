@@ -19,7 +19,13 @@
 }
 
 #welcome{
+  color:#000;
+}
+.banner01{
   background: url(../images/banner01.jpg) no-repeat center center #000;
+}
+.banner02{
+  background: url(../images/banner02.jpg) no-repeat center center #000;
 }
 #welcome div.container{
   height: 250px;

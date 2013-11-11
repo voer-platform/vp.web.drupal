@@ -40,7 +40,7 @@
 </header>
 
 <?php if (!empty($page['banner'])): ?>
-<div id="welcome" role="banner" >
+<div id="welcome" role="banner" class="banner0<?php print rand(1,2); ?>" >
   <div class="container">
     <h1 id="welcome-text">Take the world's best documents, online, for free.</h1>
     <?php print render($page['banner']); ?>
