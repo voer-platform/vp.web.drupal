@@ -93,7 +93,7 @@ body.toolbar-drawer .navbar-fixed-top {
 
 @media(min-width: 980px) {
   body.toolbar {
-    padding-top: 0px !important;
+    padding-top: 30px !important;
   }
 
   body.toolbar-drawer {
@@ -661,4 +661,20 @@ h1#welcome-text{
 }
 div.math table td{
   border: 0px;
+}
+div.features{}
+div.features ul{
+  margin: 0px;
+}
+div.features ul li{
+  list-style: none;
+  display: inline-block;
+  width: 360px;
+  margin: 0 30px 20px 0;
+}
+div.features ul li:nth-of-type(3n){
+  margin-right: 0px;
+}
+div.features ul li img{
+  box-shadow: 0 0 3px 0 #555555;;
 }
