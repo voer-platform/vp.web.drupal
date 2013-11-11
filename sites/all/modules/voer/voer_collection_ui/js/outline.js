@@ -11,13 +11,16 @@
             while(el.attr('id') != 'outline-collection' ){
                 if (el.is('div')){
                     el.show();
+                    el.parent().addClass('open');
                 }
                 el = el.parent();
             }
         }
     });
     jQuery('ul#outline-collection li.folder > a').click(function() {
-        $(this).parent().find('div').slideToggle();
+        $(this).parent().find('div').slideToggle("quick", function(){
+            $(this).parent().toggleClass('open', $(this).is(':visible'));
+        });
         return false;
     });
 })(jQuery);
