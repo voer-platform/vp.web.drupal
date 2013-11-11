@@ -659,3 +659,6 @@ h1#welcome-text{
   text-shadow: 0 0 24px rgba(0, 0, 0, 0.5), 0 0 64px rgba(0, 0, 0, 0.25), 0 2px rgba(0, 0, 0, 0.75);
   color: #FFF;
 }
+div.math table td{
+  border: 0px;
+}
