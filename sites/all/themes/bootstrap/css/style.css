@@ -678,3 +678,7 @@ div.features ul li:nth-of-type(3n){
 div.features ul li img{
   box-shadow: 0 0 3px 0 #555555;;
 }
+#outline-collection > li.folder > a {
+  background: url("../images/bullet-w2.png") no-repeat scroll 0 10px rgba(0, 0, 0, 0);
+  padding-left: 8px;
+}
