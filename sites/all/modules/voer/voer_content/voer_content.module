@@ -74,7 +74,7 @@ function voer_module_view_node($node){
       }
     }
   }else{
-    $result = node_access("update", $node);
+    $result = node_access("view", $node);
     return $result;
   }
 }
