@@ -1,8 +1,16 @@
 
 @media(min-width: 980px) {
   body {
-    padding-top: 60px;
+    /*padding-top: 60px;*/
   }
+}
+
+.voer-navbar{
+  margin-bottom: 0px;
+}
+
+.voer-navbar .navbar-inner{
+  border-radius: 0px;
 }
 
 #site-name {
@@ -11,15 +19,23 @@
 }
 
 #welcome{
-  background-color: #333;
+  background: url(../images/banner01.jpg) no-repeat center center #000;
 }
 #welcome div.container{
   height: 250px;
+  -webkit-box-shadow: inset 0px 0px 55px 21px rgba(0,0,0,1);
+  -moz-box-shadow: inset 0px 0px 55px 21px rgba(0,0,0,1);
+  box-shadow: inset 0px 0px 55px 21px rgba(0,0,0,1);
 }
 #welcome div.region-banner{
   height: 250px;
   position: relative;
 }
+
+.main-container.container {
+    margin-top: 40px;
+}
+
 .submitted {
   margin-bottom: 1em;
   font-style: italic;
