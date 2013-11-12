@@ -698,9 +698,10 @@ div.features ul{
 }
 div.features ul li{
   list-style: none;
-  display: inline-block;
+  float: left;
   width: 360px;
   margin: 0 30px 20px 0;
+  height: 230px;
 }
 div.features ul li:nth-of-type(3n){
   margin-right: 0px;
@@ -708,6 +709,22 @@ div.features ul li:nth-of-type(3n){
 div.features ul li img{
   box-shadow: 0 0 3px 0 #555555;;
 }
+div.features ul li img:hover{
+  box-shadow: 0 0 3px 1px #C10C3E;
+  opacity: 0.8;
+}
+div.features ul li h3{
+  font-size: 17px;
+  line-height: 1.2em;
+  max-height: 2.4em;
+  overflow: hidden;
+  margin: 10px 0px 5px;
+}
+div.features ul li span.categories a{
+  color: #555;
+}
+
+
 #outline-collection > li.folder > a {
   background: url("../images/bullet-w2.png") no-repeat scroll 0 10px rgba(0, 0, 0, 0);
   padding-left: 8px;
