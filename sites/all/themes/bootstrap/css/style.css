@@ -512,9 +512,23 @@ ul.inline li.node-readmore {
 /* Style diplay node detail */
 article.node-voer-module p{
   text-align: justify;
+  margin: 10px 0px;
 }
 article.node-voer-module table { margin: 1em 0; border-collapse: collapse; }
 article.node-voer-module td, th { padding: .3em; border: 1px #999 solid; }
+article.node-voer-module .note{
+  background-color: #FBF2E2;
+  padding: 10px;
+}
+article.node-voer-module .note .title{
+  color: #0061AA;
+  line-height: 2;
+  text-decoration: underline;
+  text-transform: uppercase;
+}
+article.node-voer-module .math{
+  font-size: 18px;
+}
 
 
 /* SEARCH BOX */
