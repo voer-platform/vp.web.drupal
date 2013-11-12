@@ -534,6 +534,17 @@ article.node-voer-module .note .title{
 article.node-voer-module .math{
   font-size: 18px;
 }
+article.node-voer-module .example{
+  background-color:#F1F6E6;
+  border-top: 2px solid #FAA61A ;
+  padding: 10px;
+  margin: 20px 0px;
+}
+article.node-voer-module .example .title{
+  font-weight: bold;
+  font-size: 110%;
+  color: #0061AA;
+}
 
 
 /* SEARCH BOX */
