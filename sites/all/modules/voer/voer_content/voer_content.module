@@ -58,6 +58,17 @@ function voer_content_menu_alter(&$items) {
 
   $items['node/%node']['access callback'] = 'voer_module_view_node';
   $items['node/%node']['access arguments'] = array(1);
+  $items['node/%node']['page callback'] = 'voer_content_view';
+  $items['node/%node']['page arguments'] = array(1);
+}
+
+function voer_content_view($node){
+  if ($node->type == 'voer_collection'){
+    drupal_goto('collection/' . $node->nid);
+    //return show_collection($node);
+  }else{
+    return node_page_view($node);
+  }
 }
 
 function voer_module_view_node($node){
