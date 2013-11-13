@@ -22,7 +22,7 @@ function voer_batch_import_permission() {
 
 function voer_batch_import_menu(){
   $items['import/batch'] = array(
-    'title' => t('Import modules'),
+    'title' => t('Create modules'),
     'page callback' => 'voer_content_batch_import',
     'access arguments' => array('access batch import'),
   );
