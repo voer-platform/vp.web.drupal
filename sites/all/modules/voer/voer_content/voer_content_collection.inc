@@ -200,7 +200,7 @@ function voer_collection_creation_wizard_next_submit($form, &$form_state) {
  * @ingroup form_example
  */
 function voer_collection_license_info($form, &$form_state, $entity) {
-  drupal_set_title(t('Create a collection: Step 1/3 - License'));
+  drupal_set_title(t('Create a collection: Step 1/3 - License agreement'));
 
   $form = array();
   $form['voer_content_entity'] = array(
