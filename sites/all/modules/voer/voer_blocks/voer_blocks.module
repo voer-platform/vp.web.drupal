@@ -34,6 +34,10 @@ function voer_blocks_block_info(){
     'info' => t('VOER - Featured authors'),
   );
 
+  $blocks['voer_statistics'] = array(
+    'info' => t('VOER - Statistics'),
+  );
+
   return $blocks;
 }
 
@@ -64,6 +68,9 @@ function voer_blocks_block_view($delta='') {
       break;
     case 'voer_featured_author_block' :
       $block['content'] = voer_featured_authors_block_view($delta);
+      break;
+    case 'voer_statistics' :
+      $block['content'] = voer_statistics($delta);
       break;
   }
 
@@ -359,4 +366,18 @@ function voer_blocks_theme($existing, $type, $theme, $path) {
       'template' => 'templates/block--voer-featured-author--view',
     ),
   );
+}
+
+function voer_statistics($delta = '')
+{
+  module_load_include('inc', 'voer_api');
+  $module_list = voer_api_get_all_materials();
+  $collection_list = voer_api_get_all_materials(VOER_MATERIAL_TYPE_COLLECTION);
+  $author_list = voer_api_get_all_authors();
+
+  $output = '<h3>'. $module_list->count .' collections</h3>';
+  $output .= '<h3>'. $collection_list->count .' modules</h3>';
+  $output .= '<h3>'. $author_list->count .' authors</h3>';
+
+  return $output;
 }
