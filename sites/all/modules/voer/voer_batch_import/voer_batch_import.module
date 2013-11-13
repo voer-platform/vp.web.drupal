@@ -151,13 +151,18 @@ function voer_content_batch_import_form($form, &$form_state){
     '#attributes' => array('id' => 'file_upload'),
   );
 
+  // $form['import'] = array(
+  //   '#type' => 'markup',
+  //   '#prefix' => '<div><a href="javascript:jQuery(\'#file_upload\').uploadify(\'upload\')" class="btn">Import</a></div>',
+  //   '#weight' => 100,
+  // );
 
   $form['finish'] = array(
     '#type' => 'button',
     '#value' => t('Import'),
     '#weight' => 1001,
     '#attributes' => array(
-      'onclick' => "javascript:jQuery('#file_upload').uploadify('upload');return false;",
+      'onclick' => "javascript:jQuery('#file_upload').uploadify('upload','*');return false;",
     ),
   );
   return $form;
