@@ -720,6 +720,14 @@ div.features ul li h3{
   overflow: hidden;
   margin: 10px 0px 5px;
 }
+div.features ul li h3.voer_module {
+  background: url("../images/document-16.png") no-repeat scroll left 2px rgba(0, 0, 0, 0);
+  padding-left: 20px;
+}
+div.features ul li h3.voer_collection {
+  background: url("../images/ebook-16.png") no-repeat scroll left 2px rgba(0, 0, 0, 0);
+  padding-left: 20px;
+}
 div.features ul li span.categories a{
   color: #555;
 }
