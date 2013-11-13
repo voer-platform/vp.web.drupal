@@ -85,7 +85,8 @@ function show_materials_by_category($category){
         $nodes[] = $node;
       }
       $output = node_view_multiple($nodes);
-      $output['pager'] = array('#markup' => theme('pager'));
+      $args = array('tags' => array('<<','<','','>','>>'));
+      $output['pager'] = array('#markup' => theme('pager', $args));
       return $output;// . theme('pager');
     }
   } catch (Exception $e) {

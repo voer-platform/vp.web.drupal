@@ -124,7 +124,8 @@ function show_collection_list_page() {
         $nodes[] = $node;
       }
       $output = node_view_multiple($nodes);
-      $output['pager'] = array('#markup' => theme('pager'));
+      $args = array('tags' => array('<<','<','','>','>>'));
+      $output['pager'] = array('#markup' => theme('pager', $args));
       return $output;
     }
   } catch (Exception $e) {

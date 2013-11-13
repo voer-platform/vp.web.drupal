@@ -210,7 +210,8 @@ function show_materials_result($keyword){
         $nodes[] = $node;
       }
       $output = node_view_multiple($nodes);
-      $output['pager'] = array('#markup' => theme('pager'));
+      $args = array('tags' => array('<<','<','','>','>>'));
+      $output['pager'] = array('#markup' => theme('pager', $args));
       return $output;
     }
   } catch (Exception $e) {
@@ -249,7 +250,8 @@ function search_by_author($keyword) {
         $nodes[] = $node;
       }
       $output = node_view_multiple($nodes);
-      $output['pager'] = array('#markup' => theme('pager'));
+      $args = array('tags' => array('<<','<','','>','>>'));
+      $output['pager'] = array('#markup' => theme('pager', $args));
       return $output;
     }
   } catch (Exception $e) {
@@ -317,7 +319,8 @@ function search_data_all($keyword)
       }
 
       $output = node_view_multiple($nodes);
-      $output['pager'] = array('#markup' => theme('pager'));
+      $args = array('tags' => array('<<','<','','>','>>'));
+      $output['pager'] = array('#markup' => theme('pager', $args));
       return $output;
     }
   } catch (Exception $e) {
