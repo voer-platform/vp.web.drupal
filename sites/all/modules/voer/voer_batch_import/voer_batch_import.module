@@ -1,0 +1,164 @@
+<?php
+
+/**
+ * Implements hook_admin_paths
+ * @return [type] [description]
+ */
+function voer_batch_import_admin_paths(){
+  $paths = array(
+    'import/batch' => TRUE
+  );
+  return $paths;
+}
+
+function voer_batch_import_permission() {
+  return array(
+    'access batch import' => array(
+      'title' => t('Access batch import'),
+      'description' => t('Allow users to access batch import'),
+    ),
+  );
+}
+
+function voer_batch_import_menu(){
+  $items['import/batch'] = array(
+    'title' => t('Import modules'),
+    'page callback' => 'voer_content_batch_import',
+    'access arguments' => array('access batch import'),
+  );
+
+  $items['import/handler'] = array(
+    'page callback' => 'voer_content_batch_import_handler',
+    'access arguments' => array('access content'),
+  );
+
+  return $items;
+}
+
+function voer_content_batch_import_handler(){
+  // Define a destination
+  $targetFolder = 'public://import-result'; // Relative to the root
+
+  // $verifyToken = md5('unique_salt' . $_POST['timestamp']);
+
+  if (!empty($_FILES)) {
+    $tempFile = $_FILES['Filedata']['tmp_name'];
+    // $targetPath = $_SERVER['DOCUMENT_ROOT'] . $targetFolder;
+    $targetPath = $targetFolder;
+    $targetFile = rtrim($targetPath,'/') . '/' . $_FILES['Filedata']['name'];
+
+    // Validate the file type
+    $fileTypes = array('doc','docx'); // File extensions
+    $fileParts = pathinfo($_FILES['Filedata']['name']);
+    if (in_array($fileParts['extension'],$fileTypes)) {
+      if (move_uploaded_file($tempFile,$targetFile)){
+        module_load_include('inc', 'voer_api');
+        $realpath = drupal_realpath($targetFile);
+        $zipContent = voer_api_import($realpath);
+        // Luu ra thu muc import-result
+        $uniqueFilename = md5($fileParts['filename'] . microtime());
+        $zipFile = file_unmanaged_save_data($zipContent, "public://import-result/" . $uniqueFilename . ".zip", FILE_EXISTS_RENAME);
+
+        //Unzip it
+        $realZipFile = drupal_realpath($zipFile);
+        $parentDir = dirname($realZipFile);
+        // drupal_set_message('Zip file: '. $realZipFile);
+        // drupal_set_message('Dir path: '. $parentDir);
+        $unzipDir = $parentDir . "/" . $uniqueFilename;
+        // drupal_set_message('Dir path: '. $unzipDir);
+        $zip = new ZipArchive;
+        $res = $zip->open($realZipFile);
+        if ($res === TRUE) {
+            $zip->extractTo($unzipDir);
+            $zip->close();
+        }
+
+        if (file_exists($unzipDir . '/index.html')){
+            $importContent = file_get_contents($unzipDir . '/index.html');
+            $importContent = preg_replace('/<img src="([^"]*)"/', '<img src="/sites/default/files/import-result/' . $uniqueFilename . '/$1"', $importContent);
+        }
+
+        voer_content_batch_create(array(
+          'title' => $fileParts['filename'],
+          'content' => $importContent
+        ));
+
+      }
+      echo '1';
+    } else {
+      echo 'Invalid file type.';
+    }
+  }
+  //drupal_exit();
+}
+
+function voer_content_batch_create($n){
+  module_load_include('inc', 'voer_content');
+  $node = new stdClass();
+  $node->type = 'voer_module';
+  node_object_prepare($node);
+  $node->uid = $_POST['uid'];
+  $node->created = strtotime("now");
+  $node->changed = strtotime("now");
+  $node->promote = 0;
+  $node->comment = 0;
+  $node->language = LANGUAGE_NONE;
+  $node->status = FALSE;
+  $node->field_voer_material_type[$node->language][0]['value'] = "1";
+  $node->title = $n['title'];
+  $node->body[$node->language][0]['value'] = $n['content'];
+  $node->body[$node->language][0]['format'] = 'full_html';
+  // $node->field_voer_keywords[$node->language][0]['value'] = "";
+  $node->field_voer_language[$node->language][0]['value'] = "vn";
+  // $node->field_voer_description[$node->language][0]['value'] = "";
+  // $node->field_voer_categories[$node->language][0]['value'] = "";
+  // $node->field_voer_authors = $form_state['values']['field_voer_authors'];
+  // $result = publish_module($node);
+  node_save($node);
+}
+
+function voer_content_batch_import(){
+  return drupal_get_form('voer_content_batch_import_form');
+}
+
+function voer_content_batch_import_form($form, &$form_state){
+  global $user;
+
+  $form = array();
+
+  drupal_add_js(array('voer_import' => array('uid' => $user->uid)), 'setting');
+
+  $form += array(
+    '#type' => 'container',
+    '#attributes' => array("id" => "voer-batch-import"),
+    '#attached' => array(
+      'css' => array(drupal_get_path('module', 'voer_batch_import') . '/uploadify/uploadify.css'),
+      'js' => array(
+                drupal_get_path('module', 'voer_batch_import') . '/uploadify/jquery.uploadify.js',
+                drupal_get_path('module', 'voer_batch_import') . '/js/main.js',
+              ),
+    ),
+  );
+
+  $form['upload'] = array(
+    '#name' => '',
+    '#type' => 'file',
+    '#title' => t('Choose file(s)'),
+    '#title_display' => 'invisible',
+    '#size' => 22,
+    '#theme_wrappers' => array(),
+    '#weight' => -10,
+    '#attributes' => array('id' => 'file_upload'),
+  );
+
+
+  $form['finish'] = array(
+    '#type' => 'button',
+    '#value' => t('Import'),
+    '#weight' => 1001,
+    '#attributes' => array(
+      'onclick' => "javascript:jQuery('#file_upload').uploadify('upload');return false;",
+    ),
+  );
+  return $form;
+}

@@ -1,0 +1,6 @@
+name = VOER Batch Import
+description = Allow import mass document files into modules.
+core = 7.x
+package = VOER
+dependencies[] = voer_api
+files[] = voer_batch_import.module

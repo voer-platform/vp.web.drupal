@@ -37,7 +37,7 @@ class VoerTransformer{
     // print $this->clientId;
     if (file_exists($file)){
       $fileinfo = pathinfo($file);
-      $fileform = '@' . $file . ';filename=' . $fileinfo['filename'];
+      $fileform = '@' . $file . ';filename=' . md5($fileinfo['filename']);
       $_client = $this->client;
 
       return $_client->doPost(VOER_TRANSFORMER_IMPORT, array(
