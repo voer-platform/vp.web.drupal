@@ -118,6 +118,14 @@ function voer_content_batch_create($n){
 }
 
 function voer_content_batch_import(){
+  // Build Breadcrumbs
+  $breadcrumb = array();
+  $breadcrumb[] = l('Dashboard', 'admin/dashboard');
+  $breadcrumb[] = l('Create modules', 'import/batch');
+
+  // Set Breadcrumbs
+  drupal_set_breadcrumb($breadcrumb);
+
   return drupal_get_form('voer_content_batch_import_form');
 }
 
@@ -151,12 +159,6 @@ function voer_content_batch_import_form($form, &$form_state){
     '#attributes' => array('id' => 'file_upload'),
   );
 
-  // $form['import'] = array(
-  //   '#type' => 'markup',
-  //   '#prefix' => '<div><a href="javascript:jQuery(\'#file_upload\').uploadify(\'upload\')" class="btn">Import</a></div>',
-  //   '#weight' => 100,
-  // );
-
   $form['finish'] = array(
     '#type' => 'button',
     '#value' => t('Import'),
@@ -165,5 +167,12 @@ function voer_content_batch_import_form($form, &$form_state){
       'onclick' => "javascript:jQuery('#file_upload').uploadify('upload','*');return false;",
     ),
   );
+
+  $form['result'] = array(
+    '#type' => 'markup',
+    '#prefix' => '<div id="batch-import-result"></div>',
+    '#weight' => 100,
+  );
+
   return $form;
 }

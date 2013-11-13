@@ -10,7 +10,11 @@
                 'fileTypeDesc' : 'Document Files',
                 'fileTypeExts' : '*.doc; *.docx',
                 'swf'      : '/sites/all/modules/voer/voer_batch_import/uploadify/uploadify.swf',
-                'uploader' : '/import/handler'
+                'uploader' : '/import/handler',
+                'onQueueComplete' : function(queueData) {
+                    // alert(queueData.uploadsSuccessful + ' files were successfully uploaded.');
+                    window.location.href='/#overlay=admin/dashboard';
+                }
             });
         }
     };
