@@ -1139,3 +1139,11 @@ html.js input.throbbing {
 #user-filter-form #edit-actions {
   background: transparent;
 }
+div.view-v-recent-posts table tr td.voer_module a {
+  background: url("../images/document-16.png") no-repeat scroll left 2px rgba(0, 0, 0, 0);
+  padding-left: 20px;
+}
+div.view-v-recent-posts table tr td.voer_collection a {
+  background: url("../images/ebook-16.png") no-repeat scroll left 2px rgba(0, 0, 0, 0);
+  padding-left: 20px;
+}

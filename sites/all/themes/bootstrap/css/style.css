@@ -741,3 +741,14 @@ div.features ul li span.categories a{
   background: url("../images/bullet-w3.png") no-repeat scroll 0 10px rgba(0, 0, 0, 0);
   padding-left: 8px;
 }
+#block-voer-blocks-voer-statistics {
+  position: absolute;
+  top: 155px;
+}
+#block-voer-blocks-voer-statistics h3 {
+  color: #FFFFFF;
+  font-size: 19px;
+  font-weight: normal;
+  line-height: 20px;
+  margin: 7px 0;
+}
