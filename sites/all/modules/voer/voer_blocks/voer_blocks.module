@@ -375,8 +375,8 @@ function voer_statistics($delta = '')
   $collection_list = voer_api_get_all_materials(VOER_MATERIAL_TYPE_COLLECTION);
   $author_list = voer_api_get_all_authors();
 
-  $output = '<h3><span>'. $module_list->count .'</span> collections</h3>';
-  $output .= '<h3><span>'. $collection_list->count .'</span> modules</h3>';
+  $output = '<h3><span>'. $module_list->count .'</span> modules</h3>';
+  $output .= '<h3><span>'. $collection_list->count .'</span> collections</h3>';
   $output .= '<h3><span>'. $author_list->count .'</span> authors</h3>';
 
   return $output;
