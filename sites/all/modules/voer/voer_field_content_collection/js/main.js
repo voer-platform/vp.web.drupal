@@ -64,7 +64,7 @@ Drupal.behaviors.voer_field_content_collection = {
                     $("#voer_module_search_result input[type=checkbox]:checked").map(function(){
                         if (!$(this).attr('disabled')) {
                             var id = $(this).val();
-                            var title = $(this).parent().text().trim();
+                            var title = $(this).parent().find('.voer-content-title').text().trim();
                             var parentNode = -1;
                             if ($("#collection-outline").jstree("get_selected")){
                                 if ($("#collection-outline").jstree("get_selected").length > 1){

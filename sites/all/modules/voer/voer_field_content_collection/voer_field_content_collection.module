@@ -177,8 +177,8 @@ function voer_field_content_collection_field_widget_form(&$form, &$form_state, $
         '#type' => 'markup',
         '#prefix' => '<div id="add_folder_form">
                         <div id="add_folder_form_header">
-                            <h2>'.t('Create new subsessions').'</h2>
-                            <p>'.t('Enter one per line').'</p>
+                            <h2>'.t('Create new subsection').'</h2>
+                            <p>'.t('Enter a subsection per line').'</p>
                             <a href="#" class="modal_close"></a>
                         </div>
 

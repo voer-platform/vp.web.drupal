@@ -113,13 +113,11 @@ function ajax_search_module_page(){
   $material_list = array();
 
   if ($materials->count > 0) {
-    foreach ($materials->results as $material) {
-      $material_list[$material->material_id . "|" . $material->version] = $material->title;
-    }
-
     $result = array();
     $i = 0;
-    foreach ($material_list as $material_id => $material_name) {
+    foreach ($materials->results as $material) {
+      $material_name = l($material->title, 'm/'.$material->material_id, array('attributes' => array('target' => '_blank', 'class' => 'voer-content-title')));
+
       $author_array = array();
       if ($materials->results[$i]->author) {
         $author_array = explode(',', $materials->results[$i]->author);
@@ -142,8 +140,10 @@ function ajax_search_module_page(){
       $author_list_name = rtrim($author_list_name, ', ');
 
       if ($author_list_name) {
-        $material_name .= ' - ' . t('Author(s): ') . $author_list_name;
+        $material_name .= ' | ' . t('Author(s): ') . $author_list_name;
       }
+
+      $material_id = $material->material_id . "|" . $material->version;
 
       $material_item = array(
         '#title' => $material_name,
