@@ -133,6 +133,7 @@ function voer_field_content_collection_field_widget_form(&$form, &$form_state, $
                     drupal_get_path('module', 'voer_field_content_collection') . '/js/jquery.jstree.js',
                     drupal_get_path('module', 'voer_field_content_collection') . '/js/jquery.cookie.js',
                     drupal_get_path('module', 'voer_field_content_collection') . '/js/jquery.hotkeys.js',
+                    drupal_get_path('module', 'voer_field_content_collection') . '/js/jquery.leanModal.min.js',
                     drupal_get_path('module', 'voer_field_content_collection') . '/js/main.js'
                   ),
         ),
@@ -140,8 +141,9 @@ function voer_field_content_collection_field_widget_form(&$form, &$form_state, $
 
       $widget['actions'] = array('#type' => 'actions', '#weight' => 0, '#attributes' => array('id' => 'outline-actions'));
       $widget['actions']['add_folder'] = array(
-        '#type' => 'button',
-        '#attributes' => array('id' => 'add_folder'),
+        '#type' => 'html_tag',
+        '#tag' => 'a',
+        '#attributes' => array('id' => 'add_folder', 'href' => '#add_folder_form', 'rel' => 'leanModal', 'class' => 'button'),
         '#value' => t('Create section'),
       );
       $widget['actions']['add_module'] = array(
@@ -168,6 +170,28 @@ function voer_field_content_collection_field_widget_form(&$form, &$form_state, $
       $widget['outline'] = array(
         '#type' => 'markup',
         '#prefix' => '<div id="collection-outline" class="demo" style="height:300px;"></div>',
+        '#weight' => -1,
+      );
+
+      $widget['add_folder_form'] = array(
+        '#type' => 'markup',
+        '#prefix' => '<div id="add_folder_form">
+                        <div id="add_folder_form_header">
+                            <h2>'.t('Create new subsessions').'</h2>
+                            <p>'.t('Enter one per line').'</p>
+                            <a href="#" class="modal_close"></a>
+                        </div>
+
+                        <form action="">
+                            <div class="txt-fld">
+                              <textarea name="sub_session" id="voer_sub_sessions"></textarea>
+                            </div>
+                            <div class="btn-fld">
+                                <button id="btn_add_folder" type="submit">'.t('Create').'</button>
+                            </div>
+                        </form>
+                      </div>
+        ',
         '#weight' => -1,
       );
 

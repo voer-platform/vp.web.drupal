@@ -83,22 +83,6 @@ Drupal.behaviors.voer_field_content_collection = {
                         }
                     });
                     break;
-                case "add_folder":
-                    var parentNode = -1;
-                    if ($("#collection-outline").jstree("get_selected")){
-                        if ($("#collection-outline").jstree("get_selected").length > 1){
-                            parentNode = $('ul>li#root-outline');
-                        }else{
-                            var selected = $("#collection-outline").jstree("get_selected");
-                            if (selected.attr("rel") == "bundle" || selected.attr("rel") == "root"){
-                                parentNode = null;
-                            }else{
-                                parentNode = $('ul>li#root-outline');
-                            }
-                        }
-                    }
-                    $("#collection-outline").jstree("create", parentNode, "last", { "data": "Section", "attr" : { "rel" : "bundle" } });
-                    break;
                 case "search":
                     $("#collection-outline").jstree("search", document.getElementById("text").value);
                     break;
@@ -137,6 +121,41 @@ Drupal.behaviors.voer_field_content_collection = {
         $('.voer-module-search-btn', context).click(function () {
             var keyword = jQuery('.voer-module-search-text').val();
             searchModuleByKeyword(keyword);
+            return false;
+        });
+
+        $("#add_folder").leanModal({closeButton: ".modal_close" });
+        $('#btn_add_folder').click(function () {
+            var voer_sub_sessions = $('#voer_sub_sessions').val();
+
+            if (!voer_sub_sessions) {
+                alert('Please enter something');
+                return false;
+            }
+            var session_array = voer_sub_sessions.split("\n");
+
+            $.each(session_array, function(index){
+                if (session_array[index]) {
+                    var parentNode = -1;
+                    if ($("#collection-outline").jstree("get_selected")){
+                        if ($("#collection-outline").jstree("get_selected").length > 1){
+                            parentNode = $('ul>li#root-outline');
+                        }else{
+                            var selected = $("#collection-outline").jstree("get_selected");
+                            if (selected.attr("rel") == "bundle" || selected.attr("rel") == "root"){
+                                parentNode = null;
+                            }else{
+                                parentNode = $('ul>li#root-outline');
+                            }
+                        }
+                    }
+                    $("#collection-outline").jstree("create", parentNode, "last", { "data": session_array[index], "attr" : { "rel" : "bundle" } });
+                }
+            });
+
+            $('#voer_sub_sessions').val('');
+            $('.modal_close').trigger('click');
+
             return false;
         });
     }

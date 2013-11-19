@@ -118,7 +118,33 @@ function ajax_search_module_page(){
     }
 
     $result = array();
+    $i = 0;
     foreach ($material_list as $material_id => $material_name) {
+      $author_array = array();
+      if ($materials->results[$i]->author) {
+        $author_array = explode(',', $materials->results[$i]->author);
+      }
+
+      $author_list_name = '';
+      if ($author_array) {
+        foreach ($author_array as $author_id) {
+          $author_info = voer_api_get_author($author_id);
+
+          if ($author_info->fullname) {
+            $author_name = $author_info->fullname;
+          } else {
+            $author_name = $author_info->user_id;
+          }
+
+          $author_list_name .= l($author_name, 'person/'.$author_id, array('attributes' => array('target' => '_blank'))) . ', ';
+        }
+      }
+      $author_list_name = rtrim($author_list_name, ', ');
+
+      if ($author_list_name) {
+        $material_name .= ' - ' . t('Author(s): ') . $author_list_name;
+      }
+
       $material_item = array(
         '#title' => $material_name,
         '#type' => 'checkbox',
@@ -131,6 +157,7 @@ function ajax_search_module_page(){
       }
 
       $result[] = $material_item;
+      $i++;
     }
 
     $next_button = array();
