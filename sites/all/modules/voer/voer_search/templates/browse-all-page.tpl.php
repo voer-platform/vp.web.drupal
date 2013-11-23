@@ -7,7 +7,7 @@
     </div>
   </div>
   <div>
-    <input type="text" id="searchbox" placeholder="Search...">
+    <input type="text" id="searchbox" placeholder="Search..." class="span3" />
     <span class="glyphicon glyphicon-search search-icon"></span>
   </div>
   <div class="criteria" id="type_criteria">
