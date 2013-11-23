@@ -16,7 +16,38 @@ function voer_search_menu(){
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
+  $items['browse-all'] = array(
+    'page callback' => 'voer_browse_all',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK
+  );
+  $items['ajax/materials-all'] = array(
+    'page callback' => 'ajax_get_materials',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
   return $items;
+}
+
+/**
+* Implemtnation of hook_theme()
+*/
+function voer_search_theme($existing, $type, $theme, $path) {
+  return array(
+    'material_browse_all' => array(
+      'arguments' => array('params' => array()),
+      'template' => 'templates/browse-all-page',
+    ),
+  );
+}
+
+function voer_browse_all(){
+  drupal_add_js(drupal_get_path('module', 'voer_search') . '/js/filter.js');
+  drupal_add_js(drupal_get_path('module', 'voer_search') . '/js/mustache.js');
+  drupal_add_js(drupal_get_path('module', 'voer_search') . '/js/materials.js');
+  drupal_add_js(drupal_get_path('module', 'voer_search') . '/js/materials_data.js');
+  drupal_add_css(drupal_get_path('module', 'voer_search') . '/css/filter.css');
+  return theme('material_browse_all', $params);
 }
 
 function voer_search_block_info(){
