@@ -43,7 +43,7 @@ select:focus, textarea:focus, input:focus{
   color: #808080;
   padding-left: 0px;
 /* border-bottom: 2px solid #e5e5e5;
-  border-bottom: 2px solid #F08080; 
+  border-bottom: 2px solid #F08080;
   padding-bottom: 7px;
  */
 }
@@ -76,7 +76,7 @@ select:focus, textarea:focus, input:focus{
 
 .title{
   padding: 5px 0 ;
-/*  color: #b94a48; 
+/*  color: #b94a48;
   color: #F08080;*/
   color: #D3D3D3;
   margin-left: 15px;
@@ -96,7 +96,7 @@ select:focus, textarea:focus, input:focus{
 
 .thumbnail{
   background-color: #D3D3D3;
-  min-height: 265px;
+  min-height: 195px;
   border-radius: 0;
 }
 
@@ -123,10 +123,14 @@ select:focus, textarea:focus, input:focus{
   padding-right: 5px;
 }
 
+.row-fluid .movie:nth-child(3n+1) {
+  margin-left: 0px;
+}
+
 .movie h4{
   margin-top: 15px;
   margin-bottom: -5px;
-  border-bottom: 1px solid #A9A9A9; 
+  border-bottom: 1px solid #A9A9A9;
   padding-bottom: 7px;
 }
 
