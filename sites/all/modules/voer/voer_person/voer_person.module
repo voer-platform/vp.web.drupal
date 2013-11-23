@@ -246,6 +246,10 @@ function voer_person_user_presave(&$edit, &$account, $category = NULL)
 {
   module_load_include('inc', 'voer_api');
 
+  if (isset($edit['update_to_vpr']) && $edit['update_to_vpr'] === FALSE) {
+    return;
+  }
+
   if (isset($edit['status']) && isset($edit['mail']) && isset($edit['name'])) {
     $author = array();
     $author['email'] = $edit['mail'];
