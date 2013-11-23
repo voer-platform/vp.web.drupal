@@ -1,3 +1,4 @@
+
 body{
   background-color: #f5f5f5;
   font-family: "Open Sans", sans-serif;
@@ -94,6 +95,14 @@ select:focus, textarea:focus, input:focus{
   margin-top: 40px;
 }
 
+.item-material {
+  float: left;
+  margin-bottom: 20px;
+  width: 33.3333%;
+  -moz-box-sizing: border-box;
+  padding: 0 10px;
+}
+
 .thumbnail{
   background-color: #D3D3D3;
   min-height: 195px;
@@ -118,33 +127,11 @@ select:focus, textarea:focus, input:focus{
   display: block;
 }
 
-.movie{
-  margin-bottom: 20px;
-  padding-right: 5px;
-}
-
-.row-fluid .movie:nth-child(3n+1) {
-  margin-left: 0px;
-}
-
-.movie h4{
+.item-material h4{
   margin-top: 15px;
   margin-bottom: -5px;
   border-bottom: 1px solid #A9A9A9;
   padding-bottom: 7px;
-}
-
-.rating{
-  float: right;
-  font-size: 14px;
-  margin-top: -5px;
-  margin-right: -5px;
-  background-color: #F08080;
-}
-
-.rating .glyphicon{
-  vertical-align: middle;
-  color: #fff;
 }
 
 .first{

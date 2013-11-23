@@ -18,7 +18,7 @@
       </label>
     </div>
   </div>
-  <div class="criteria" id="genre_criteria">
+  <div class="criteria" id="category_criteria">
     <h4>Categories</h4>
     <div class="checkbox">
       <label>
@@ -27,12 +27,10 @@
     </div>
   </div>
 </div>
-<div class="movies content span9">
-  <div class="row-fluid show-grid" id="materials">
-  </div>
+<div class="span9" id="materials">
 </div>
 <script id="template" type="text/html">
-  <div class="span4 movie">
+  <div class="item-material">
     <div class="thumbnail">
       <div class="caption">
         <h4><a href="/m/{{material_id}}">{{title}}</a></h4>

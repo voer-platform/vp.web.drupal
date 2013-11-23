@@ -4,7 +4,7 @@
       var all_categories = ["Business", "Social Sciences", "Science and Technology", "Humanities", "Arts",
             "Mathematics and Statistics"];
       var genre_template = Mustache.compile($.trim($("#genre_template").html()))
-          ,$genre_container = $('#genre_criteria')
+          ,$genre_container = $('#category_criteria')
 
       $.each(all_categories, function(i, g){
         $genre_container.append(genre_template({id: i+1, name: g}));
@@ -32,9 +32,15 @@
       $.each(Materials, function(i, m){ m.id = i+1; });
       window.mf = MovieFilter(Materials);
 
-      $('#genre_criteria :checkbox').prop('checked', true);
+      $('#category_criteria :checkbox').prop('checked', true);
       $('#all_categories').on('click', function(e){
-        $('#genre_criteria :checkbox:gt(0)').prop('checked', $(this).is(':checked'));
+        $('#category_criteria :checkbox:gt(0)').prop('checked', $(this).is(':checked'));
+        mf.filter();
+      });
+
+      $('#type_criteria :checkbox').prop('checked', true);
+      $('#all_type').on('click', function(e){
+        $('#type_criteria :checkbox:gt(0)').prop('checked', $(this).is(':checked'));
         mf.filter();
       });
 
@@ -69,8 +75,8 @@
 
         options = {
           filter_criteria: {
-            // type:   ['#type_criteria input:checkbox:gt(0)', 'material_type'],
-            category:   ['#genre_criteria input:checkbox:gt(0)', 'categories']
+            type:   ['#type_criteria input:checkbox:gt(0)', 'material_type'],
+            category:   ['#category_criteria input:checkbox:gt(0)', 'categories']
           },
           and_filter_on: true,
           callbacks: callbacks,
