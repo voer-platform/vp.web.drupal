@@ -144,7 +144,7 @@ function voer_field_content_collection_field_widget_form(&$form, &$form_state, $
         '#type' => 'html_tag',
         '#tag' => 'a',
         '#attributes' => array('id' => 'add_folder', 'href' => '#add_folder_form', 'rel' => 'leanModal', 'class' => 'button'),
-        '#value' => t('Create section'),
+        '#value' => t('Create subsections'),
       );
       $widget['actions']['add_module'] = array(
         '#type' => 'button',
@@ -177,9 +177,9 @@ function voer_field_content_collection_field_widget_form(&$form, &$form_state, $
         '#type' => 'markup',
         '#prefix' => '<div id="add_folder_form">
                         <div id="add_folder_form_header">
-                            <h2>'.t('Create new subsection').'</h2>
+                            <h2>'.t('Create new subsections').'</h2>
                             <p>'.t('Enter a subsection per line').'</p>
-                            <a href="#" class="modal_close"></a>
+                            <a href="javascript:void(0)" class="modal_close"></a>
                         </div>
 
                         <form action="">

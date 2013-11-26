@@ -155,7 +155,7 @@ Drupal.behaviors.voer_field_content_collection = {
 
             $('#voer_sub_sessions').val('');
             $('.modal_close').trigger('click');
-
+            $("#collection-outline").find('input.jstree-rename-input').blur();
             return false;
         });
     }
