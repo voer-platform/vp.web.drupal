@@ -6,7 +6,8 @@
  */
 function voer_batch_import_admin_paths(){
   $paths = array(
-    'import/batch' => TRUE
+    'import/batch' => TRUE,
+    'import/batch/user' => TRUE,
   );
   return $paths;
 }
@@ -30,6 +31,12 @@ function voer_batch_import_menu(){
   $items['import/handler'] = array(
     'page callback' => 'voer_content_batch_import_handler',
     'access arguments' => array('access content'),
+  );
+
+  $items['import/batch/user'] = array(
+    'title' => t('Create modules'),
+    'page callback' => 'voer_content_batch_import_user',
+    'access arguments' => array('access batch import'),
   );
 
   return $items;
@@ -93,11 +100,21 @@ function voer_content_batch_import_handler(){
 }
 
 function voer_content_batch_create($n){
+  global $user;
+  $user_data = user_load($_POST['uid']);
+
+  $person_id = '';
+  if (isset($user_data->field_person_id[LANGUAGE_NONE][0]['value'])) {
+    $person_id = $user_data->field_person_id[LANGUAGE_NONE][0]['value'];
+  } elseif (isset($user_data->field_person_id[0]['value'])) {
+    $person_id = $user_data->field_person_id[0]['value'];
+  }
+
   module_load_include('inc', 'voer_content');
   $node = new stdClass();
   $node->type = 'voer_module';
   node_object_prepare($node);
-  $node->uid = $_POST['uid'];
+  $node->uid = $_POST['uid'];;
   $node->created = strtotime("now");
   $node->changed = strtotime("now");
   $node->promote = 0;
@@ -112,7 +129,14 @@ function voer_content_batch_create($n){
   $node->field_voer_language[$node->language][0]['value'] = "vn";
   // $node->field_voer_description[$node->language][0]['value'] = "";
   // $node->field_voer_categories[$node->language][0]['value'] = "";
-  // $node->field_voer_authors = $form_state['values']['field_voer_authors'];
+
+  if ($person_id) {
+    $node->field_voer_authors[$node->language][0]['author'] = $person_id;
+    $node->field_voer_authors[$node->language][0]['editor'] = $person_id;
+    $node->field_voer_authors[$node->language][0]['licensor'] = $person_id;
+    $node->field_voer_authors[$node->language][0]['maintainer'] = $person_id;
+  }
+
   // $result = publish_module($node);
   node_save($node);
 }
@@ -175,4 +199,238 @@ function voer_content_batch_import_form($form, &$form_state){
   );
 
   return $form;
+}
+
+function voer_content_batch_import_user()
+{
+  // Build Breadcrumbs
+  $breadcrumb = array();
+  $breadcrumb[] = l('Dashboard', 'admin/dashboard');
+  $breadcrumb[] = l('Create modules', 'import/batch');
+  $breadcrumb[] = l('Import user', 'import/batch/user');
+
+  // Set Breadcrumbs
+  drupal_set_breadcrumb($breadcrumb);
+
+  return drupal_get_form('voer_content_batch_import_user_form');
+}
+
+function voer_content_batch_import_user_form($form, &$form_state)
+{
+  $form = array();
+
+  $form['finish'] = array(
+    '#type' => 'submit',
+    '#value' => t('Import user'),
+    '#weight' => 1001,
+    '#submit' => array('voer_content_batch_import_user_submit'),
+    '#attributes' => array(
+    ),
+  );
+
+  return $form;
+}
+
+function voer_content_batch_import_user_submit($form, &$form_state)
+{
+  module_load_include('inc', 'voer_api');
+
+  $page = 1;
+  $user_name_list = array();
+  $user_mail_list = array();
+  $person_id_list = array();
+
+  $users = entity_load('user');
+  foreach ($users as $user_id => $user) {
+    $user_name_list[] = $user->name;
+    $user_mail_list[] = $user->mail;
+
+    if (isset($user->field_person_id[LANGUAGE_NONE][0]['value'])) {
+      $person_id_list[] = $user->field_person_id[LANGUAGE_NONE][0]['value'];
+    } elseif (isset($user->field_person_id[0]['value'])) {
+      $person_id_list[] = $user->field_person_id[0]['value'];
+    }
+
+  }
+
+  $continue_flag = TRUE;
+  $backup_data = array();
+
+  while ($continue_flag && $page < 3) {
+    $authors = voer_api_get_all_authors($page);
+
+    foreach ($authors->results as $key => $author) {
+      $csv_data = array();
+      $insert_into_csv = FALSE;
+      $username = $author->user_id ? $author->user_id : 'unknown';
+      $email = $author->email ? $author->email : 'user.voer@voer.edu.vn';
+      $person_id = $author->id;
+
+      //cancel with user has field_person_id
+      if (in_array($person_id, $person_id_list)) {
+        break;
+      } else {
+        $person_id_list[] = $person_id;
+      }
+
+      if (in_array($username, $user_name_list) || in_array($email, $user_mail_list)) {
+        $insert_into_csv = TRUE;
+        $csv_data['old'] = (array) $author;
+      }
+
+      for ($i = 0; $i <= 50; $i++) {
+        if ($i == 0) {
+          $tmp_username = $username;
+        } else {
+          $tmp_username = $username . $i;
+        }
+
+        if (!in_array($tmp_username, $user_name_list)) {
+          $username = $tmp_username;
+          break;
+        }
+      }
+      $user_name_list[] = $username;
+
+      for ($i = 0; $i <= 50; $i++) {
+        if ($i == 0) {
+          $tmp_email = $email;
+        } else {
+          $tmp_email = str_replace('@', $i . '@', $email);
+        }
+
+        if (!in_array($tmp_email, $user_mail_list)) {
+          $email = $tmp_email;
+          break;
+        }
+      }
+      $user_mail_list[] = $email;
+
+      $fields = array(
+        'name' => $username,
+        'mail' => $email,
+        'pass' => $username, //set default is username
+        'status' => 1,
+        'init' => $email,
+        'roles' => array(
+          DRUPAL_AUTHENTICATED_RID => TRUE,
+        ),
+        'field_person_id' => array(LANGUAGE_NONE => array(0 => array('value' => $author->id))),
+      );
+      if (isset($author->fullname)) {
+        $fields['field_person_fullname'] = array(LANGUAGE_NONE => array(0 => array('value' => $author->fullname)));
+      }
+      if (isset($author->first_name)) {
+        $fields['field_person_first_name'] = array(LANGUAGE_NONE => array(0 => array('value' => $author->first_name)));
+      }
+      if (isset($author->last_name)) {
+        $fields['field_person_last_name'] = array(LANGUAGE_NONE => array(0 => array('value' => $author->last_name)));
+      }
+      if (isset($author->title)) {
+        $fields['field_person_title'] = array(LANGUAGE_NONE => array(0 => array('value' => $author->title)));
+      }
+      if (isset($author->homepage)) {
+        $fields['field_person_homepage'] = array(LANGUAGE_NONE => array(0 => array('value' => $author->homepage)));
+      }
+      if (isset($author->affiliation)) {
+        $fields['field_person_affiliation'] = array(LANGUAGE_NONE => array(0 => array('value' => $author->affiliation)));
+      }
+      if (isset($author->affiliation_url)) {
+        $fields['field_person_affiliation_url'] = array(LANGUAGE_NONE => array(0 => array('value' => $author->affiliation_url)));
+      }
+      if (isset($author->national)) {
+        $fields['field_person_national'] = array(LANGUAGE_NONE => array(0 => array('value' => $author->national)));
+      }
+      if (isset($author->biography)) {
+        $fields['field_person_biography'] = array(LANGUAGE_NONE => array(0 => array('value' => $author->biography)));
+      }
+      if (isset($author->client_id)) {
+        $fields['field_person_client_id'] = array(LANGUAGE_NONE => array(0 => array('value' => $author->client_id)));
+      }
+
+
+      if ($insert_into_csv) {
+        $fields['update_to_vpr'] = TRUE;
+      } else {
+        $fields['update_to_vpr'] = FALSE;
+      }
+
+      $query = "SELECT max(uid) FROM {users} ";
+      $max_uid = db_query($query)->fetchField();
+
+      $current_user_id = $max_uid + 1;
+      $fields['uid'] = $current_user_id;
+
+      if (isset($author->avatar)) {
+        $avatar_link = sprintf('http://%s:%s/%s%s/avatar/', VOER_API_URL, VOER_API_PORT, VOER_API_COMMAND_AUTHOR, $author->id);
+
+        $file_name = 'picture-'.$current_user_id.'-'.time().'.jpg';
+        $tmp_avatar_path = drupal_realpath('public://pictures').'/' . $file_name;
+        $ch = curl_init($avatar_link);
+        $fp = fopen($tmp_avatar_path, 'wb');
+        curl_setopt($ch, CURLOPT_FILE, $fp);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_exec($ch);
+        curl_close($ch);
+        fclose($fp);
+
+        $image_info = image_get_info($tmp_avatar_path);
+
+        // create file object
+        $file = new stdClass();
+        $file->uid = $current_user_id;
+        $file->uri = 'public://pictures/' . $file_name;
+        $file->filemime = $image_info['mime_type'];
+        $file->status = FILE_STATUS_PERMANENT; // Yes! Set status to 0 in order to save temporary file.
+        $file->filesize = $image_info['file_size'];
+        $file->filename = $file_name;
+
+        $errors = file_validate($file);
+        if (empty($errors)) {
+            file_save($file);
+            $fields['picture'] = $file->fid;
+        }
+      }
+
+      user_save('', $fields);
+
+      if ($insert_into_csv == TRUE) {
+        $tmp_author = (array) $author;
+        $tmp_author['user_id'] = $fields['name'];
+        $tmp_author['email'] = $fields['mail'];
+
+        $csv_data['new'] = $tmp_author;
+      }
+
+      if ($authors->next == NULL || $page > 400) {  //will remove '$page > 400' when VPR fixbug
+        $continue_flag = FALSE;
+      }
+
+      if ($csv_data) {
+        $backup_data[] = $csv_data;
+      }
+    }
+
+    $page++;
+  }
+
+  if ($backup_data) {
+    // Add the headers needed to let the browser know this is a csv file download.
+    drupal_add_http_header('Content-Type', 'text/csv; utf-8');
+    drupal_add_http_header('Content-Disposition', 'attachment; filename = backup_data.csv');
+
+    // Instead of writing to a file, we write to the output stream.
+    $fh = fopen('php://output', 'w');
+
+    fputcsv($fh, array(t('No.'), t('Person ID'), t('Old data'), t('New data'))); // Add a header row
+
+    foreach($backup_data as $index => $data) {
+      fputcsv($fh, array($index + 1, $data['old']['id'], json_encode($data['old']), json_encode($data['new'])));
+    }
+
+    fclose($fh); // Close the output stream.
+    die;
+  }
+
+  drupal_set_message(t('Import user successfull'));
 }
