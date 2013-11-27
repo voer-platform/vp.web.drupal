@@ -79,7 +79,8 @@
     border-radius: 4px;
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
-    font-size: 1.2em;
+    font-size: 15px;
+    height: 135px;
     color: #222;
     background: #F7F7F7;
     outline: none;
