@@ -80,6 +80,7 @@ Drupal.behaviors.voer_field_content_collection = {
                             }
                             $("#collection-outline").jstree("create", parentNode, "last", { "data": title, "attr" : { "id": id, "rel" : "module" } });
                             $(this).attr('disabled', 'disabled');
+                            $("#collection-outline").find('input.jstree-rename-input').blur();
                         }
                     });
                     break;
@@ -135,7 +136,7 @@ Drupal.behaviors.voer_field_content_collection = {
             var session_array = voer_sub_sessions.split("\n");
 
             $.each(session_array, function(index){
-                if (session_array[index]) {
+                if ($.trim(session_array[index])) {
                     var parentNode = -1;
                     if ($("#collection-outline").jstree("get_selected")){
                         if ($("#collection-outline").jstree("get_selected").length > 1){
