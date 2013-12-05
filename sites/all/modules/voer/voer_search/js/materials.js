@@ -1,16 +1,21 @@
 (function ($) {
   Drupal.behaviors.voer_field_content_collection = {
     attach: function(context, settings) {
-      var all_categories = ["Business", "Social Sciences", "Science and Technology", "Humanities", "Arts",
-            "Mathematics and Statistics"];
+      var all_categories = [
+            {id: 1, name:"Business"},
+            {id: 2, name:"Social Sciences"},
+            {id: 3, name:"Science and Technology"},
+            {id: 4, name:"Humanities"},
+            {id: 5, name:"Arts"},
+            {id: 6, name:"Mathematics and Statistics"}];
       var genre_template = Mustache.compile($.trim($("#genre_template").html()))
           ,$genre_container = $('#category_criteria')
 
       $.each(all_categories, function(i, g){
-        $genre_container.append(genre_template({id: i+1, name: g}));
+        $genre_container.append(genre_template({id: g.id, name: g.name}));
       });
 
-      var all_type = [{id: 1, name:'Module'}, {id: 2, name: 'Collection'}];
+      var all_type = [{id: 'voer_module', name:'Module'}, {id: 'voer_collection', name: 'Collection'}];
       var type_template = Mustache.compile($.trim($('#type_template').html()));
       var $type_container = $('#type_criteria');
       $.each(all_type, function(i, g){
@@ -40,8 +45,14 @@
 
       $('#type_criteria :checkbox').prop('checked', true);
       $('#all_type').on('click', function(e){
-        $('#type_criteria :checkbox:gt(0)').prop('checked', $(this).is(':checked'));
+        if ($(this).is(':checked')){
+          $('#type_criteria :checkbox:gt(0)').prop('checked', false);
+        }
         mf.filter();
+      });
+
+      $('#type_criteria :checkbox:gt(0)').on('click', function(e){
+
       });
 
     }
@@ -75,11 +86,12 @@
 
         options = {
           filter_criteria: {
-            type:   ['#type_criteria input:checkbox:gt(0)', 'material_type'],
-            category:   ['#category_criteria input:checkbox:gt(0)', 'categories']
+            type:   ['#type_criteria input:checkbox:gt(0) .EVENT.click .SELECT.:checked .TYPE.value_filter', 'type'],
+            category:   ['#category_criteria input:checkbox:gt(0) .EVENT.click .SELECT.:checked .TYPE.value_filter', 'categories']
           },
           and_filter_on: true,
           callbacks: callbacks,
+          filter_types:filter_type_functions,
           search: {input: '#searchbox'}
           // streaming: {
           //   // data_url: '/ajax/materials-all',
@@ -88,6 +100,18 @@
           //   batch_size: 50
           // }
         }
+
+        var filter_type_functions = {
+          value_filter: function(value, type){
+            // console.log('Value = ' + value);
+            // console.log('Value = ' + type);
+            // alert('hi');
+            if (value == 'all'){
+              return true;
+            }
+            if (value == type){return true;}
+          },
+        };
 
         return FilterJS(data, "#materials", view, options);
       }

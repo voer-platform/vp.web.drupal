@@ -105,8 +105,9 @@ select:focus, textarea:focus, input:focus{
 
 .thumbnail{
   background-color: #D3D3D3;
-  min-height: 195px;
+  height: 215px;
   border-radius: 0;
+  overflow: hidden;
 }
 
 .label{

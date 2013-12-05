@@ -58,6 +58,10 @@ function voer_search_block_info(){
   return $blocks;
 }
 
+function ajax_get_materials(){
+
+}
+
 /**
  * Implements hook_block_view().
  */

@@ -1,7 +1,7 @@
 <div class="row">
 <div class="sidebar span3">
   <div class="row">
-    <h4 class="col-span-6"> Materials (<span id="total_movies">250</span>)</h4>
+    <h4 class="col-span-6"> Materials (<span id="total_movies">4567</span>)</h4>
     <div class="col-span-6 progress">
       <div class="progress-bar" id="stream_progress" style="width: 0%">0 %</div>
     </div>
@@ -14,7 +14,7 @@
     <h4>Type</h4>
     <div class="checkbox">
       <label>
-        <input type="checkbox" value='All' id="all_type"> All
+        <input type="checkbox" value='all' id="all_type"> All
       </label>
     </div>
   </div>
@@ -22,7 +22,7 @@
     <h4>Categories</h4>
     <div class="checkbox">
       <label>
-        <input type="checkbox" value='All' id="all_categories"> All
+        <input type="checkbox" value='all' id="all_categories"> All
       </label>
     </div>
   </div>
@@ -33,7 +33,7 @@
   <div class="item-material">
     <div class="thumbnail">
       <div class="caption">
-        <h4><a href="/m/{{material_id}}">{{title}}</a></h4>
+        <h4><a href="/node/{{nid}}">{{title}}</a></h4>
         <div class="detail">
           <dl>
             <dt>Author</dt>
