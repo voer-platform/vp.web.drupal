@@ -292,6 +292,11 @@ function voer_content_batch_import_user_submit($form, &$form_state)
   $backup_data = array();
   $user_created_count = 0;
 
+  $backup_folder = drupal_realpath('public://backup');
+  if (!file_exists($backup_folder)) {
+    mkdir($backup_folder, 0777);
+  }
+
   $author_list_file = drupal_realpath('public://backup').'/list_person.json';
 
   if (!file_exists($author_list_file)) {
@@ -456,11 +461,6 @@ function voer_content_batch_import_user_submit($form, &$form_state)
     // Add the headers needed to let the browser know this is a csv file download.
     drupal_add_http_header('Content-Type', 'text/csv; utf-8');
     drupal_add_http_header('Content-Disposition', 'attachment; filename = backup_data.csv');
-
-    $backup_folder = drupal_realpath('public://backup');
-    if (!file_exists($backup_folder)) {
-      mkdir($backup_folder, 0777);
-    }
 
     $backup_filename = 'backup-'.date('YmdHis').'.csv';
     // Instead of writing to a file, we write to the output stream.
