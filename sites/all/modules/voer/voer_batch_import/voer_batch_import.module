@@ -402,7 +402,6 @@ function voer_content_batch_import_user_submit($form, &$form_state)
     $file_headers = @get_headers($avatar_link);
 
     if ($file_headers[0] == 'HTTP/1.1 200 OK') {
-      drupal_set_message($author->id);
       $file_name = 'picture-'.$current_user_id.'-'.time().'.jpg';
       $tmp_avatar_path = drupal_realpath('public://pictures').'/' . $file_name;
       $ch = curl_init($avatar_link);
