@@ -267,6 +267,7 @@ function voer_content_batch_import_user_form($form, &$form_state)
 
 function voer_content_batch_import_user_submit($form, &$form_state)
 {
+  module_load_include('inc', 'voer_api');
   ini_set('memory_limit', '1024M');
 
   $user_name_list = array();
@@ -397,9 +398,11 @@ function voer_content_batch_import_user_submit($form, &$form_state)
     $fields['uid'] = $current_user_id;
     $fields['update_to_vpr'] = FALSE;
 
-    if (isset($author->avatar)) {
-      $avatar_link = sprintf('http://%s:%s/%s%s/avatar/', VOER_API_URL, VOER_API_PORT, VOER_API_COMMAND_AUTHOR, $author->id);
+    $avatar_link = sprintf('http://%s:%s/%s%s/avatar/', VOER_API_URL, VOER_API_PORT, VOER_API_COMMAND_AUTHOR, $author->id);
+    $file_headers = @get_headers($avatar_link);
 
+    if ($file_headers[0] == 'HTTP/1.1 200 OK') {
+      drupal_set_message($author->id);
       $file_name = 'picture-'.$current_user_id.'-'.time().'.jpg';
       $tmp_avatar_path = drupal_realpath('public://pictures').'/' . $file_name;
       $ch = curl_init($avatar_link);
