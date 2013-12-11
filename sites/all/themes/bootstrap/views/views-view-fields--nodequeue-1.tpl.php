@@ -23,7 +23,7 @@
  *
  * @ingroup views_templates
  */
- dpm($fields);
+ // dpm($fields);
   $type_class = "icon-puzzle";
   if ($fields['type']->content == "voer_collection"){
     $type_class = "icon-book";
