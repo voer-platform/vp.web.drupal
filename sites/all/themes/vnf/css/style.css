@@ -1,0 +1,65 @@
+/**
+ * This file should get overwritten if Method 1 is used. If Method 2 is chosen,
+ * remove this comment and start adding your styles to this file.
+ */
+
+body{
+    background-color: #F9FAF7;
+    color: #555555;
+    font-family: Arial,sans-serif,Tahoma;
+    font-size: 13px;
+    line-height: 20px;
+}
+
+a{
+    color: #C10C3E;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+a:hover, a:focus {
+    color: #C43E63;
+    text-decoration: none;
+}
+a:focus {
+    outline: thin dotted #333333;
+    outline-offset: -2px;
+}
+
+#mainpage > .container{
+    width: 1070px;
+    padding: 0px;
+}
+
+.list-mainpage-browser{
+    margin: 0;
+    padding: 0;
+}
+
+div.features{}
+div.features ul{
+    margin: 0;
+    padding: 0;
+}
+div.features ul li{
+    border: 1px solid #E8E8E8;
+    border-radius: 5px;
+    display: inline-block;
+    float: left;
+    margin-bottom: 20px;
+    margin-right: 29px;
+    position: relative;
+    list-style: none;
+}
+div.features ul li:nth-child(3n){
+    margin-right: 0;
+}
+div.features h3{
+    line-height: 20px;
+    margin: 0;
+    padding: 0;
+}
+div.features h3 a{
+    font-size: 16px;
+    font-weight: bold;
+}
