@@ -269,6 +269,7 @@
         </aside>  <!-- /#sidebar-first -->
       <?php endif; ?>
 
+      <?php if (!$is_front): ?>
       <section<?php print $content_column_class; ?>>
         <?php if (!empty($page['highlighted'])): ?>
           <div class="highlighted jumbotron"><?php print render($page['highlighted']); ?></div>
@@ -289,10 +290,9 @@
         <?php if (!empty($action_links)): ?>
           <ul class="action-links"><?php print render($action_links); ?></ul>
         <?php endif; ?>
-        <?php if (!$is_front): ?>
         <?php print render($page['content']); ?>
-        <?php endif; ?>
       </section>
+      <?php endif; ?>
 
       <?php if (!empty($page['sidebar_second'])): ?>
         <aside class="col-sm-3" role="complementary">
