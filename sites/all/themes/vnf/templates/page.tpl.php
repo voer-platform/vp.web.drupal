@@ -191,7 +191,6 @@
   <div class="container">
     <div class="row">
       <?php print $messages; ?>
-
       <?php if (!empty($page['header'])): ?>
         <?php print render($page['header']); ?>
         <div class="mainpage-browser left">
@@ -277,8 +276,10 @@
         <?php if (!empty($breadcrumb)): print $breadcrumb; endif;?>
         <a id="main-content"></a>
         <?php print render($title_prefix); ?>
-        <?php if (!empty($title)): ?>
-          <h1 class="page-header"><?php print $title; ?></h1>
+        <?php if (!empty($title) && !isset($node)): ?>
+          <div class="module-view-title left padding-content-15">
+            <span class="module-view-name left clear"><?php print $title; ?></span>
+          </div>
         <?php endif; ?>
         <?php print render($title_suffix); ?>
         <?php if (!empty($tabs)): ?>

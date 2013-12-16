@@ -36,6 +36,10 @@ a:focus {
     padding: 0;
 }
 
+.module-view-author-block {
+    width: 74px;
+}
+
 div.features{}
 div.features ul{
     margin: 0;
@@ -62,4 +66,56 @@ div.features h3{
 div.features h3 a{
     font-size: 16px;
     font-weight: bold;
+}
+
+body.page-node div#mainpage{
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: -moz-use-text-color #E8E8E8 #E8E8E8;
+    border-image: none;
+    border-right: 1px solid #E8E8E8;
+    border-style: none solid solid;
+    border-width: medium 1px 1px;
+    padding: 10px;
+}
+
+body.page-node div#mainpage h1.page-header{
+    padding: 15px;
+    color: #C10C3E;
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 11px;
+    background: none repeat scroll 0 0 #F4F4F4;
+    border-bottom: 1px solid #E8E8E8;
+}
+
+body.page-node div#mainpage article.node figure{
+    text-align: center;
+}
+
+body.page-node  article.node-voer-module{
+    width: 772px;
+    float: left;
+    border-right: 1px solid #E8E8E8;
+}
+
+body.page-node div#mainpage article.node figure figcaption{
+    font-style: italic;
+}
+
+div.left-col{
+    width: 298px;
+    float: left;
+}
+
+div.module-view-title .voer_field_author_content{
+    clear: both;
+    float: left;
+}
+
+div.module-view-title .voer_field_author_content a{
+    color: #231F20;
+    font-size: 17px;
 }
