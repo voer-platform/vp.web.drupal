@@ -119,3 +119,31 @@ div.module-view-title .voer_field_author_content a{
     color: #231F20;
     font-size: 17px;
 }
+
+.modal-header {
+    border-bottom: none;
+}
+
+.modal-title {
+    color: #C10C3E;
+    font-size: 20px;
+    margin: 0;
+}
+
+.modal-footer {
+    padding: 0;
+}
+
+.modal-dialog {
+    padding-top: 55px;
+}
+
+.alert {
+    margin-top: 20px;
+}
+
+.btn-primary {
+    background-color: #C10C3E;
+    border-color: #C10C3E;
+    color: #FFFFFF;
+}

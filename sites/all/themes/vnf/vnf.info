@@ -26,6 +26,8 @@ regions[page_bottom]    = 'Page bottom'
 
 stylesheets[all][] = css/templates.css
 stylesheets[all][] = css/slide.css
+stylesheets[all][] = css/flat-ui.css
+stylesheets[all][] = fonts/font.css
 stylesheets[all][] = css/style.css
 
 

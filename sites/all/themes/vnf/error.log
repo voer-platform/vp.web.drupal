@@ -1,0 +1,6 @@
+[17-Dec-2013 17:14:46 Europe/Moscow] PHP Warning:  PHP Startup: Unable to load dynamic library 'ext\php_zip.dll' - The specified module could not be found.
+ in Unknown on line 0
+[17-Dec-2013 17:30:31 Europe/Moscow] PHP Warning:  PHP Startup: Unable to load dynamic library 'ext\php_zip.dll' - The specified module could not be found.
+ in Unknown on line 0
+[18-Dec-2013 22:05:42 Europe/Moscow] PHP Warning:  PHP Startup: Unable to load dynamic library 'ext\php_zip.dll' - The specified module could not be found.
+ in Unknown on line 0

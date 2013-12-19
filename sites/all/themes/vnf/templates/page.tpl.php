@@ -73,61 +73,7 @@
  * @ingroup themeable
  */
 ?>
-<div id="top">
-  <div class="main" id="header">
-    <div class="logo">
-      <a href="<?php echo $front_page; ?>">
-        Logo
-      </a>
-    </div>
-    <div id="main-menu">
-    <ul class="main-menu-nav">
-      <li>
-        <a href="<?php echo $front_page; ?>">Home</a>
-      </li>
-      <li>
-        <a href="/browse">Browser All</a>
-      </li>
-      <li>
-        <a href="/discover">Discover</a>
-      </li>
-      <li>
-        <a href="/about-us">About Us</a>
-      </li>
-    </ul>
-    </div>
-    <!--RIGHT TOP-->
-    <div class="right" id="right-top-nav">
-      <div class="block-top-language">
-        <ul class="list-right-top">
-          <li>Language:</li>
-          <li>
-            <div class="collapse navbar-collapse bs-js-navbar-collapse">
-            <ul class="nav navbar-nav">
-              <li class="dropdown">
-                <a data-toggle="dropdown" class="dropdown-toggle" role="button" id="drop-top-language">
-                  English
-                  <span class="caret"></span>
-                </a>
-                <div aria-labelledby="drop-category-pd" role="menu" class="dropdown-menu">
-                  <ul class="dropdown-menu-language">
-                    <li>
-                      <a>Vietnamese</a>
-                    </li>
-                  </ul>
-                </div>
-              </li>
-            </ul>
-          </div>
-          </li>
-          <li><a href="<?php print $base_path; ?>user/register">Join</a></li>
-          <li><a class="btn-top-login"></a></li>
-        </ul>
-    </div>
-    </div>
-    <!--END RIGHT TOP-->
-  </div>
-</div>
+<?php require_once 'header.tpl.php'; ?>
 
 <?php if ($is_front) : ?>
 <div class="slide1" id="slider" style="background-image: url('<?php print $base_path . $directory;?>/images/bg-slide1.jpg');">
@@ -199,7 +145,7 @@
             <ul class="list-mainpage-browser left">
               <li>
                 <div class="browser-author-img left clear">
-                  <img src="images/author1.jpg">
+                  <img src="<?php print $base_path . $directory;?>/images/author1.jpg">
                 </div>
                 <div class="browser-author-details left clear">
                   <div class="icon-browser-author"></div>
@@ -211,7 +157,7 @@
               </li>
               <li>
                 <div class="browser-author-img left clear">
-                  <img src="images/author2.jpg">
+                  <img src="<?php print $base_path . $directory;?>/images/author2.jpg">
                 </div>
                 <div class="browser-author-details left clear">
                   <div class="icon-browser-author"></div>
@@ -223,7 +169,7 @@
               </li>
               <li>
                 <div class="browser-author-img left clear">
-                  <img src="images/author3.jpg">
+                  <img src="<?php print $base_path . $directory;?>/images/author3.jpg">
                 </div>
                 <div class="browser-author-details left clear">
                   <div class="icon-browser-author"></div>
@@ -235,7 +181,7 @@
               </li>
               <li>
                 <div class="browser-author-img left clear">
-                  <img src="images/author4.jpg">
+                  <img src="<?php print $base_path . $directory;?>/images/author4.jpg">
                 </div>
                 <div class="browser-author-details left clear">
                   <div class="icon-browser-author"></div>
@@ -247,7 +193,7 @@
               </li>
               <li>
                 <div class="browser-author-img left clear">
-                  <img src="images/author1.jpg">
+                  <img src="<?php print $base_path . $directory;?>/images/author1.jpg">
                 </div>
                 <div class="browser-author-details left clear">
                   <div class="icon-browser-author"></div>
@@ -301,38 +247,7 @@
         </aside>  <!-- /#sidebar-second -->
       <?php endif; ?>
 
-      <div class="footer left">
-        <div class="logo-footer left">
-        </div>
-        <ul class="list-menu-footer left">
-          <li>
-            <a>About</a>
-          </li>
-          <li>
-            <a>Careers</a>
-          </li>
-          <li>
-            <a>Team</a>
-          </li>
-          <li>
-            <a>Store</a>
-          </li>
-          <li>
-            <a>Contact</a>
-          </li>
-          <li>
-            <a>Press</a>
-          </li>
-          <li>
-            <a>Terms</a>
-          </li>
-        </ul>
-        <ul class="list-footer-social right">
-          <li><a>Facebook</a></li>
-          <li><a>Google+</a></li>
-          <li><a>Twitter</a></li>
-        </ul>
-      </div>
+      <?php require_once 'footer.tpl.php'; ?>
     </div>
   </div>
 </div>
